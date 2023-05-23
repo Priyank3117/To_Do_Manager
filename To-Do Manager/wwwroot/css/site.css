@@ -1,0 +1,146 @@
+body {
+    background-color: #ebebeb !important;
+}
+
+.loginContainer {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginDiv {
+    width: 500px;
+    height: fit-content;
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 50px;
+}
+
+.registrationDiv {
+    width: 700px;
+    height: fit-content;
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 50px;
+}
+
+.ForgotPasswordDiv {
+    width: 600px;
+    height: fit-content;
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 50px;
+}
+
+@media screen and (max-width: 576px) {
+    .loginDiv, .registrationDiv, .ForgotPasswordDiv {
+        width: 350px;
+        padding: 15px;
+    }
+
+    .loginButton,
+    .backButton {
+        width: auto !important;
+        height: 35px !important;
+    }
+}
+
+@media screen and (max-width: 768px) and (min-width: 577px) {
+    .registrationDiv {
+        width: 500px;
+    }
+}
+
+.loginTitle {
+    font-size: 30px;
+    color: #555;
+}
+
+.form-control:focus {
+    border: none !important;
+    box-shadow: 0 0 0 0.2rem rgba(51, 48, 0, 0.25) !important;
+}
+
+input[type=checkbox] {
+    accent-color: #333;
+}
+
+.loginButton {
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+    line-height: 1.2;
+    display: flex;
+    justify-content: center;
+    width: 150px;
+    align-items: center;
+    padding: 0 20px;
+    height: 55px;
+    background-color: #333;
+    border-radius: 27px;
+    transition: .4s;
+    border: none;
+}
+
+.SendOTPButton {
+    font-size: 12px;
+    font-weight: 400;
+    color: #333;
+    line-height: 1.2;
+    display: flex;
+    justify-content: center;
+    height: 33px;
+    align-items: center;
+    padding: 0 10px;
+    background-color: #fff;
+    border-radius: 27px;
+    transition: .4s;
+    border: 1px solid #333;
+    text-decoration: none;
+}
+
+#Role option:hover {
+    background-color: #333 !important;
+}
+
+.backButton {
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    color: #000000;
+    line-height: 1.2;
+    display: flex;
+    justify-content: center;
+    width: 150px;
+    align-items: center;
+    padding: 0 20px;
+    height: 55px;
+    background-color: #ffffff;
+    border-radius: 27px;
+    transition: .4s;
+    border: 1px solid #333;
+    text-decoration: none;
+}
+
+.loginButton:hover {
+    background-color: #4fd355;
+    border: none;
+}
+
+.backButton:hover {
+    color: #ffffff;
+    background-color: #333;
+}
+
+.SendOTPButton:hover {
+    color: #ffffff;
+    background-color: #333;
+}
+
+.mainPageTitle {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 2.5rem;
+    font-weight: 500;
+    color: #1a1a1a;
+}

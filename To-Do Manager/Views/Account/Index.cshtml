@@ -1,0 +1,30 @@
+﻿@using Entities.ViewModels.AccountViewModels;
+
+@model LoginViewModel
+
+<div class="loginDiv">
+    <p class="loginTitle">ACCOUNT LOGIN</p>
+    <form method="post">
+        <div class="mb-3">
+            <label for="Email" class="form-label">Email</label>
+            <input type="email" class="form-control" asp-for="Email" autocomplete="off">
+            <span class="text-danger" asp-validation-for="Email"></span>
+        </div>
+        <div class="mb-3">
+            <label for="Password" class="form-label">Password</label>
+            <input type="password" class="form-control" asp-for="Password" autocomplete="off">
+            <span class="text-danger" asp-validation-for="Password"></span>
+        </div>
+        <div class="mb-3 d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                <p class="text-muted m-0">Do not have an account? <a asp-action="Registration" asp-controller="Account" style="color: #4fd355;text-decoration: none;">Sign up</a></p>
+            </div>
+            <div>
+                <a asp-action="ForgotPassword" asp-controller="Account" style="text-decoration: none;" class="m-0 text-muted">Forgot Password?</a>
+            </div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="loginButton">Login</button>
+        </div>
+    </form>
+</div>
