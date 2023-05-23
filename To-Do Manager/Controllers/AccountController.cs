@@ -140,10 +140,27 @@ namespace To_Do_Manager.Controllers
         {
             return PartialView("~/Views/Account/ResetPassword.cshtml");
         }
-        
+
         public IActionResult GetForgotPasswordView()
         {
             return PartialView("~/Views/Account/ForgotPassword.cshtml");
+        }
+
+        [HttpPost]
+        public IActionResult ChangePassword(ResetPasswordViewModel resetPassword)
+        {
+            if (ModelState.IsValid)
+            {
+                resetPassword.OldPassword = BCrypt.Net.BCrypt.HashPassword(resetPassword.OldPassword);
+                resetPassword.NewPassword = BCrypt.Net.BCrypt.HashPassword(resetPassword.NewPassword);
+
+                if (_AccountRepo.ChangePassword(resetPassword) == "EnterValidOldPassword")
+                    ModelState.AddModelError("OldPassword", "Enter valid old password");
+                else
+                    return RedirectToAction("Index", "Account");
+            }
+
+            return View(resetPassword);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Entities.Data;
 using Entities.Models;
 using Entities.ViewModels.AccountViewModels;
+using Microsoft.EntityFrameworkCore;
 using Repository.Interface;
 
 namespace Repository.Repository
@@ -109,6 +110,26 @@ namespace Repository.Repository
                 }
 
                 return "Error";
+            }
+        }
+
+        public string ChangePassword(ResetPasswordViewModel resetPassword)
+        {
+            var user = _db.Users.FirstOrDefault(user => user.Email == resetPassword.Email);
+
+            if(user != null && resetPassword.OldPassword == user.Password)
+            {
+                user.Password = resetPassword.NewPassword;
+                user.UpdatedAt = DateTime.Now;
+
+                _db.Update(user);
+                _db.SaveChanges();
+
+                return "Changed";
+            }
+            else
+            {
+                return "EnterValidOldPassword";
             }
         }
     }

@@ -55,7 +55,7 @@ function VerifyOTP() {
             data: { forgotPassword: forgotPassword },
             success: function (data) {
                 if (data == "ValidOTP") {
-                    GetChangePasswordView();
+                    GetChangePasswordView($("#Email").val());
                 }
                 else if (data == "OTPIsExpired") {
                     $("#OTPSpan").html("OTP is expired")
@@ -68,7 +68,7 @@ function VerifyOTP() {
     }
 }
 
-function GetChangePasswordView() {
+function GetChangePasswordView(email) {
     $.ajax({
         url: "/Account/GetChangePasswordView",
         type: "GET",
@@ -76,6 +76,7 @@ function GetChangePasswordView() {
         success: function (data) {
             $(".AccounPageContent").empty()
             $(".AccounPageContent").html(data)
+            $("#Email").val(email)
         }
     })
 }

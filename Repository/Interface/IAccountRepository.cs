@@ -13,5 +13,7 @@ namespace Repository.Interface
         public bool StoreOTP(ForgotPasswordViewModel forgotPassword);
 
         public string VerifyOTP(ForgotPasswordViewModel forgotPassword);
+
+        public string ChangePassword(ResetPasswordViewModel resetPassword);
     }
 }
