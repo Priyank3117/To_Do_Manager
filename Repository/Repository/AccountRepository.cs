@@ -1,7 +1,6 @@
 ﻿using Entities.Data;
 using Entities.Models;
 using Entities.ViewModels.AccountViewModels;
-using Microsoft.EntityFrameworkCore;
 using Repository.Interface;
 
 namespace Repository.Repository
@@ -25,7 +24,6 @@ namespace Repository.Repository
                     LastName = registration.LastName,
                     Email = registration.Email,
                     Password = registration.Password,
-                    Role = registration.Role,
                     CreatedAt = DateTime.Now
                 };
 
@@ -117,7 +115,9 @@ namespace Repository.Repository
         {
             var user = _db.Users.FirstOrDefault(user => user.Email == resetPassword.Email);
 
-            if(user != null && resetPassword.OldPassword == user.Password)
+            resetPassword.NewPassword = BCrypt.Net.BCrypt.HashPassword(resetPassword.NewPassword);
+
+            if (user != null && BCrypt.Net.BCrypt.Verify(resetPassword.OldPassword, user.Password))
             {
                 user.Password = resetPassword.NewPassword;
                 user.UpdatedAt = DateTime.Now;

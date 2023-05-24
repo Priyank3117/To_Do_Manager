@@ -1,49 +1,217 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - To_Do_Manager</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/To_Do_Manager.styles.css" asp-append-version="true" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="~/css/site.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+            crossorigin="anonymous"></script>
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">To_Do_Manager</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+
+<body style="background-color: #ffffff !important;">
+
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" style="padding-left: 200px;" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown my-1 px-2" style="list-style-type: none;">
+
+                    </li>
+                </ul>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center" id="profileSecion">
+                <div class="notificationContainer">
+                    <ul class="navbar-nav text-center">
+                        <li class="nav-item dropdown" style="list-style-type: none;">
+                            <a style="color: black;padding: 0px;" class="nav-link" id="notificationDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="/images/bell.png" class="notoficationImage" />
+                            </a>
+
+                            <ul class="dropdown-menu notificationDropdown mainNotificationDropdown" style="width: 470px;position: absolute;"
+                                aria-labelledby="notificationDropdown" id="forReopenThis">
+                                <li class="firstRowNotification">
+                                    <a style="color: black;padding: 0px;" class="nav-link SettingDropdown">
+                                        <img src="/images/settings.png" alt="">
+                                    </a>
+                                    <p class="p-0 m-0" style="font-weight: 500;">Notification</p>
+                                    <a role="button" class="text-muted" id="clearAllNotification">Clear All</a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <img src="/HTML/images/user1.png" alt="">
+                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress</bold></p>
+                                    <div class="dot"></div>
+                                </li>
+                                <hr class="text-muted p-0 m-0">
+                                <li class="dropdown-item">
+                                    <img src="/HTML/images/add.png" alt="">
+                                    <p class="m-0  dropRow">John Deo Recommended this mission- <bold>Grow Tress</bold></p>
+                                    <img src="/HTML/images/checked.png" alt="">
+                                </li>
+                                <hr class="text-muted p-0 m-0">
+                                <li class="dropdown-item">
+                                    <img src="/HTML/images/new-message.png" alt="">
+                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress</bold></p>
+                                    <img src="/HTML/images/checked.png" alt="">
+                                </li>
+                                <div class="breakNotificationList bg-light">
+                                    <p class="m-0 p-0 text-muted">Yesterday</p>
+                                </div>
+                                <hr class="text-muted p-0 m-0">
+                                <li class="dropdown-item">
+                                    <img src="/HTML/images/user1.png" alt="">
+                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress</bold></p>
+                                    <div class="dot"></div>
+                                </li>
+                                <hr class="text-muted p-0 m-0">
+                                <li class="dropdown-item">
+                                    <img src="/HTML/images/add.png" alt="">
+                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress</bold></p>
+                                    <img src="/HTML/images/checked.png" alt="">
+                                </li>
+                                <hr class="text-muted p-0 m-0">
+                                <li class="dropdown-item">
+                                    <img src="/HTML/images/new-message.png" alt="">
+                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress</bold></p>
+                                    <img src="/HTML/images/checked.png" alt="">
+                                </li>
+                                <div class="breakNotificationList bg-light">
+                                    <p class="m-0 text-muted">Yesterday</p>
+                                </div>
+                                <hr class="text-muted p-0 m-0">
+                                <li class="dropdown-item">
+                                    <img src="/HTML/images/user1.png" alt="">
+                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress</bold></p>
+                                    <div class="dot"></div>
+                                </li>
+                                <hr class="text-muted p-0 m-0">
+                                <li class="dropdown-item">
+                                    <img src="/HTML/images/add.png" alt="">
+                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress</bold></p>
+                                    <img src="/HTML/images/checked.png" alt="">
+                                </li>
+                                <hr class="text-muted p-0 m-0">
+                                <li class="dropdown-item">
+                                    <img src="/HTML/images/new-message.png" alt="">
+                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress</bold></p>
+                                    <img src="/HTML/images/checked.png" alt="">
+                                </li>
+                                <div class="breakNotificationList bg-light">
+                                    <p class="m-0 text-muted">Yesterday</p>
+                                </div>
+                            </ul>
+
+                            <ul class="dropdown-menu notificationDropdown noNotificationDropdown" style="width: 470px;position: absolute;">
+                                <li class="firstRowNotification">
+                                    <a style="color: black;padding: 0px;" class="nav-link SettingDropdown">
+                                        <img src="/HTML/images/settings.png" alt="">
+                                    </a>
+                                    <p class="p-0 m-0" style="font-weight: 500;">Notification</p>
+                                    <a role="button" class="text-muted">Clear All</a>
+                                </li>
+                                <hr class="text-muted p-0 m-0">
+                                <li class="noNotification">
+                                    <img src="/HTML/images/bell-big.png" alt="">
+                                    <p class="p-0 m-0 text-muted">You do not have any new notification</p>
+                                </li>
+                            </ul>
+
+
+                            <ul class="dropdown-menu notificationDropdown notificationSettingDropdown" style="width: 470px;position: absolute;"
+                                aria-labelledby="SettingDropdown">
+                                <li class="firstRowNotification" style="justify-content: center;">
+                                    <p class="p-0 m-0" style="font-weight: 500;">Notification Setting</p>
+                                </li>
+                                <div class="breakNotificationList bg-light mb-1" style="justify-content: flex-start;">
+                                    <p class="m-0 ps-3 text-muted">Get a notification for</p>
+                                </div>
+                                <li>
+                                    <p class="m-0 p-0">Recommended Missions</p>
+                                    <input type="checkbox" id="RecommendedMissions">
+                                </li>
+                                <li>
+                                    <p class="m-0 p-0">Volunteering Hours</p>
+                                    <input type="checkbox" id="VolunteeringHours">
+                                </li>
+                                <li>
+                                    <p class="m-0 p-0">Volunteering Goals</p>
+                                    <input type="checkbox" id="VolunteeringGoals">
+                                </li>
+                                <li>
+                                    <p class="m-0 p-0">My Comments</p>
+                                    <input type="checkbox" id="MyComments">
+                                </li>
+                                <li>
+                                    <p class="m-0 p-0">My Stories</p>
+                                    <input type="checkbox" id="MyStories">
+                                </li>
+                                <li>
+                                    <p class="m-0 p-0">New Stories</p>
+                                    <input type="checkbox" id="NewStories">
+                                </li>
+                                <li>
+                                    <p class="m-0 p-0">New Missions</p>
+                                    <input type="checkbox" id="NewMissions">
+                                </li>
+                                <li>
+                                    <p class="m-0 p-0">New Messages</p>
+                                    <input type="checkbox" id="NewMessages">
+                                </li>
+                                <hr class="text-muted p-0 mt-2 mb-2 m-0">
+                                <div class="row">
+                                    <div class="col p-2 d-flex justify-content-center align-items-center">
+                                        <button type="button" class="cancelButton" style="padding: 3px 18px 3px 18px">Cancel</button>
+                                        <button type="button" class="changePasswordButton">Save</button>
+                                    </div>
+                                </div>
+                            </ul>
                         </li>
                     </ul>
+                    <div class="notificationDot">
+                        <p class="p-0 m-0">11</p>
+                    </div>
                 </div>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <img src="/images/EmptyProfile.png" class="userAvatar " alt="" />
+                &nbsp;
+                <ul class="navbar-nav text-center" id="userDropdown" style="padding: 0px;margin: 0px;">
+                    <li class="nav-item dropdown" style="list-style-type: none;">
+                        <a style="color: black;padding: 0px;" class="nav-link d-flex justify-content-between align-items-center" href="#" id="navbarDropdownMenuLink"
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Anand Chavda &nbsp;
+                            <img src="/images/drop-down.png" alt="">
+                        </a>
+                        <ul class="dropdown-menu" id="profileDropdown" aria-labelledby="navbarDropdownMenuLink" style="left: -65px;
+                    top: 30px;position: absolute;">
+                            <li><a class="dropdown-item" asp-action="Index" asp-controller="Dashboard">Home</a></li>
+                            <li><a class="dropdown-item" asp-action="Logout" asp-controller="Home">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - To_Do_Manager - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="container">
+            @RenderBody()
+        </div>
+    </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

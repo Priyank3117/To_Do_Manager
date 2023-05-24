@@ -92,3 +92,36 @@ function backToForgotPasswordView(){
         }
     })
 }
+
+function ChangePassword() {
+    if ($("#OldPassword").val() == "") {
+        $("#OldPasswordSpan").html("Old password is required")
+
+        if ($("#NewPassword").val() == "") {
+            $("#NewPasswordSpan").html("New password is required")
+        }
+    }
+    else {
+        $("#OldPasswordSpan").html("")
+        $("#NewPasswordSpan").html("")
+
+        var changePassword = {
+            Email: $("#Email").val(),
+            OldPassword: $("#OldPassword").val(),
+            NewPassword: $("#NewPassword").val()
+        }
+
+        $.ajax({
+            url: "/Account/ChangePassword",
+            type: "POST",
+            data: { resetPassword: changePassword },
+            success: function (data) {
+                if (data == "EnterValidOldPassword") {
+                    $("#OldPasswordSpan").html("Old password is not correct")
+                } else {
+                    backToForgotPasswordView();
+                }
+            }
+        })
+    }
+}

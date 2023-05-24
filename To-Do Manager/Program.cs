@@ -2,6 +2,7 @@ using Entities.Data;
 using Microsoft.EntityFrameworkCore;
 using Repository.Repository;
 using Repository.Interface;
+using BAL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ToDoManagerDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddSession();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<AccountBAL>();
 
 var app = builder.Build();
 

@@ -144,3 +144,215 @@ input[type=checkbox] {
     font-weight: 500;
     color: #1a1a1a;
 }
+
+/* Home Page */
+.homepageContent {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+nav {
+    border-bottom: 1px solid rgb(212, 212, 212);
+    height: 50px;
+}
+
+.userAvatar {
+    height: 25px;
+    width: 25px;
+}
+
+.notificationContainer {
+    position: relative;
+}
+
+.notificationDropdown {
+    top: 30px !important;
+    left: -440px !important;
+    overflow: scroll;
+    height: fit-content;
+    max-height: 400px;
+    -ms-overflow-style: none;
+}
+
+@media screen and (max-width: 767px) {
+    .notificationDropdown {
+        top: 30px !important;
+        left: -340px !important;
+        overflow: scroll;
+        height: fit-content;
+        max-height: 400px;
+        -ms-overflow-style: none;
+    }
+}
+
+@media screen and (max-width: 575px) {
+    .notificationDropdown {
+        top: 30px !important;
+        left: -240px !important;
+        overflow: scroll;
+        height: fit-content;
+        max-height: 400px;
+        -ms-overflow-style: none;
+    }
+}
+
+@media screen and (max-width: 510px) {
+    .notificationDropdown {
+        top: 30px !important;
+        left: -200px !important;
+        overflow-y: scroll;
+        overflow-x: scroll;
+        width: 300px !important;
+        height: fit-content;
+        max-height: 400px;
+        -ms-overflow-style: none;
+    }
+
+    .dropRow {
+        padding-left: 3px !important;
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .notificationDropdown {
+        top: 30px !important;
+        left: -75px !important;
+        overflow-y: scroll;
+        overflow-x: scroll;
+        width: 250px !important;
+        height: fit-content;
+        max-height: 400px;
+        -ms-overflow-style: none;
+    }
+
+    .dropRow {
+        padding-left: 3px !important;
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+
+.notificationSettingDropdown li {
+    height: 30px !important;
+}
+
+    .notificationSettingDropdown li:hover {
+        background-color: #f3f3f3;
+    }
+
+.notificationDropdown::-webkit-scrollbar {
+    display: none;
+}
+
+.noNotification {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 0px 50px 0px;
+    height: inherit !important;
+    width: inherit !important;
+}
+
+    .noNotification p {
+        font-size: 1.2rem
+    }
+
+.notificationDropdown li {
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+    .notificationDropdown li .dot {
+        background-color: #dc3545;
+        border-radius: 50%;
+        height: 12px;
+        width: 12px;
+    }
+
+.breakNotificationList {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+}
+
+.firstRowNotification a {
+    text-decoration: none;
+}
+
+.notificationDot {
+    position: absolute;
+    background-color: #dc3545;
+    bottom: 15px;
+    border-radius: 50%;
+    left: 13px;
+    height: 16px;
+    width: 16px;
+}
+
+    .notificationDot p {
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        padding-bottom: 1px;
+        font-weight: bold;
+    }
+
+.joinTeamButton {
+    font-size: 25px;
+    font-weight: 500;
+    color: #333;
+    line-height: 1.2;
+    display: flex;
+    justify-content: center;
+    width: fit-content;
+    align-items: center;
+    padding: 0 50px;
+    height: 100px;
+    background-color: #fff;
+    border-radius: 70px;
+    transition: .4s;
+    margin: 20px;
+    border: 2px solid #333;
+}
+
+    .joinTeamButton:hover {
+        color: #fff;
+        background-color: #333;
+    }
+
+@media screen and (max-width: 450px) {
+    .joinTeamButton {
+        font-size: 16px;
+        font-weight: 500;
+        width: fit-content;
+        align-items: center;
+        padding: 0 20px;
+        height: 55px;
+        border-radius: 27px;
+        border: 1px solid #333;
+        margin: 20px !important;
+    }
+}
+
+.allTeamContainer {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+}
