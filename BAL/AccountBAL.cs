@@ -41,5 +41,10 @@ namespace BAL
         {
             return _AccountRepo.ChangePassword(resetPassword);
         }
+
+        public bool IsUserHaveAnyTeam(long userID)
+        {
+            return _AccountRepo.IsUserHaveAnyTeam(userID);
+        }
     }
 }

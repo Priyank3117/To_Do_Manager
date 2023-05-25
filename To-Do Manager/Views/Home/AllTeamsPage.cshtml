@@ -1,0 +1,556 @@
+﻿<div class="row mt-3 mb-3">
+                <div class="col d-flex justify-content-between align-items-center">
+                    <div>
+                        <input class="form-control searchTeam" type="search" placeholder="Search" aria-label="Search">
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="loginButton me-2" data-bs-toggle="modal"
+                            data-bs-target="#CreateTeamModal">Create Team</button>
+
+                        <!-- Create Team Modal -->
+                        <div class="modal fade" id="CreateTeamModal" tabindex="-1"
+                            aria-labelledby="CreateTeamModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="border: none;">
+                                        <h1 class="modal-title fs-5" id="CreateTeamModalLabel">Create Team</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="mb-3">
+                                                    <label for="TeamName" class="form-label">Team Name</label>
+                                                    <input type="text" class="form-control" id="TeamName"
+                                                        autocomplete="off" placeholder="Enter Team Name">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="TeamDescription" class="form-label">Description</label>
+                                                    <textarea class="form-control" id="TeamDescription"
+                                                        placeholder="Enter Team Description" rows="3"
+                                                        readonly></textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="AddUser" class="form-label">Add Users</label>
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <input type="text" class="form-control me-2" id="AddUser"
+                                                            autocomplete="off" placeholder="Enter Email">
+                                                        <button type="button" class="addUser">Add</button>
+                                                    </div>
+                                                </div>
+                                                <div class="AddedUser">
+                                                    <p class="text-muted m-0">chavdaanand2002@gmail.com</p>
+                                                    <a href="" class="ms-2">
+                                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                                        class="bi bi-x-lg" viewBox="0 0 16 16">
+                                                        <path
+                                                          d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+                                                      </svg>
+                                                    </a>
+                                                  </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer" style="border: none;">
+                                        <div class="mt-4">
+                                            <a href="/Login.html" type="button"
+                                                class="CancelCreateTeamButton">Cancel</a>
+                                        </div>
+                                        <div class="mt-4">
+                                            <button type="button" class="createTeamButton">Create</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn allTaskButton">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="36" fill="currentColor"
+                                class="bi bi-list-task" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M2 2.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5H2zM3 3H2v1h1V3z" />
+                                <path
+                                    d="M5 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM5.5 7a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 4a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9z" />
+                                <path fill-rule="evenodd"
+                                    d="M1.5 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5V7zM2 7h1v1H2V7zm0 3.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5H2zm1 .5H2v1h1v-1z" />
+                            </svg>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+
+                <!-- Add User Modal -->
+                <div class="modal fade" id="AddUserModal" tabindex="-1" aria-labelledby="AddUserModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header" style="border: none;">
+                                <h1 class="modal-title fs-5" id="AddUserModalLabel">Create Team</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="mb-3">
+                                            <label for="AddUser" class="form-label">Add Users</label>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <input type="text" class="form-control me-2" id="AddUser"
+                                                    autocomplete="off" placeholder="Enter Email">
+                                                <button type="button" class="addUser">Add</button>
+                                            </div>
+                                        </div>
+                                        <div class="AddedUser">
+                                            <p class="text-muted m-0">chavdaanand2002@gmail.com</p>
+                                            <a href="" class="ms-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer" style="border: none;">
+                                <div class="mt-4">
+                                    <a href="/Login.html" type="button" class="CancelCreateTeamButton">Cancel</a>
+                                </div>
+                                <div class="mt-4">
+                                    <button type="button" class="createTeamButton">Done</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Add Task Modal -->
+                <div class="modal fade" id="AddTaskModal" tabindex="-1" aria-labelledby="AddTaskModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header" style="border: none;">
+                                <h1 class="modal-title fs-5" id="AddTaskModalLabel">Create Task</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="mb-3">
+                                            <label for="TaskName" class="form-label">Task Name</label>
+                                            <input type="text" class="form-control me-2" id="TaskName" placeholder="Enter Task Name"
+                                                autocomplete="off">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="TaskAssignTo" class="form-label">Assign To</label>
+                                            <select class="form-select form-control" aria-label="Default select example" id="TaskAssignTo">
+                                                <option selected>Select Member</option>
+                                                <option value="1">One</option>
+                                                <option value="2">Two</option>
+                                                <option value="3">Three</option>
+                                              </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer" style="border: none;">
+                                <div class="mt-4">
+                                    <a href="/Login.html" type="button" class="CancelCreateTeamButton">Cancel</a>
+                                </div>
+                                <div class="mt-4">
+                                    <button type="button" class="createTeamButton">Add Task</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-6 col-12">
+                    <div class="teamContainer">
+                        <div class="row">
+                            <div class="col">
+                                <div class="col d-flex justify-content-between align-items-center">
+                                    <p class="teamName m-0">This is a first team</p>
+                                    <div class="d-flex justify-content-start align-items-center">
+                                        <button type="button" class="threeDotButton me-2" data-bs-toggle="modal"
+                                            data-bs-target="#AddTaskModal">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                                fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd"
+                                                    d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                                            </svg>
+                                        </button>
+                                        <button type="button" class="threeDotButton me-2"
+                                            style="height: 30px;width: 30px;" data-bs-toggle="modal"
+                                            data-bs-target="#AddUserModal">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17"
+                                                fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z" />
+                                                <path fill-rule="evenodd"
+                                                    d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
+                                            </svg>
+                                        </button>
+                                        <button type="button" class="threeDotButton">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                                fill="currentColor" class="bi bi-three-dots-vertical"
+                                                viewBox="0 0 16 16">
+                                                <path
+                                                    d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <p class="m-0 mt-2 text-muted">Today's Tasks</p>
+                                <div class="allTasksContainer">
+
+                                    <div class="oneUserTasksContainer mt-3">
+                                        <p class="m-0 fs-5">My Tasks</p>
+                                        <div class="taskList" style="padding-left: 0px;">
+                                            <ul>
+                                                <li>
+                                                    <div>
+                                                        <p class="m-0">Anand Chavda</p>
+                                                        <button class="btn p-0">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                height="20" fill="currentColor"
+                                                                class="bi bi-check-circle" viewBox="0 0 16 16">
+                                                                <path
+                                                                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                                <path
+                                                                    d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div>
+                                                        <p class="m-0">Anand Chavda</p>
+                                                        <button class="btn p-0">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                height="20" fill="currentColor"
+                                                                class="bi bi-check-circle" viewBox="0 0 16 16">
+                                                                <path
+                                                                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                                <path
+                                                                    d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="oneUserTasksContainer mt-3">
+                                        <div class="d-flex justify-content-start align-items-center">
+                                            <img src="/images/EmptyProfile.png" class="userAvatar " alt="" />
+                                            &nbsp;&nbsp;
+                                            <p class="m-0 fs-5">Anand Chavda</p>
+                                        </div>
+                                        <div class="taskList">
+                                            <ul>
+                                                <li>
+                                                    <div>
+                                                        <p class="m-0">Anand Chavda</p>
+                                                        <button class="btn p-0">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                height="20" fill="currentColor"
+                                                                class="bi bi-check-circle" viewBox="0 0 16 16">
+                                                                <path
+                                                                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                                <path
+                                                                    d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div>
+                                                        <p class="m-0">Anand Chavda</p>
+                                                        <button class="btn p-0">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                height="20" fill="currentColor"
+                                                                class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                                                <path
+                                                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="oneUserTasksContainer mt-3">
+                                        <div class="d-flex justify-content-start align-items-center">
+                                            <img src="/images/EmptyProfile.png" class="userAvatar " alt="" />
+                                            &nbsp;&nbsp;
+                                            <p class="m-0 fs-5">Anand Chavda</p>
+                                        </div>
+                                        <div class="taskList">
+                                            <ul>
+                                                <li>
+                                                    <div>
+                                                        <p class="m-0">Anand Chavda</p>
+                                                        <button class="btn p-0">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                height="20" fill="currentColor"
+                                                                class="bi bi-check-circle" viewBox="0 0 16 16">
+                                                                <path
+                                                                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                                <path
+                                                                    d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div>
+                                                        <p class="m-0">Anand Chavda</p>
+                                                        <button class="btn p-0">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                height="20" fill="currentColor"
+                                                                class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                                                <path
+                                                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="oneUserTasksContainer mt-3">
+                                        <div class="d-flex justify-content-start align-items-center">
+                                            <img src="/images/EmptyProfile.png" class="userAvatar " alt="" />
+                                            &nbsp;&nbsp;
+                                            <p class="m-0 fs-5">Anand Chavda</p>
+                                        </div>
+                                        <div class="taskList">
+                                            <ul>
+                                                <li>
+                                                    <div>
+                                                        <p class="m-0">Anand Chavda</p>
+                                                        <button class="btn p-0">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                height="20" fill="currentColor"
+                                                                class="bi bi-check-circle" viewBox="0 0 16 16">
+                                                                <path
+                                                                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                                <path
+                                                                    d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div>
+                                                        <p class="m-0">Anand Chavda</p>
+                                                        <button class="btn p-0">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                height="20" fill="currentColor"
+                                                                class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                                                <path
+                                                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-12">
+                    <div class="teamContainer">
+                        <div class="row">
+                            <div class="col">
+                                <button type="button" class="threeDotButton">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+                                        class="bi bi-arrow-left" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+                                    </svg>
+                                </button>
+                                <div class="allTasksContainer">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="oneUserTasksContainer mt-3">
+                                                <p class="teamName m-0">This is a first team</p>
+                                                <p class="text-muted">Lorem ipsum dolor sit amet consectetur adipisicing
+                                                    elit. Saepe, voluptate? Perferendis facere sequi quis excepturi
+                                                    ducimus non alias aut deleniti ipsam molestias maxime sapiente,
+                                                    doloremque id optio possimus cumque et?</p>
+                                                <p class="m-0 fs-5 mb-3">Team Members</p>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div
+                                                            class="userListRow d-flex justify-content-between align-items-center">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center">
+                                                                <img src="/images/EmptyProfile.png"
+                                                                    class="userAvatar me-2" alt="" />
+                                                                <p class="m-0">Anand Chavda</p>
+                                                            </div>
+                                                            <button class="removeButton">
+                                                                remove
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div
+                                                            class="userListRow d-flex justify-content-between align-items-center">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center">
+                                                                <img src="/images/EmptyProfile.png"
+                                                                    class="userAvatar me-2" alt="" />
+                                                                <p class="m-0">Anand Chavda</p>
+                                                            </div>
+                                                            <button class="removeButton">
+                                                                remove
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-12">
+                    <div class="teamContainer">
+                        <div class="row">
+                            <div class="col">
+                                <div class="col d-flex justify-content-between align-items-center">
+                                    <p class="teamName m-0">This is a first team</p>
+                                    <div class="d-flex justify-content-start align-items-center">
+                                        <button type="button" class="threeDotButton me-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                                fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd"
+                                                    d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                                            </svg>
+                                        </button>
+                                        <button type="button" class="threeDotButton me-2"
+                                            style="height: 30px;width: 30px;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17"
+                                                fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z" />
+                                                <path fill-rule="evenodd"
+                                                    d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
+                                            </svg>
+                                        </button>
+                                        <button type="button" class="threeDotButton">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                                fill="currentColor" class="bi bi-three-dots-vertical"
+                                                viewBox="0 0 16 16">
+                                                <path
+                                                    d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <p class="m-0 mt-2 text-muted">Today's Tasks</p>
+                                <div class="allTasksContainer">
+
+                                    <div class="oneUserTasksContainer mt-3">
+                                        <p class="m-0 fs-5">My Tasks</p>
+                                        <div class="taskList" style="padding-left: 0px;">
+                                            <ul>
+                                                <li>
+                                                    <div>
+                                                        <p class="m-0">Anand Chavda</p>
+                                                        <button class="btn p-0">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                height="20" fill="currentColor"
+                                                                class="bi bi-check-circle" viewBox="0 0 16 16">
+                                                                <path
+                                                                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                                <path
+                                                                    d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div>
+                                                        <p class="m-0">Anand Chavda</p>
+                                                        <button class="btn p-0">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                height="20" fill="currentColor"
+                                                                class="bi bi-check-circle" viewBox="0 0 16 16">
+                                                                <path
+                                                                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                                <path
+                                                                    d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="oneUserTasksContainer mt-3">
+                                        <div class="d-flex justify-content-start align-items-center">
+                                            <img src="/images/EmptyProfile.png" class="userAvatar " alt="" />
+                                            &nbsp;&nbsp;
+                                            <p class="m-0 fs-5">Anand Chavda</p>
+                                        </div>
+                                        <div class="taskList">
+                                            <ul>
+                                                <li>
+                                                    <div>
+                                                        <p class="m-0">Anand Chavda</p>
+                                                        <button class="btn p-0">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                height="20" fill="currentColor"
+                                                                class="bi bi-check-circle" viewBox="0 0 16 16">
+                                                                <path
+                                                                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                                <path
+                                                                    d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div>
+                                                        <p class="m-0">Anand Chavda</p>
+                                                        <button class="btn p-0">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                height="20" fill="currentColor"
+                                                                class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                                                <path
+                                                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>

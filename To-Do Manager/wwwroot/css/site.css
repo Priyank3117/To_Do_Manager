@@ -2,6 +2,18 @@ body {
     background-color: #ebebeb !important;
 }
 
+    body::-webkit-scrollbar {
+        display: none;
+    }
+
+/* Hide scrollbar for IE, Edge and Firefox */
+body {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    /*scrollbar-width: none;*/
+    /* Firefox */
+}
+
 .loginContainer {
     height: 100vh;
     display: flex;
@@ -337,6 +349,12 @@ nav {
         background-color: #333;
     }
 
+.allTaskButton {
+    border: 2px solid #333 !important;
+    border-radius: 15px !important;
+    height: 100%;
+}
+
 @media screen and (max-width: 450px) {
     .joinTeamButton {
         font-size: 16px;
@@ -349,6 +367,19 @@ nav {
         border: 1px solid #333;
         margin: 20px !important;
     }
+
+    .requestSendButton {
+        font-size: 16px !important;
+        font-weight: 500;
+        width: fit-content;
+        align-items: center;
+        padding: 0 20px !important;
+        height: 55px !important;
+        background-color: #fff;
+        border-radius: 27px;
+        margin: 20px;
+        cursor: default !important;
+    }
 }
 
 .allTeamContainer {
@@ -356,3 +387,227 @@ nav {
     width: 100%;
     flex-wrap: wrap;
 }
+
+.requestSendButton {
+    color: #c2c2c2;
+    border: 2px solid #c2c2c2;
+    font-size: 25px;
+    font-weight: 500;
+    line-height: 1.2;
+    display: flex;
+    justify-content: center;
+    width: fit-content;
+    align-items: center;
+    padding: 0 50px;
+    height: 100px;
+    background-color: #fff;
+    border-radius: 70px;
+    transition: .4s;
+    margin: 20px;
+    cursor: default !important;
+}
+
+/* All Team Page CSS */
+.teamContainer {
+    background-color: #ebebeb;
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 35px;
+}
+
+.teamName {
+    font-size: 25px;
+    font-weight: 500;
+    color: #333;
+}
+
+.threeDotButton {
+    font-size: 25px;
+    font-weight: 500;
+    color: #333;
+    line-height: 1.2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 50%;
+    transition: .4s;
+    border: 0.5px solid #333;
+    padding: 3px;
+}
+
+.allTasksContainer {
+    overflow-y: scroll;
+    max-height: 550px;
+    height: fit-content;
+}
+
+    .allTasksContainer::-webkit-scrollbar {
+        display: none;
+    }
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.allTasksContainer {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    /*scrollbar-width: none;*/
+    /* Firefox */
+}
+
+.oneUserTasksContainer {
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.taskList {
+    padding-left: 25px;
+}
+
+    .taskList li {
+        border-radius: 10px;
+        padding: 0px 3px 0px 3px;
+    }
+
+        .taskList li div {
+            margin: 8px 0px 8px 0px;
+            border-bottom: 1px dotted #333;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .taskList li:hover {
+            background-color: #ebebeb;
+        }
+
+.createTeamButton {
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 1.2;
+    display: flex;
+    justify-content: center;
+    width: 110px;
+    align-items: center;
+    padding: 0 17px;
+    height: 45px;
+    background-color: #333;
+    border-radius: 27px;
+    transition: .4s;
+    border: 1px solid #333;
+}
+
+.addUser {
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.2;
+    display: flex;
+    justify-content: center;
+    width: 110px;
+    align-items: center;
+    padding: 0 17px;
+    height: 38px;
+    background-color: #ffffff;
+    border-radius: 27px;
+    transition: .4s;
+    border: 1px solid #333;
+}
+
+    .addUser:hover {
+        background-color: #333;
+        color: #ffffff;
+    }
+
+.createTeamButton:hover {
+    background-color: #4fd355;
+    border-radius: 27px;
+    transition: .4s;
+    border: 1px solid #4fd355;
+}
+
+.CancelCreateTeamButton {
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    color: #000000;
+    line-height: 1.2;
+    display: flex;
+    justify-content: center;
+    width: 110px;
+    align-items: center;
+    padding: 0 17px;
+    height: 45px;
+    background-color: #ffffff;
+    border-radius: 27px;
+    transition: .4s;
+    border: 1px solid #333;
+}
+
+    .CancelCreateTeamButton:hover {
+        background-color: #333;
+        border-radius: 27px;
+        transition: .4s;
+        border: 1px solid #333;
+        color: #ffffff;
+    }
+
+.userListRow {
+    background-color: #ebebeb;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.removeButton {
+    border: 1px solid #333;
+    border-radius: 15px;
+    padding: 0px 7px 0px 7px !important;
+    background-color: #ffffff;
+    transition: .4s;
+}
+
+    .removeButton:hover {
+        border: 1px solid #333;
+        background-color: #333;
+        color: #ffffff;
+    }
+
+.searchTeam {
+    height: 50px;
+    width: 150% !important;
+    border-radius: 30px !important;
+}
+
+@media screen and (max-width: 576px) {
+    .allTaskButton {
+        height: 35px;
+        padding: 0px 12px 0px 12px !important;
+    }
+
+    .searchTeam {
+        height: 35px;
+        width: 100% !important;
+        border-radius: 20px !important;
+    }
+}
+
+.AddedUser {
+    background-color: #c2c2c2;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 3px 8px 3px 8px;
+}
+
+    .AddedUser a {
+        text-decoration: none;
+        color: #000000;
+    }

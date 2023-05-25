@@ -11,7 +11,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ToDoManagerDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddSession();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IHomeRepository, HomeRepository>();
 builder.Services.AddScoped<AccountBAL>();
+builder.Services.AddScoped<HomeBAL>();
 
 var app = builder.Build();
 

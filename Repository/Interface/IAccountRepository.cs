@@ -15,5 +15,7 @@ namespace Repository.Interface
         public string VerifyOTP(ForgotPasswordViewModel forgotPassword);
 
         public string ChangePassword(ResetPasswordViewModel resetPassword);
+
+        public bool IsUserHaveAnyTeam(long userID);
     }
 }

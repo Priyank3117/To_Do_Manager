@@ -13,5 +13,9 @@ namespace Entities.Data
         public DbSet<Users> Users { get; set; }
 
         public DbSet<ResetPassword> ResetPassword { get; set; }
+
+        public DbSet<Teams> Teams { get; set; }
+
+        public DbSet<TeamMembers> TeamMembers { get; set; }
     }
 }

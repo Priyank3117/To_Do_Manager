@@ -1,18 +1,120 @@
 ﻿<div class="row mt-3 mb-3">
-    <div class="col d-flex justify-content-end">
-        <button type="button" class="loginButton">Create Team</button>
+    <div class="col d-flex justify-content-between align-items-center">
+        <div>
+            <input class="form-control searchTeam" type="search" placeholder="Search" aria-label="Search">
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <!-- Button trigger modal -->
+            <button type="button" class="loginButton me-2" data-bs-toggle="modal"
+                    data-bs-target="#CreateTeamModal">
+                Create Team
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="CreateTeamModal" tabindex="-1" aria-labelledby="CreateTeamModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header" style="border: none;">
+                            <h1 class="modal-title fs-5" id="CreateTeamModalLabel">Create Team</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="TeamName" class="form-label">Team Name</label>
+                                        <input type="text" class="form-control" id="TeamName" autocomplete="off"
+                                               placeholder="Enter Team Name">
+                                        <span class="text-danger" id="TeamNameSpan"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="TeamDescription" class="form-label">Description</label>
+                                        <textarea class="form-control" id="TeamDescription" placeholder="Enter Team Description"
+                                                  rows="3"></textarea>
+                                        <span class="text-danger" id="TeamDescriptionSpan"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="AddUser" class="form-label">Add Users</label>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div style="width: -webkit-fill-available;" class="me-2">
+                                                <input type="text" class="form-control" id="AddUser" autocomplete="off"
+                                                       placeholder="Enter Email">
+                                                <span class="text-danger" id="AddUserSpan"></span>
+                                            </div>
+                                            <button type="button" class="addUser" style="height: 38px;">Add</button>
+                                        </div>
+                                    </div>
+                                    <div class="AddedUserContainer">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="border: none;">
+                            <div class="mt-4">
+                                <a href="/Login.html" type="button" class="CancelCreateTeamButton">Cancel</a>
+                            </div>
+                            <div class="mt-4">
+                                <button type="button" class="createTeamButton">Create</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 <div class="row">
+    <div class="modal fade" id="JoinTeamModal" tabindex="-1" aria-labelledby="JoinTeamModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="border: none;">
+                    <h1 class="modal-title fs-5" id="JoinTeamModalLabel">Request to join Team</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="TeamName" class="form-label">Team Name</label>
+                                <input type="text" class="form-control" id="TeamName" autocomplete="off" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="Description" class="form-label">Description</label>
+                                <textarea class="form-control" id="Description" rows="3" readonly></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border: none;">
+                    <div class="mt-4">
+                        <a href="/Login.html" type="button" class="CancelCreateTeamButton">Cancel</a>
+                    </div>
+                    <div class="mt-4">
+                        <button type="button" class="createTeamButton" style="width: fit-content;">Send Request</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="col allTeamContainer">
-        <button type="button" class="joinTeamButton">Join Team Join Team</button>
-        <button type="button" class="joinTeamButton">Join Team Join TeamJoin Team</button>
-        <button type="button" class="joinTeamButton">Join Team</button>
-        <button type="button" class="joinTeamButton">Join</button>
-        <button type="button" class="joinTeamButton">Join Team Join Team Join TeamJoin Team</button>
-        <button type="button" class="joinTeamButton">Join Team</button>
-        <button type="button" class="joinTeamButton">ABC</button>
-        <button type="button" class="joinTeamButton">Join Team</button>
-        <button type="button" class="joinTeamButton">Join Team</button>
+        <h2 style="font-family: sans-serif;margin-bottom: 25px;margin-top: 25px;">Available Teams</h2>
+        <div class="allTeamContainer">
+            <button type="button" class="joinTeamButton" data-bs-toggle="modal" data-bs-target="#JoinTeamModal">
+                Join
+                Team Join Team
+            </button>
+            <button type="button" class="requestSendButton">Join Team Join TeamJoin Team</button>
+            <button type="button" class="joinTeamButton">Join Team</button>
+            <button type="button" class="joinTeamButton">Join</button>
+            <button type="button" class="joinTeamButton">Join Team Join Team Join TeamJoin Team</button>
+            <button type="button" class="joinTeamButton">Join Team</button>
+            <button type="button" class="joinTeamButton">ABC</button>
+            <button type="button" class="joinTeamButton">Join Team</button>
+            <button type="button" class="joinTeamButton">Join Team</button>
+        </div>
     </div>
 </div>

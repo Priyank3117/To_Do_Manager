@@ -36,7 +36,10 @@ namespace To_Do_Manager.Controllers
                     {
                         HttpContext.Session.SetString("UserId", user.UserId.ToString());
 
-                        return RedirectToAction("Index", "Home");
+                        if (!_AccountBAL.IsUserHaveAnyTeam(user.UserId))
+                            return RedirectToAction("Index", "Home");
+                        else
+                            return RedirectToAction("AllTeamsPage", "Home");
                     }
                     else
                     {
@@ -79,23 +82,6 @@ namespace To_Do_Manager.Controllers
 
         public IActionResult ForgotPassword()
         {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult ForgotPassword(ForgotPasswordViewModel forgotPassword)
-        {
-            if (ModelState.IsValid)
-            {
-                if (!_AccountBAL.IsUserAlreadyRegistered(forgotPassword.Email))
-                {
-                    ModelState.AddModelError("Email", "User not exist!");
-                }
-                else
-                {
-
-                }
-            }
             return View();
         }
 
