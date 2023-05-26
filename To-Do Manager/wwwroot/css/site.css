@@ -173,6 +173,7 @@ nav {
 .userAvatar {
     height: 25px;
     width: 25px;
+    border-radius: 50%;
 }
 
 .notificationContainer {
@@ -342,6 +343,7 @@ nav {
     transition: .4s;
     margin: 20px;
     border: 2px solid #333;
+    text-decoration: none;
 }
 
     .joinTeamButton:hover {
@@ -404,6 +406,7 @@ nav {
     border-radius: 70px;
     transition: .4s;
     margin: 20px;
+    text-decoration: none;
     cursor: default !important;
 }
 

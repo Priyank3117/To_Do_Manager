@@ -17,5 +17,24 @@ namespace Entities.Data
         public DbSet<Teams> Teams { get; set; }
 
         public DbSet<TeamMembers> TeamMembers { get; set; }
+
+        public DbSet<Tasks> Tasks { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<TeamMembers>()
+                .Property(U => U.Status)
+                .HasConversion<string>()
+                .HasMaxLength(50);
+            modelBuilder.Entity<TeamMembers>()
+                .Property(U => U.Role)
+                .HasConversion<string>()
+                .HasMaxLength(50);
+            modelBuilder.Entity<Tasks>()
+                .Property(U => U.AssignedBy)
+                .HasConversion<string>()
+                .HasMaxLength(50);
+        }
     }
 }

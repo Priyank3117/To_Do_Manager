@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(ToDoManagerDBContext))]
-    [Migration("20230525095228_AddedTeamsAndTeamsMemberTables")]
-    partial class AddedTeamsAndTeamsMemberTables
+    [Migration("20230526111739_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,6 +54,41 @@ namespace Entities.Migrations
                     b.ToTable("ResetPassword");
                 });
 
+            modelBuilder.Entity("Entities.Models.Tasks", b =>
+                {
+                    b.Property<long>("TaskId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("TaskId"));
+
+                    b.Property<string>("AssignedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("TaskName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TaskStatus")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("TeamId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("TaskId");
+
+                    b.HasIndex("TeamId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Tasks");
+                });
+
             modelBuilder.Entity("Entities.Models.TeamMembers", b =>
                 {
                     b.Property<long>("TeamMemberId")
@@ -62,19 +97,23 @@ namespace Entities.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("TeamMemberId"));
 
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("Role");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("Status");
+
                     b.Property<long>("TeamId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
-
-                    b.Property<int>("role")
-                        .HasColumnType("int")
-                        .HasColumnName("Role");
-
-                    b.Property<int>("status")
-                        .HasColumnType("int")
-                        .HasColumnName("Status");
 
                     b.HasKey("TeamMemberId");
 
@@ -149,6 +188,25 @@ namespace Entities.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Entities.Models.Tasks", b =>
+                {
+                    b.HasOne("Entities.Models.Teams", "Teams")
+                        .WithMany()
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.Users", "Users")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Teams");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Entities.Models.TeamMembers", b =>

@@ -50,6 +50,8 @@ namespace Repository.Repository
                 loginViewModel.UserId = user.UserId;
                 loginViewModel.Email = user.Email;
                 loginViewModel.Password = user.Password;
+                loginViewModel.UserName = user.FirstName +" "+ user.LastName;
+                loginViewModel.Avatar = user.Avatar;
             }
             return loginViewModel;
         }
@@ -135,7 +137,7 @@ namespace Repository.Repository
 
         public bool IsUserHaveAnyTeam(long userID)
         {
-            return _db.TeamMembers.Any(teamMember => teamMember.UserId == userID);
+            return _db.TeamMembers.Any(teamMember => teamMember.UserId == userID && teamMember.Status == TeamMembers.MemberStatus.Approved);
         }
     }
 }

@@ -35,6 +35,8 @@ namespace To_Do_Manager.Controllers
                     if (BCrypt.Net.BCrypt.Verify(login.Password, user.Password))
                     {
                         HttpContext.Session.SetString("UserId", user.UserId.ToString());
+                        HttpContext.Session.SetString("UserName", user.UserName);
+                        HttpContext.Session.SetString("Avatar", user.Avatar);
 
                         if (!_AccountBAL.IsUserHaveAnyTeam(user.UserId))
                             return RedirectToAction("Index", "Home");

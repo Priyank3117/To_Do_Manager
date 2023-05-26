@@ -40,13 +40,9 @@
                                data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="/images/bell.png" class="notoficationImage" />
                             </a>
-
                             <ul class="dropdown-menu notificationDropdown mainNotificationDropdown" style="width: 470px;position: absolute;"
                                 aria-labelledby="notificationDropdown" id="forReopenThis">
                                 <li class="firstRowNotification">
-                                    <a style="color: black;padding: 0px;" class="nav-link SettingDropdown">
-                                        <img src="/images/settings.png" alt="">
-                                    </a>
                                     <p class="p-0 m-0" style="font-weight: 500;">Notification</p>
                                     <a role="button" class="text-muted" id="clearAllNotification">Clear All</a>
                                 </li>
@@ -116,9 +112,6 @@
 
                             <ul class="dropdown-menu notificationDropdown noNotificationDropdown" style="width: 470px;position: absolute;">
                                 <li class="firstRowNotification">
-                                    <a style="color: black;padding: 0px;" class="nav-link SettingDropdown">
-                                        <img src="/HTML/images/settings.png" alt="">
-                                    </a>
                                     <p class="p-0 m-0" style="font-weight: 500;">Notification</p>
                                     <a role="button" class="text-muted">Clear All</a>
                                 </li>
@@ -128,56 +121,6 @@
                                     <p class="p-0 m-0 text-muted">You do not have any new notification</p>
                                 </li>
                             </ul>
-
-
-                            <ul class="dropdown-menu notificationDropdown notificationSettingDropdown" style="width: 470px;position: absolute;"
-                                aria-labelledby="SettingDropdown">
-                                <li class="firstRowNotification" style="justify-content: center;">
-                                    <p class="p-0 m-0" style="font-weight: 500;">Notification Setting</p>
-                                </li>
-                                <div class="breakNotificationList bg-light mb-1" style="justify-content: flex-start;">
-                                    <p class="m-0 ps-3 text-muted">Get a notification for</p>
-                                </div>
-                                <li>
-                                    <p class="m-0 p-0">Recommended Missions</p>
-                                    <input type="checkbox" id="RecommendedMissions">
-                                </li>
-                                <li>
-                                    <p class="m-0 p-0">Volunteering Hours</p>
-                                    <input type="checkbox" id="VolunteeringHours">
-                                </li>
-                                <li>
-                                    <p class="m-0 p-0">Volunteering Goals</p>
-                                    <input type="checkbox" id="VolunteeringGoals">
-                                </li>
-                                <li>
-                                    <p class="m-0 p-0">My Comments</p>
-                                    <input type="checkbox" id="MyComments">
-                                </li>
-                                <li>
-                                    <p class="m-0 p-0">My Stories</p>
-                                    <input type="checkbox" id="MyStories">
-                                </li>
-                                <li>
-                                    <p class="m-0 p-0">New Stories</p>
-                                    <input type="checkbox" id="NewStories">
-                                </li>
-                                <li>
-                                    <p class="m-0 p-0">New Missions</p>
-                                    <input type="checkbox" id="NewMissions">
-                                </li>
-                                <li>
-                                    <p class="m-0 p-0">New Messages</p>
-                                    <input type="checkbox" id="NewMessages">
-                                </li>
-                                <hr class="text-muted p-0 mt-2 mb-2 m-0">
-                                <div class="row">
-                                    <div class="col p-2 d-flex justify-content-center align-items-center">
-                                        <button type="button" class="cancelButton" style="padding: 3px 18px 3px 18px">Cancel</button>
-                                        <button type="button" class="changePasswordButton">Save</button>
-                                    </div>
-                                </div>
-                            </ul>
                         </li>
                     </ul>
                     <div class="notificationDot">
@@ -185,13 +128,13 @@
                     </div>
                 </div>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <img src="/images/EmptyProfile.png" class="userAvatar " alt="" />
+                <img src="@ViewBag.Avatar" class="userAvatar " alt="" />
                 &nbsp;
                 <ul class="navbar-nav text-center" id="userDropdown" style="padding: 0px;margin: 0px;">
                     <li class="nav-item dropdown" style="list-style-type: none;">
                         <a style="color: black;padding: 0px;" class="nav-link d-flex justify-content-between align-items-center" href="#" id="navbarDropdownMenuLink"
                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Anand Chavda &nbsp;
+                            @ViewBag.UserName &nbsp;
                             <img src="/images/drop-down.png" alt="">
                         </a>
                         <ul class="dropdown-menu" id="profileDropdown" aria-labelledby="navbarDropdownMenuLink" style="left: -65px;
@@ -211,7 +154,6 @@
         </div>
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/Home.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

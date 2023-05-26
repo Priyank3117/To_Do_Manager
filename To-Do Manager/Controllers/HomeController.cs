@@ -19,21 +19,42 @@ namespace To_Do_Manager.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.UserName = HttpContext.Session.GetString("UserName");
+            ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
             return View();
         }
 
         public IActionResult AllTeamsPage()
         {
+            ViewBag.UserName = HttpContext.Session.GetString("UserName");
+            ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
             return View();
+        }
+        
+        public List<AllTeamsViewModel> GetAllTeams(string searchTerm)
+        {
+            return _HomeBAL.GetAllTeams(searchTerm, long.Parse(HttpContext.Session.GetString("UserId")!));
+        }
+
+        public TeamViewModel GetTeamDetails(long teamId)
+        {
+            return _HomeBAL.GetTeamDetails(teamId);
         }
 
         public bool CreateTeam(TeamViewModel team)
         {
             if (ModelState.IsValid)
             {
+                team.TeamLeaderUserId = long.Parse(HttpContext.Session.GetString("UserId")!);
                 return _HomeBAL.CreateTeam(team);
             }
             return false;
+        }
+
+        public bool RequestToJoinTeam(TeamMemberViewModel userRequest)
+        {
+            userRequest.UserId = long.Parse(HttpContext.Session.GetString("UserId")!);
+            return _HomeBAL.RequestToJoinTeam(userRequest);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

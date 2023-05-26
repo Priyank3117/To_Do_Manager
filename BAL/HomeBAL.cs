@@ -14,20 +14,30 @@ namespace BAL
             _HomeRepo = homeRepo;
         }
 
+        public List<AllTeamsViewModel> GetAllTeams(string searchTerm, long userId)
+        {
+            return _HomeRepo.GetAllTeams(searchTerm, userId);
+        }
+
+        public TeamViewModel GetTeamDetails(long teamId)
+        {
+            return _HomeRepo.GetTeamDetails(teamId);
+        }
+
         public bool CreateTeam(TeamViewModel team)
         {
             var teamId = _HomeRepo.CreateTeam(team);
             if (teamId != 0)
             {
-                foreach (var user in team.UserEmails)
+                foreach (var userEmail in team.UserEmails)
                 {
-                    if (!_HomeRepo.AddUserToTeam(user, teamId))
+                    if (!_HomeRepo.AddUserToTeam(userEmail, teamId))
                     {
                         SendEmailViewModel sendEmailViewModel = new()
                         {
                             Body = "You have an invitation to join <b>" + team.TeamName + "</b> Team",
                             Subject = "Invitation to join a Team",
-                            ToEmail = user
+                            ToEmail = userEmail
                         };
                         InviteUser(sendEmailViewModel);
                     }
@@ -35,6 +45,11 @@ namespace BAL
                 return true;
             }
             return false;
+        }
+
+        public bool RequestToJoinTeam(TeamMemberViewModel userRequest)
+        {
+            return _HomeRepo.RequestToJoinTeam(userRequest);
         }
 
         public bool InviteUser(SendEmailViewModel emailInfo)

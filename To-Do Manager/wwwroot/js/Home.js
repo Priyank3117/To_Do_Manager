@@ -1,4 +1,7 @@
 ﻿$(document).ready(function () {
+
+    SearchTeam();
+
     $("#TeamName").focusout(function () {
         if ($("#TeamName").val() == "") {
             $("#TeamNameSpan").html("Team name is required")
@@ -49,16 +52,16 @@ function RemoveUser(idOfEmailText) {
 }
 
 $(".createTeamButton").click(function () {
-    var team = new FormData();
     debugger
+    var team = new FormData();
+    team.append('TeamName', $("#TeamName").val());
+    team.append('TeamDescription', $("#TeamDescription").val());
+
     var allUsersEmails = $(".userEmail")
-    console.log(allUsersEmails)
+
     for (var i = 0; i < allUsersEmails.length; i++) {       
         team.append('UserEmails', allUsersEmails[i].innerHTML);
     }
-
-    team.append('TeamName', $("#TeamName").val());
-    team.append('TeamDescription', $("#TeamDescription").val());
 
     $.ajax({
         type: "POST",
@@ -73,3 +76,60 @@ $(".createTeamButton").click(function () {
         }
     })
 })
+
+function SearchTeam() {
+    $.ajax({
+        type: "GET",
+        url: "/Home/GetAllTeams",
+        data: { searchTerm: $("#searchTeam").val()},
+        success: function (result) {
+
+            $(".allTeamContainer").empty()
+            for (var i = 0; i < result.length; i++) {
+                if (result[i].status == "Pending") {
+                    $(".allTeamContainer").append(`<a role="button" onclick="GetTeamDetails(` + result[i].teamId + `)" id=` + result[i].teamId + ` class="requestSendButton" disabled>
+                        `+ result[i].teamName + `
+                    </a>`)
+                } else {
+                    $(".allTeamContainer").append(`<a role="button" onclick="GetTeamDetails(` + result[i].teamId + `)" id=` + result[i].teamId + ` class="joinTeamButton">
+                        `+ result[i].teamName + `
+                    </a>`)
+                }
+            }
+        }
+    })
+}
+
+function GetTeamDetails(teamId) {
+
+    if (!($('#' + teamId + '').hasClass("requestSendButton"))) {
+        $.ajax({
+            type: "POST",
+            url: "/Home/GetTeamDetails",
+            data: { teamId: teamId },
+            success: function (result) {
+                $("#ViewTeamTeamId").val(result.teamId)
+                $("#Name").val(result.teamName)
+                $("#Description").val(result.teamDescription)
+                $("#JoinTeamModal").modal("show")
+            }
+        })
+    }
+}
+
+function RequestToJoinTeam() {
+    var userRequest = {
+        "TeamId": $("#ViewTeamTeamId").val()
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "/Home/RequestToJoinTeam",
+        data: { userRequest: userRequest },
+        success: function (result) {
+            $('#' + $("#ViewTeamTeamId").val() + '').addClass("requestSendButton")
+            $('#' + $("#ViewTeamTeamId").val() + '').attr("disabled", true)
+            $("#JoinTeamModal").modal("hide")
+        }
+    })
+}

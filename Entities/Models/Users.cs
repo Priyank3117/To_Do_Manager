@@ -15,7 +15,7 @@ namespace Entities.Models
 
         public string Password { get; set; } = null!;
 
-        public string Avatar { get; set; } = "~/images/EmptyProfile.png";
+        public string Avatar { get; set; } = "/images/EmptyProfile.png";
 
         public DateTime CreatedAt { get; set; }
 

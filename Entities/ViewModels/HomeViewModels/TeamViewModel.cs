@@ -7,6 +7,8 @@ namespace Entities.ViewModels.HomeViewModels
     {
         public long TeamId { get; set; }
 
+        public long TeamLeaderUserId { get; set; }
+
         [Required]
         public string TeamName { get; set; } = string.Empty;
 

@@ -8,22 +8,20 @@ namespace Entities.Models
         [Key]
         public long TeamMemberId { get; set; }
 
-        [Display(Name = "Users")]
+        [ForeignKey("Users")]
         public long UserId { get; set; } = 0;
-
-        [ForeignKey("UserId")]
+        
         public virtual Users Users { get; set; } = null!;
 
-        [Display(Name = "Teams")]
+        [ForeignKey("Teams")]
         public long TeamId { get; set; }
-
-        [ForeignKey("TeamId")]
-        public virtual Teams Teams { get; set; } = new Teams();
+        
+        public virtual Teams Teams { get; set; } = null!;
 
         [Column("Role")]
-        public Role role { get; set; }
+        public Roles Role { get; set; }
 
-        public enum Role
+        public enum Roles
         {
             TeamMember,
             TeamLeader,
@@ -31,9 +29,9 @@ namespace Entities.Models
         }
 
         [Column("Status")]
-        public Status status { get; set; }
+        public MemberStatus Status { get; set; }
 
-        public enum Status
+        public enum MemberStatus
         {
             Approved,
             Pending,
