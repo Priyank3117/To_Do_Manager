@@ -12,8 +12,10 @@ builder.Services.AddDbContext<ToDoManagerDBContext>(options => options.UseSqlSer
 builder.Services.AddSession();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IHomeRepository, HomeRepository>();
+builder.Services.AddScoped<IAllTasksRepository, AllTasksRepository>();
 builder.Services.AddScoped<AccountBAL>();
 builder.Services.AddScoped<HomeBAL>();
+builder.Services.AddScoped<AllTasksBAL>();
 
 var app = builder.Build();
 

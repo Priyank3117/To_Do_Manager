@@ -29,5 +29,7 @@ namespace Entities.Models
             Self,
             TeamLeader
         }
+
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
 }

@@ -76,5 +76,25 @@ namespace BAL
 
             return true;
         }
+
+        public List<TodayTasksViewModel> GetAllTodayTasks(long userId)
+        {
+            return _HomeRepo.GetAllTodayTasks(userId);
+        }
+
+        public List<ListOfUsers> GetDataForAddTask(long teamId, long userId)
+        {
+            return _HomeRepo.GetDataForAddTask(teamId, userId);
+        }
+
+        public bool AddTask(TaskDetailViewModel task)
+        {
+            return _HomeRepo.AddTask(task);
+        }
+
+        public bool MarkTaskAsCompleteOrUncomplete(TaskDetailViewModel task)
+        {
+            return _HomeRepo.MarkTaskAsCompleteOrUncomplete(task);
+        }
     }
 }

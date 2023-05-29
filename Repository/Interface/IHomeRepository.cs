@@ -13,5 +13,13 @@ namespace Repository.Interface
         public bool AddUserToTeam(string email, long teamId);
 
         public bool RequestToJoinTeam(TeamMemberViewModel userRequest);
+
+        public List<TodayTasksViewModel> GetAllTodayTasks(long userId);
+
+        public List<ListOfUsers> GetDataForAddTask(long teamId, long userId);
+
+        public bool AddTask(TaskDetailViewModel task);
+
+        public bool MarkTaskAsCompleteOrUncomplete(TaskDetailViewModel task);
     }
 }

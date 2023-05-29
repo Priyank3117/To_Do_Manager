@@ -113,36 +113,97 @@ namespace Repository.Repository
 
         public List<TodayTasksViewModel> GetAllTodayTasks(long userId)
         {
-            var query = _db.Tasks.Where(task => task.UserId == userId).AsQueryable();
+            var query = _db.Tasks.AsQueryable();            
 
-            var todatTasks = query.Select(task => new TodayTasksViewModel()
+            var x = query.Where(p => p.UserId == userId).Select(task => new TodayTasksViewModel()
             {
                 TeamId = task.TeamId,
                 TeamName = task.Teams.TeamName,
-                UserId = task.UserId,
-                TodayTasks = query.Select(task => new TaskDetailViewModel()
+                UserId = userId,
+                UserName = task.Users.FirstName + " " + task.Users.LastName,
+                Role = task.Teams.TeamMembers.FirstOrDefault(team => team.UserId == userId)!.Role.ToString(),
+                TodayTasks = query.Where(task => task.UserId == userId).Select(task => new TaskDetailViewModel()
                 {
                     TaskId = task.TaskId,
                     TaskName = task.TaskName,
                     IsCompleted = task.TaskStatus
                 }).ToList(),
-                TeamMembersTaasks = query.Select(task => task.Teams.TeamMembers.Where(teamMember => teamMember.Role.ToString() == "TeamMember" && teamMember.TeamId == task.TeamId).Select(teamMember => new TeamMembersTaskDetails()
+                TeamMembersTaasks = task.Teams.TeamMembers.Where(teamMember => teamMember.TeamId == task.TeamId && teamMember.UserId != userId).Select(teamMember => new TeamMembersTaskDetails()
                 {
                     UserId = teamMember.UserId,
                     TaskId = task.TaskId,
-                    TaskName = task.TaskName,
                     Avatar = teamMember.Users.Avatar,
                     UserName = teamMember.Users.FirstName + " " + teamMember.Users.LastName,
-                    IsCompleted = task.TaskStatus,
-                    TodayTasks = query.Select(task => new TaskDetailViewModel()
+                    TodayTasks = query.Where(task => task.UserId == teamMember.UserId).Select(task => new TaskDetailViewModel()
                     {
                         TaskId = task.TaskId,
                         TaskName = task.TaskName,
                         IsCompleted = task.TaskStatus
                     }).ToList()
-                })).
+                }).ToList()
+            }).ToList();
 
-            });
+            return x;
+        }
+
+        public List<ListOfUsers> GetDataForAddTask(long teamId, long userId)
+        {
+            var query = _db.TeamMembers.AsQueryable();
+
+            if(query.Any(teamMember => teamMember.UserId == userId && teamMember.Role == TeamMembers.Roles.TeamLeader))
+            {
+                return query.Where(teamMember => teamMember.TeamId == teamId).Select(task => new ListOfUsers()
+                {
+                    UserId = task.UserId,
+                    UserName = task.Users.FirstName + " " + task.Users.LastName
+                }).ToList();
+            }
+            else
+            {
+                return new List<ListOfUsers>();
+            }
+        }
+
+        public bool AddTask(TaskDetailViewModel task)
+        {
+            if(task != null)
+            {
+                Tasks addTask = new()
+                {
+                    TaskStatus = false,
+                    TeamId = task.TeamId,
+                    TaskName = task.TaskName,
+                    UserId = task.UserId
+                };
+
+                _db.Add(addTask);
+                _db.SaveChanges();
+
+                return true;
+            }
+            return false;
+        }
+
+        public bool MarkTaskAsCompleteOrUncomplete(TaskDetailViewModel taskDetail)
+        {
+            var task = _db.Tasks.FirstOrDefault(task => task.TaskId == taskDetail.TaskId && task.TeamId == taskDetail.TeamId && task.UserId == taskDetail.UserId)!;
+            
+            if(task.TaskStatus == true)
+            {
+                task.TaskStatus = false;
+                _db.Update(task);
+                _db.SaveChanges();
+
+                return false;
+            }
+            else
+            {
+                task.TaskStatus = true;
+                _db.Update(task);
+                _db.SaveChanges();
+
+                return true;
+            }
         }
     }
 }

@@ -28,7 +28,7 @@ namespace To_Do_Manager.Controllers
         {
             ViewBag.UserName = HttpContext.Session.GetString("UserName");
             ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
-            return View();
+            return View(_HomeBAL.GetAllTodayTasks(long.Parse(HttpContext.Session.GetString("UserId")!)));
         }
         
         public List<AllTeamsViewModel> GetAllTeams(string searchTerm)
@@ -55,6 +55,25 @@ namespace To_Do_Manager.Controllers
         {
             userRequest.UserId = long.Parse(HttpContext.Session.GetString("UserId")!);
             return _HomeBAL.RequestToJoinTeam(userRequest);
+        }
+
+        public List<ListOfUsers> GetDataForAddTask(long teamId, long userId)
+        {
+            return _HomeBAL.GetDataForAddTask(teamId, userId);
+        }
+
+        public bool AddTask(TaskDetailViewModel task)
+        {
+            if(task.UserId == 0)
+            {
+                task.UserId = long.Parse(HttpContext.Session.GetString("UserId")!);
+            }
+            return _HomeBAL.AddTask(task);
+        }
+
+        public bool MarkTaskAsCompleteOrUncomplete(TaskDetailViewModel task)
+        {
+            return _HomeBAL.MarkTaskAsCompleteOrUncomplete(task);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

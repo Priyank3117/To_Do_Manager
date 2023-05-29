@@ -17,12 +17,8 @@ namespace Entities.Models
 
         public string Avatar { get; set; } = "/images/EmptyProfile.png";
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public DateTime? UpdatedAt { get; set; }
-
-        public DateTime? DeletedAt { get; set; }
-
-        public bool IsDeleted { get; set; } = false;
     }
 }

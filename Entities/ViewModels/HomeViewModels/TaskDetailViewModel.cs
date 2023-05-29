@@ -2,6 +2,12 @@
 {
     public class TaskDetailViewModel
     {
+        public long TeamId { get; set; } = 0;
+
+        public long FromUserId { get; set; } = 0;
+
+        public long UserId { get; set; } = 0;
+
         public long TaskId { get; set; } = 0;
 
         public string TaskName { get; set; } = string.Empty;

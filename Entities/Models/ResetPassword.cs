@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
@@ -17,11 +16,5 @@ namespace Entities.Models
         public DateTime? UpdatedAt { get; set; }
 
         public DateTime? DeletedAt { get; set; }
-
-        //[Display(Name = "Users")]
-        //public long UserId { get; set; }
-
-        //[ForeignKey("UserId")]
-        //public virtual Users User { get; set; } = null!;
     }
 }

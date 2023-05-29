@@ -12,5 +12,9 @@ namespace Entities.Models
         public string TeamDescription { get; set; } = string.Empty;
 
         public virtual ICollection<TeamMembers> TeamMembers { get; } = new List<TeamMembers>();
+
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        public DateTime? UpdatedAt { get; set; }
     }
 }
