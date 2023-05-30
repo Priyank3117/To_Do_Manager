@@ -35,6 +35,10 @@ namespace Entities.Data
                 .Property(U => U.AssignedBy)
                 .HasConversion<string>()
                 .HasMaxLength(50);
+            modelBuilder.Entity<Users>()
+                .Property(U => U.Gender)
+                .HasConversion<string>()
+                .HasMaxLength(10);
         }
     }
 }

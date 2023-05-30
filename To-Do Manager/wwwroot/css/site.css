@@ -614,3 +614,138 @@ nav {
         text-decoration: none;
         color: #000000;
     }
+
+/* All TAsk Page */
+.accordionItem {
+    margin: 10px 0px 10px 0px;
+}
+
+/* USER PROFILE */
+
+.userProfileBox {
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 230px;
+    width: auto;
+    background-color: #ffffff;
+}
+
+    .userProfileBox img {
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+    }
+
+.imageContainer {
+    border-radius: 50%;
+    width: auto;
+    height: auto;
+}
+
+.userProfileFormTitle {
+    font-weight: 450;
+    font-size: 1.5em;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #000000;
+    width: fit-content;
+}
+
+.userSaveBtnContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@media screen and (max-width: 767px) {
+    #formContainer {
+        width: 100%;
+    }
+
+    .userProfileBox img {
+        border-radius: 50%;
+        width: 75px;
+        height: 75px;
+    }
+
+    .userProfileBox {
+        border: 1px solid #D9D9D9;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        height: 175px;
+        width: auto;
+    }
+}
+
+#selectProfileImage {
+    position: absolute;
+    opacity: 0;
+    right: 0;
+    padding-top: 1rem;
+    border-radius: 50%;
+    height: 100%;
+    width: 100%;
+}
+
+.profileImageContainer {
+    position: relative;
+}
+
+.leaveTeamsButton {
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 1.2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 17px;
+    height: 45px;
+    background-color: #fd4d4d;
+    border-radius: 27px;
+    transition: .4s;
+    border: 1px solid #fd4d4d;
+}
+
+.ListOfTeams {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ebebeb;
+    border-radius: 20px;
+    padding: 8px 15px 8px 15px;
+    margin: 0px 0px 15px 0px;
+}
+
+    .ListOfTeams p {
+        font-weight: 500;
+        font-family: sans-serif;
+        font-size: 17px;
+    }
+
+.leaveTeamSmallButton {
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    color: #fd4d4d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 12px;
+    height: 30px;
+    background-color: #ffffff;
+    border-radius: 27px;
+    transition: .4s;
+    border: 1px solid #fd4d4d;
+}
+
+    .leaveTeamSmallButton:hover {
+        color: #ffffff;
+        background-color: #fd4d4d;
+    }

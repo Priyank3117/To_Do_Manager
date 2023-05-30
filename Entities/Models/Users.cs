@@ -15,7 +15,19 @@ namespace Entities.Models
 
         public string Password { get; set; } = null!;
 
+        public string? Deparment { get; set; }
+
+        public string? LinkedInURL { get; set; }
+
         public string Avatar { get; set; } = "/images/EmptyProfile.png";
+
+        public UserGender? Gender { get; set; }
+
+        public enum UserGender
+        {
+            Male,
+            Female
+        }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 

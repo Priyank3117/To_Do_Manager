@@ -2,71 +2,7 @@
 
 @model List<AllTasksOfAllTeams>
 
-<div class="row mt-3 mb-3">
-    <div class="col d-flex justify-content-between align-items-center">
-        <div>
-            <input class="form-control searchTeam" type="search" placeholder="Search" id="searchTeam" onkeyup="SearchTeams()" aria-label="Search">
-        </div>
-        <div class="d-flex justify-content-center align-items-center">
-            <button class="btn allTaskButton me-2" id="grid">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-grid" viewBox="0 0 16 16">
-                    <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z" />
-                </svg>
-            </button>
-            <button class="btn allTaskButton" id="list">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
-                </svg>
-            </button>
-        </div>
-
-    </div>
-</div>
-<div class="row">
-    <!-- Add Task Modal -->
-    <div class="modal fade" id="AddTaskModal" tabindex="-1" aria-labelledby="AddTaskModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header" style="border: none;">
-                    <h1 class="modal-title fs-5" id="AddTaskModalLabel">Create Task</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <input type="hidden" id="TeamId">
-                        <div class="col">
-                            <div class="mb-3">
-                                <label for="TaskName" class="form-label">Task Name</label>
-                                <input type="text" class="form-control me-2" id="TaskName" placeholder="Enter Task Name"
-                                       autocomplete="off">
-                                <span class="text-danger" id="TaskNameSpan"></span>
-                            </div>
-                            <div class="mb-3 assignedTo">
-                                <label for="TaskAssignTo" class="form-label">Assign To</label>
-                                <select class="form-select form-control" aria-label="Default select example" id="TaskAssignTo">
-                                </select>
-                                <span class="text-danger" id="TaskAssignToSpan"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer" style="border: none;">
-                    <div class="mt-4">
-                        <a href="/Login.html" type="button" class="CancelCreateTeamButton">Cancel</a>
-                    </div>
-                    <div class="mt-4">
-                        <button type="button" class="addTaskButton" onclick="AddTask()">Add Task</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="col-12 allTeamsContainer">
-        @if (Model != null)
+@if (Model != null)
         {
             @foreach (var team in Model)
             {
@@ -231,7 +167,3 @@
                 </div>
             }
         }
-    </div>
-</div>
-
-<script src="~/js/AllTasks.js"></script>

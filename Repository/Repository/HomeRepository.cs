@@ -1,5 +1,6 @@
 ﻿using Entities.Data;
 using Entities.Models;
+using Entities.ViewModels.AllTasksViewModel;
 using Entities.ViewModels.HomeViewModels;
 using Repository.Interface;
 
@@ -113,37 +114,67 @@ namespace Repository.Repository
 
         public List<TodayTasksViewModel> GetAllTodayTasks(long userId)
         {
-            var query = _db.Tasks.AsQueryable();            
+            List<TodayTasksViewModel> teams = new();
 
-            var x = query.Where(p => p.UserId == userId).Select(task => new TodayTasksViewModel()
+            var query = _db.Tasks.Where(task => task.IsTodayTask != null).AsQueryable();
+
+            var totalTeams = query.Where(task => task.UserId == userId).Select(task => task.TeamId).Distinct().ToList();
+
+            foreach (var teamId in totalTeams)
             {
-                TeamId = task.TeamId,
-                TeamName = task.Teams.TeamName,
-                UserId = userId,
-                UserName = task.Users.FirstName + " " + task.Users.LastName,
-                Role = task.Teams.TeamMembers.FirstOrDefault(team => team.UserId == userId)!.Role.ToString(),
-                TodayTasks = query.Where(task => task.UserId == userId).Select(task => new TaskDetailViewModel()
-                {
-                    TaskId = task.TaskId,
-                    TaskName = task.TaskName,
-                    IsCompleted = task.TaskStatus
-                }).ToList(),
-                TeamMembersTaasks = task.Teams.TeamMembers.Where(teamMember => teamMember.TeamId == task.TeamId && teamMember.UserId != userId).Select(teamMember => new TeamMembersTaskDetails()
-                {
-                    UserId = teamMember.UserId,
-                    TaskId = task.TaskId,
-                    Avatar = teamMember.Users.Avatar,
-                    UserName = teamMember.Users.FirstName + " " + teamMember.Users.LastName,
-                    TodayTasks = query.Where(task => task.UserId == teamMember.UserId).Select(task => new TaskDetailViewModel()
-                    {
-                        TaskId = task.TaskId,
-                        TaskName = task.TaskName,
-                        IsCompleted = task.TaskStatus
-                    }).ToList()
-                }).ToList()
-            }).ToList();
+                TodayTasksViewModel team = new();
+                var myTasks = query.Where(task => task.UserId == userId && task.TeamId == teamId);
+                team.TeamId = teamId;
+                team.TeamName = query.Select(p => p.Teams.TeamName).FirstOrDefault()!;
+                team.UserId = userId;
 
-            return x;
+                team.Role = _db.TeamMembers.FirstOrDefault(teamMember => teamMember.UserId == userId && teamMember.TeamId == teamId)!.Role.ToString();
+
+                foreach (var mytask in myTasks)
+                {
+                    TaskDetailViewModel taskDetailViewModel = new();
+                    taskDetailViewModel.TaskName = mytask.TaskName;
+                    taskDetailViewModel.IsCompleted = mytask.TaskStatus;
+                    taskDetailViewModel.TaskId = mytask.TaskId;
+                    taskDetailViewModel.UserId = userId;
+                    taskDetailViewModel.TeamId = teamId;
+                    taskDetailViewModel.IsTodayTask = mytask.IsTodayTask;
+
+                    team.TodayTasks.Add(taskDetailViewModel);
+                }
+
+                if (team.Role != "TeamMember")
+                {
+                    var totalMembers = query.Where(task => task.UserId != userId && task.TeamId == teamId).Select(p => p.UserId).Distinct().ToList();
+
+                    foreach (var memberTask in totalMembers)
+                    {
+                        var teamMemberTasks = query.Where(task => task.UserId == memberTask && task.TeamId == teamId);
+
+                        TeamMembersTaskDetails teamMembersTaskDetails = new();
+                        teamMembersTaskDetails.Avatar = teamMemberTasks.Select(p => p.Users.Avatar).FirstOrDefault()!.ToString();
+                        teamMembersTaskDetails.UserName = teamMemberTasks.Select(p => p.Users.FirstName).FirstOrDefault()!.ToString() + " " + teamMemberTasks.Select(p => p.Users.LastName).FirstOrDefault()!.ToString();
+
+                        foreach (var task in teamMemberTasks)
+                        {
+                            TaskDetailViewModel taskDetailViewModel = new();
+                            taskDetailViewModel.TaskName = task.TaskName;
+                            taskDetailViewModel.IsCompleted = task.TaskStatus;
+                            taskDetailViewModel.TaskId = task.TaskId;
+                            taskDetailViewModel.UserId = memberTask;
+                            taskDetailViewModel.TeamId = teamId;
+                            taskDetailViewModel.IsTodayTask = task.IsTodayTask;
+
+                            teamMembersTaskDetails.TodayTasks.Add(taskDetailViewModel);
+                        }
+                        team.TeamMembersTaasks.Add(teamMembersTaskDetails);
+                    }
+                }
+
+                teams.Add(team);
+            }
+
+            return teams;
         }
 
         public List<ListOfUsers> GetDataForAddTask(long teamId, long userId)
@@ -173,7 +204,8 @@ namespace Repository.Repository
                     TaskStatus = false,
                     TeamId = task.TeamId,
                     TaskName = task.TaskName,
-                    UserId = task.UserId
+                    UserId = task.UserId,
+                    IsTodayTask = DateTime.Now
                 };
 
                 _db.Add(addTask);

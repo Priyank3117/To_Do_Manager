@@ -13,5 +13,7 @@
         public string TaskName { get; set; } = string.Empty;
 
         public bool IsCompleted { get; set; } = false;
+
+        public DateTime? IsTodayTask { get; set; }
     }
 }

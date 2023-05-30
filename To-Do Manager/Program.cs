@@ -13,9 +13,11 @@ builder.Services.AddSession();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IHomeRepository, HomeRepository>();
 builder.Services.AddScoped<IAllTasksRepository, AllTasksRepository>();
+builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
 builder.Services.AddScoped<AccountBAL>();
 builder.Services.AddScoped<HomeBAL>();
 builder.Services.AddScoped<AllTasksBAL>();
+builder.Services.AddScoped<UserProfileBAL>();
 
 var app = builder.Build();
 

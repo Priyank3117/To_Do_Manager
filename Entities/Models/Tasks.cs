@@ -31,5 +31,7 @@ namespace Entities.Models
         }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        public DateTime? IsTodayTask { get; set; }
     }
 }
