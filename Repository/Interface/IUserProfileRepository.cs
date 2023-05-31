@@ -11,5 +11,11 @@ namespace Repository.Interface
         public string ChangePassword(long userId, string newPassword, string oldPassword);
 
         public string ChangeImage(long userId, string imageURL);
+
+        public List<ListOfTeamsName> GetTeamNames(long userId);
+
+        public bool LeaveFromTeam(long teamId, long userId);
+
+        public bool LeaveFromAllTeam(long userId);
     }
 }

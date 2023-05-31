@@ -14,6 +14,6 @@
 
         public bool IsCompleted { get; set; } = false;
 
-        public DateTime? IsTodayTask { get; set; }
+        public bool IsTodayTask { get; set; }
     }
 }

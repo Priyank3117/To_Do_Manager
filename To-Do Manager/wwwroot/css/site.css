@@ -749,3 +749,19 @@ nav {
         color: #ffffff;
         background-color: #fd4d4d;
     }
+
+#calendar {
+    margin: 20px auto;
+}
+
+a{
+    color: #000000 !important;
+    text-decoration: none !important;
+}
+
+.todayButton {
+    background-color: rgb(255 255 255) !important;
+    color: rgb(0, 0, 0) !important;
+    border-radius: 20px !important;
+    width: 80px !important;
+}

@@ -31,5 +31,20 @@ namespace BAL
         {
             return _UserProfileRepo.ChangeImage(userId, imageURL);
         }
+
+        public List<ListOfTeamsName> GetTeamNames(long userId)
+        {
+            return _UserProfileRepo.GetTeamNames(userId);
+        }
+
+        public bool LeaveFromTeam(long teamId, long userId)
+        {
+            return _UserProfileRepo.LeaveFromTeam(teamId, userId);
+        }
+
+        public bool LeaveFromAllTeam(long userId)
+        {
+            return _UserProfileRepo.LeaveFromAllTeam(userId);
+        }
     }
 }

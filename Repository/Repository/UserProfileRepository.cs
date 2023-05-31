@@ -75,6 +75,7 @@ namespace Repository.Repository
                 .Where(u => u.UserId == userId)
                 .ExecuteUpdate(b =>
                     b.SetProperty(u => u.Password, newPassword).SetProperty(u => u.UpdatedAt, DateTime.Now));
+
             return "Changed";
         }
 
@@ -83,7 +84,83 @@ namespace Repository.Repository
             _db.Users
                 .Where(u => u.UserId == userId)
                 .ExecuteUpdate(b => b.SetProperty(u => u.Avatar, imageURL).SetProperty(u => u.UpdatedAt, DateTime.Now));
+
             return "Changed";
+        }
+
+        public List<ListOfTeamsName> GetTeamNames(long userId)
+        {
+            if(userId != 0)
+            {
+                var x = _db.TeamMembers.Where(teamMember => teamMember.UserId == userId && teamMember.Role == TeamMembers.Roles.TeamMember).Select(teamMember => new ListOfTeamsName()
+                {
+                    TeamId = teamMember.Teams.TeamId,
+                    TeamName = teamMember.Teams.TeamName,
+                    UserId = userId,
+                    LeaveStatus = teamMember.Status.ToString(),
+                }).ToList();
+
+                return x;
+            }
+            else
+            {
+                return new List<ListOfTeamsName>();
+            }
+        }
+
+        public bool LeaveFromTeam(long teamId, long userId)
+        {
+            if(teamId != 0 && userId != 0)
+            {
+                var teamMember = _db.TeamMembers.Where(teamMember => teamMember.TeamId == teamId && teamMember.UserId == userId).FirstOrDefault();
+
+                if(teamMember != null)
+                {
+                    teamMember.Status = TeamMembers.MemberStatus.RequestedForLeave;
+
+                    _db.Update(teamMember);
+                    _db.SaveChanges();
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool LeaveFromAllTeam(long userId)
+        {
+            if (userId != 0)
+            {
+                var teams = _db.TeamMembers.Where(teamMember => teamMember.UserId == userId);
+
+                if (teams != null)
+                {
+                    foreach(var team in teams)
+                    {
+                        team.Status = TeamMembers.MemberStatus.RequestedForLeave;
+                        _db.Update(team);
+                    }
+                    
+                    _db.SaveChanges();
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

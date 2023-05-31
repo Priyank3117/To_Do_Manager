@@ -1,4 +1,5 @@
-﻿$(document).ready(function () {
+﻿// Change Password Validation
+$(document).ready(function () {
     $("#oldPassword").focusout(function () {
         if ($('#oldPassword').val() == '') {
             $("#oldPasswordSpan").html('Old password is required');
@@ -55,7 +56,7 @@
             $(".changePasswordButton").removeAttr("disabled");
         }
     })
-});
+})
 
 // Change Password
 function ChangePassword() {
@@ -106,18 +107,115 @@ function ChangePassword() {
 
 // Profile Image Preview
 var loadFile = function (event) {
-    var image = document.getElementById("profileImage");
-    const imageFiles = event.target.files[0];
-    var imageURL = "/images/" + event.target.files[0].name;
-    console.log(imageFiles)
+    const file = event.target.files[0];
+
+    var formData = new FormData();
+    formData.append('file', file);
+
     $.ajax({
         type: "POST",
         url: "/UserProfile/ChangeImage",
-        data: { imageURL: imageURL },
+        processData: false,
+        contentType: false,
+        data: formData,
         success: function (result) {
             if (result == "Changed") {
-                image.src = URL.createObjectURL(event.target.files[0]);
+                /*image.src = URL.createObjectURL(event.target.files[0]);*/
+                location.reload(true)
             }
         }
     });
 };
+
+// Leave From Team
+function GetAllTeams() {
+    $.ajax({
+        type: "POST",
+        url: "/UserProfile/GetTeamNames",
+        data: { },
+        success: function (data) {
+            console.log(data)
+            var team = "";
+
+            for (var i = 0; i < data.length; i++) {
+                var button = "";
+
+                if (data[i].leaveStatus == "RequestedForLeave") {
+                    button = `<button type="button" class="leaveTeamSmallButton" disabled>
+                                Requsted
+                            </button>`
+                } else {
+                    button = `<button type="button" class="leaveTeamSmallButton" id="` + data[i].teamId + `" onclick="LeaveFromTeam(` + data[i].teamId + `,` + data[i].userId + `, \'` + data[i].teamName +`\')">
+                                Leave
+                            </button>`
+                }
+
+                team += `<div class="ListOfTeams">
+                            <p class="m-0">`+ data[i].teamName + `</p>
+                            `+ button +`
+                         </div>`;
+            }
+
+            $(".ListOfTeamsContainer").html(team)
+            $("#LeaveTeamsModal").modal("show")
+        }
+    });
+}
+
+function LeaveFromTeam(teamId, userId, teamName) {
+    $(".warningText").html(`Are you sure to leave from <span class="h5">` + teamName + `</span> team?`)
+    $(".leaveTeamButtonContainer").html(`<button type="button" class="CancelCreateTeamButton me-2"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#LeaveTeamsModal">
+                                                Cancel
+                                            </button>
+                                            <button type="button" class="leaveTeamsButton" onclick="FinalLeaveFromTeam(` + teamId + `,` + userId + `)">Leave</button>`)
+    $("#LeaveWarningModal").modal("show")
+    $("#LeaveTeamsModal").modal("hide")
+}
+
+function FinalLeaveFromTeam(teamId, userId) {
+    $.ajax({
+        type: "POST",
+        url: "/UserProfile/LeaveFromTeam",
+        data: { teamId: teamId, userId: userId },
+        success: function (data) {
+            if (data == true) {
+                $('#' + teamId + '').html("Requsted")
+                $('#' + teamId + '').attr("disabled", true)
+                $("#LeaveWarningModal").modal("hide")
+                $("#LeaveTeamsModal").modal("show")
+            }
+        }
+    });
+}
+
+// Leave All Teams
+function LeaveAllTeams() {
+    $(".warningText").html(`Are you sure to leave from all teams?`)
+    $(".leaveTeamButtonContainer").html(`<button type="button" class="CancelCreateTeamButton me-2"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#LeaveTeamsModal">
+                                                Cancel
+                                            </button>
+                                            <button type="button" class="leaveTeamsButton" onclick="LeaveFromAllTeam()">Yes</button>`)
+    $("#LeaveWarningModal").modal("show")
+    $("#LeaveTeamsModal").modal("hide")
+}
+
+function LeaveFromAllTeam() {
+    $.ajax({
+        type: "POST",
+        url: "/UserProfile/LeaveFromAllTeam",
+        data: { },
+        success: function (data) {
+            if (data == true) {
+
+                $(".leaveTeamSmallButton").html("Requsted")
+
+                $("#LeaveWarningModal").modal("hide")
+                $("#LeaveTeamsModal").modal("show")
+            }
+        }
+    });
+}

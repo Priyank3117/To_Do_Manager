@@ -33,5 +33,11 @@ namespace Entities.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public DateTime? IsTodayTask { get; set; }
+
+        public bool IsTaskForToday { get; set; }
+
+        public DateTime StartDate { get; set; } = DateTime.MinValue;
+
+        public DateTime EndDate { get; set; } = DateTime.MaxValue;
     }
 }

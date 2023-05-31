@@ -1,5 +1,13 @@
 ﻿$(document).ready(function () {
     SearchTeams();
+
+    $("#CalenderView").css("display", "none")
+    $(".allTeamsContainer").css("display", "block")
+    $("#list").css("background-color", "#333")
+    $("#list").css("color", "white")
+    $(".fc-prev-button, .fc-next-button").css("background-color", "#333")
+    $(".fc-today-button").addClass("todayButton")
+    $(".fc-today-button").css("color", "#000000")
 })
 
 function GetDataForAddTask(teamId, userId) {
@@ -122,3 +130,21 @@ function SearchTeams() {
         }
     })
 }
+
+$("#grid").click(function () {
+    $("#CalenderView").css("display","block")
+    $(".allTeamsContainer").css("display", "none")
+    $("#grid").css("background-color", "#333")
+    $("#grid").css("color", "white")
+    $("#list").css("background-color", "white")
+    $("#list").css("color", "#333")
+})
+
+$("#list").click(function () {
+    $("#CalenderView").css("display", "none")
+    $(".allTeamsContainer").css("display", "block")
+    $("#list").css("background-color", "#333")
+    $("#list").css("color", "white")
+    $("#grid").css("background-color", "white")
+    $("#grid").css("color", "#333")
+})

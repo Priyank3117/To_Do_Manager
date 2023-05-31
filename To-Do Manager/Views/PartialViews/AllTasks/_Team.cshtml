@@ -44,7 +44,7 @@
                                                                         <div>
                                                                             <p class="m-0">@task.TaskName</p>
                                                                             <span>
-                                                                                @if (task.IsTodayTask != null)
+                                                                                @if (task.IsTodayTask == true)
                                                                                 {
                                                                                     <button class="btn p-0" onclick="AddTaskToTodayTask(@task.UserId, @task.TeamId, @task.TaskId)" id="task_@task.TaskId">
                                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
@@ -115,7 +115,7 @@
                                                                             <div>
                                                                                 <p class="m-0">@task.TaskName</p>
                                                                                 <span>
-                                                                                    @if (task.IsTodayTask != null)
+                                                                                    @if (task.IsTodayTask == true)
                                                                                 {
                                                                                     <button class="btn p-0" onclick="AddTaskToTodayTask(@task.UserId, @task.TeamId, @task.TaskId)" id="task_@task.TaskId">
                                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">

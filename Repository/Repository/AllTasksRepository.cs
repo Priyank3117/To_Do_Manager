@@ -25,18 +25,22 @@ namespace Repository.Repository
                 query = query.Where(task => task.Teams.TeamName.ToLower().Contains(searchTerm.ToLower()) || task.TaskName.ToLower().Contains(searchTerm.ToLower()));
             }
 
-            query = query.OrderByDescending(task => task.IsTodayTask);
+            //query = query.OrderByDescending(task => task.IsTodayTask);
 
             var totalTeams = query.Where(task => task.UserId == userId).Select(task => task.TeamId).Distinct().ToList();
+
+            if (totalTeams.Count == 0 && searchTerm == null)
+            {
+                totalTeams = _db.TeamMembers.Where(teamMembers => teamMembers.UserId == userId).Select(teamMember => teamMember.TeamId).ToList();
+            }
 
             foreach (var teamId in totalTeams)
             {
                 AllTasksOfAllTeams team = new();
                 var myTasks = query.Where(task => task.UserId == userId && task.TeamId == teamId);
                 team.TeamId = teamId;
-                team.TeamName = query.Select(p => p.Teams.TeamName).FirstOrDefault()!;
+                team.TeamName = query.Where(p => p.Teams.TeamId == teamId).Select(p => p.Teams.TeamName).FirstOrDefault()!;
                 team.UserId = userId;
-
                 team.Role = _db.TeamMembers.FirstOrDefault(teamMember => teamMember.UserId == userId && teamMember.TeamId == teamId)!.Role.ToString();
 
                 foreach (var mytask in myTasks)
@@ -47,7 +51,7 @@ namespace Repository.Repository
                     taskDetailViewModel.TaskId = mytask.TaskId;
                     taskDetailViewModel.UserId = userId;
                     taskDetailViewModel.TeamId = teamId;
-                    taskDetailViewModel.IsTodayTask = mytask.IsTodayTask;
+                    taskDetailViewModel.IsTodayTask = mytask.StartDate.Date <= DateTime.Now.Date && mytask.EndDate >= DateTime.Now.Date && mytask.IsTaskForToday == true ? true : false;
 
                     team.MyTasks.Add(taskDetailViewModel);
                 }
@@ -60,23 +64,26 @@ namespace Repository.Repository
                     {
                         var teamMemberTasks = query.Where(task => task.UserId == memberTask && task.TeamId == teamId);
 
-                        TeamMembersTaskDetails teamMembersTaskDetails = new();
-                        teamMembersTaskDetails.Avatar = teamMemberTasks.Select(p => p.Users.Avatar).FirstOrDefault()!.ToString();
-                        teamMembersTaskDetails.UserName = teamMemberTasks.Select(p => p.Users.FirstName).FirstOrDefault()!.ToString() + " " + teamMemberTasks.Select(p => p.Users.LastName).FirstOrDefault()!.ToString();
-
-                        foreach (var task in teamMemberTasks)
+                        if (teamMemberTasks.Any())
                         {
-                            TaskDetailViewModel taskDetailViewModel = new();
-                            taskDetailViewModel.TaskName = task.TaskName;
-                            taskDetailViewModel.IsCompleted = task.TaskStatus;
-                            taskDetailViewModel.TaskId = task.TaskId;
-                            taskDetailViewModel.UserId = memberTask;
-                            taskDetailViewModel.TeamId = teamId;
-                            taskDetailViewModel.IsTodayTask = task.IsTodayTask;
+                            TeamMembersTaskDetails teamMembersTaskDetails = new();
+                            teamMembersTaskDetails.Avatar = teamMemberTasks.Select(p => p.Users.Avatar).FirstOrDefault()!.ToString();
+                            teamMembersTaskDetails.UserName = teamMemberTasks.Select(p => p.Users.FirstName).FirstOrDefault()!.ToString() + " " + teamMemberTasks.Select(p => p.Users.LastName).FirstOrDefault()!.ToString();
 
-                            teamMembersTaskDetails.TodayTasks.Add(taskDetailViewModel);
+                            foreach (var task in teamMemberTasks)
+                            {
+                                TaskDetailViewModel taskDetailViewModel = new();
+                                taskDetailViewModel.TaskName = task.TaskName;
+                                taskDetailViewModel.IsCompleted = task.TaskStatus;
+                                taskDetailViewModel.TaskId = task.TaskId;
+                                taskDetailViewModel.UserId = memberTask;
+                                taskDetailViewModel.TeamId = teamId;
+                                taskDetailViewModel.IsTodayTask = task.StartDate.Date <= DateTime.Now.Date && task.EndDate.Date >= DateTime.Now.Date && task.IsTaskForToday == true ? true : false;
+
+                                teamMembersTaskDetails.TodayTasks.Add(taskDetailViewModel);
+                            }
+                            team.TeamMembersTaasks.Add(teamMembersTaskDetails);
                         }
-                        team.TeamMembersTaasks.Add(teamMembersTaskDetails);
                     }
                 }
 
@@ -90,9 +97,12 @@ namespace Repository.Repository
         {
             var task = _db.Tasks.FirstOrDefault(task => task.TaskId == taskDetail.TaskId && task.TeamId == taskDetail.TeamId && task.UserId == taskDetail.UserId)!;
 
-            if(task.IsTodayTask == null)
+            if(task.IsTaskForToday == false)
             {
-                task.IsTodayTask = DateTime.Now;
+                task.IsTaskForToday = true;
+                task.StartDate = DateTime.Now;
+                task.EndDate = DateTime.Now;
+
                 _db.Update(task);
                 _db.SaveChanges();
 
@@ -100,7 +110,8 @@ namespace Repository.Repository
             }
             else
             {
-                task.IsTodayTask = null;
+                task.IsTaskForToday = false;
+
                 _db.Update(task);
                 _db.SaveChanges();
 

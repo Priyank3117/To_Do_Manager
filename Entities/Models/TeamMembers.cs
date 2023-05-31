@@ -35,7 +35,8 @@ namespace Entities.Models
         {
             Approved,
             Pending,
-            Declined
+            Declined,
+            RequestedForLeave
         }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;

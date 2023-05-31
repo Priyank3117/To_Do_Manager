@@ -7,10 +7,12 @@ namespace To_Do_Manager.Controllers
     public class UserProfileController : Controller
     {
         private readonly UserProfileBAL _UserProfileBAL;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public UserProfileController(UserProfileBAL userProfileBAL)
+        public UserProfileController(UserProfileBAL userProfileBAL, IWebHostEnvironment webHostEnvironment)
         {
             _UserProfileBAL = userProfileBAL;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
@@ -56,9 +58,38 @@ namespace To_Do_Manager.Controllers
             return _UserProfileBAL.ChangePassword(long.Parse(HttpContext.Session.GetString("UserId")!), newPassword, oldPassword);
         }
 
-        public string ChangeImage(string imageURL)
+        public string ChangeImage(IFormFile file)
         {
-            return _UserProfileBAL.ChangeImage(long.Parse(HttpContext.Session.GetString("UserId")!), imageURL);
+            var ImageURL = UploadImage(file);
+
+            HttpContext.Session.SetString("Avatar", ImageURL);
+
+            return _UserProfileBAL.ChangeImage(long.Parse(HttpContext.Session.GetString("UserId")!), ImageURL);
+        }
+
+        private string UploadImage(IFormFile file)
+        {
+            string folder = "ProfileImages/";
+            folder += Guid.NewGuid().ToString() + "_" + file.FileName;
+            string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folder);
+            file.CopyTo(new FileStream(serverFolder, FileMode.Create));
+
+            return "/" + folder;
+        }
+
+        public List<ListOfTeamsName> GetTeamNames()
+        {
+            return _UserProfileBAL.GetTeamNames(long.Parse(HttpContext.Session.GetString("UserId")!));
+        }
+
+        public bool LeaveFromTeam(long teamId, long userId)
+        {
+            return _UserProfileBAL.LeaveFromTeam(teamId, userId);
+        }
+
+        public bool LeaveFromAllTeam()
+        {
+            return _UserProfileBAL.LeaveFromAllTeam(long.Parse(HttpContext.Session.GetString("UserId")!));
         }
     }
 }
