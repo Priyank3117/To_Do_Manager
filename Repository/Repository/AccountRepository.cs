@@ -8,10 +8,12 @@ namespace Repository.Repository
     public class AccountRepository: IAccountRepository
     {
         private readonly ToDoManagerDBContext _db;
+        private readonly IHomeRepository _HomeRepo;
 
-        public AccountRepository(ToDoManagerDBContext db)
+        public AccountRepository(ToDoManagerDBContext db, IHomeRepository homeRepo)
         {
             _db = db;
+            _HomeRepo = homeRepo;
         }
 
         public bool RegisterUser(RegistrationViewModel registration)
@@ -29,6 +31,15 @@ namespace Repository.Repository
 
                 _db.Users.Add(user);
                 _db.SaveChanges();
+
+                var isInvitedUser = _db.InvitedUsers.FirstOrDefault(user => user.Email == registration.Email);
+                if (isInvitedUser != null)
+                {
+                    _HomeRepo.AddUserToTeam(isInvitedUser.Email, isInvitedUser.TeamId);
+
+                    _db.Remove(isInvitedUser);
+                    _db.SaveChanges();
+                }
 
                 return true;
             }

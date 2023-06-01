@@ -10,18 +10,24 @@ namespace To_Do_Manager.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly HomeBAL _HomeBAL;
+        private readonly AccountBAL _AccountBAL;
 
-        public HomeController(ILogger<HomeController> logger, HomeBAL homeBAL)
+        public HomeController(ILogger<HomeController> logger, HomeBAL homeBAL, AccountBAL accountBAL)
         {
             _logger = logger;
             _HomeBAL = homeBAL;
+            _AccountBAL = accountBAL;
         }
 
         public IActionResult Index()
         {
             ViewBag.UserName = HttpContext.Session.GetString("UserName");
             ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
-            return View();
+
+            if (!_AccountBAL.IsUserHaveAnyTeam(long.Parse(HttpContext.Session.GetString("UserId")!)))
+                return RedirectToAction("Index", "Home");
+            else
+                return RedirectToAction("AllTeamsPage", "Home");
         }
 
         public IActionResult AllTeamsPage()

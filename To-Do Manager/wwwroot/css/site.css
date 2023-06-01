@@ -165,14 +165,14 @@ input[type=checkbox] {
     justify-content: center;
 }
 
-nav {
+/*nav {
     border-bottom: 1px solid rgb(212, 212, 212);
     height: 50px;
-}
+}*/
 
 .userAvatar {
-    height: 25px;
-    width: 25px;
+    height: 29px;
+    width: 29px;
     border-radius: 50%;
 }
 
@@ -505,7 +505,7 @@ nav {
     border: 1px solid #333;
 }
 
-.addUser {
+.addUser, .addUserInTeam {
     text-decoration: none;
     font-size: 15px;
     font-weight: 500;
@@ -522,10 +522,10 @@ nav {
     border: 1px solid #333;
 }
 
-    .addUser:hover {
-        background-color: #333;
-        color: #ffffff;
-    }
+.addUser, .addUserInTeam:hover {
+    background-color: #333;
+    color: #ffffff;
+}
 
 .createTeamButton:hover {
     background-color: #4fd355;
@@ -573,11 +573,12 @@ nav {
     padding: 0px 7px 0px 7px !important;
     background-color: #ffffff;
     transition: .4s;
+    font-size: 13px;
 }
 
     .removeButton:hover {
-        border: 1px solid #333;
-        background-color: #333;
+        border: 1px solid #fd4d4d;
+        background-color: #fd4d4d;
         color: #ffffff;
     }
 
@@ -600,7 +601,7 @@ nav {
     }
 }
 
-.AddedUser {
+.AddedUser, .AddedUserInTeam {
     background-color: #c2c2c2;
     border-radius: 20px;
     display: flex;
@@ -610,7 +611,7 @@ nav {
     padding: 3px 8px 3px 8px;
 }
 
-    .AddedUser a {
+    .AddedUser, .AddedUserInTeam a {
         text-decoration: none;
         color: #000000;
     }
@@ -754,7 +755,7 @@ nav {
     margin: 20px auto;
 }
 
-a{
+.fc-daygrid-day-number, .fc-col-header-cell-cushion {
     color: #000000 !important;
     text-decoration: none !important;
 }
@@ -764,4 +765,52 @@ a{
     color: rgb(0, 0, 0) !important;
     border-radius: 20px !important;
     width: 80px !important;
+}
+
+.fc-event{
+    border-radius: 10px !important;
+    padding-left: 5px !important;
+}
+
+/* Team Management */
+@media screen and (max-width: 576px) {
+    #UserName {
+        display: none;
+    }
+}
+
+.approveButton {
+    border: 1px solid #333;
+    border-radius: 15px;
+    padding: 0px 7px 0px 7px !important;
+    background-color: #ffffff;
+    transition: .4s;
+    font-size: 13px;
+}
+
+    .approveButton:hover {
+        border: 1px solid #4fd355;
+        background-color: #4fd355;
+        color: #ffffff;
+    }
+
+.reportingPersonButton {
+    border: 1px solid #333;
+    border-radius: 15px;
+    padding: 0px 7px 0px 7px !important;
+    background-color: #ffffff;
+    transition: .4s;
+    font-size: 13px;
+}
+
+    .reportingPersonButton:hover {
+        border: 1px solid #ffbb33;
+        background-color: #ffbb33;
+        color: #ffffff;
+    }
+
+.teamMemberAvatar {
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
 }

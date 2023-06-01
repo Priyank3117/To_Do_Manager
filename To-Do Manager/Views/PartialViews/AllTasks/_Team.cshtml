@@ -3,167 +3,167 @@
 @model List<AllTasksOfAllTeams>
 
 @if (Model != null)
-        {
-            @foreach (var team in Model)
-            {
-                <div class="teamContainer">
-                    <div class="row">
-                        <div class="col">
-                            <div class="col d-flex justify-content-between align-items-center">
-                                <p class="teamName m-0">@team.TeamName</p>
-                                <div class="d-flex justify-content-start align-items-center">
-                                    <button type="button" class="threeDotButton me-2" data-bs-toggle="modal"
-                                    data-bs-target="#AddTaskModal" onclick="GetDataForAddTask(@team.TeamId, @team.UserId)">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
-                                     fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                            <path fill-rule="evenodd"
-                                          d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                            <p class="m-0 mt-2 text-muted">All Tasks</p>
-                            <div class="allTasksContainer">
-                                <div class="col-12">
-                                    <div class="accordion accordion-flush" id="accordionFlushExample">
-                                        @if (team.MyTasks.Count() != 0)
-                                        {
-                                            <div class="accordion-item accordionItem" style="border-radius: 10px;">
-                                                <h2 class="accordion-header">
-                                                    <button class="accordion-button collapsed" style="background-color: #ffffff;color: #000000;border-radius: 10px;box-shadow: none;" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                                        <p class="m-0 fs-5">My Tasks</p>
-                                                    </button>
-                                                </h2>
-                                                <div id="flush-collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionFlushExample">
-                                                    <div class="accordion-body">
-                                                        <div class="taskList">
-                                                            <ul>
-                                                                @foreach (var task in team.MyTasks)
-                                                                {
-                                                                    <li>
-                                                                        <div>
-                                                                            <p class="m-0">@task.TaskName</p>
-                                                                            <span>
-                                                                                @if (task.IsTodayTask == true)
-                                                                                {
-                                                                                    <button class="btn p-0" onclick="AddTaskToTodayTask(@task.UserId, @task.TeamId, @task.TaskId)" id="task_@task.TaskId">
-                                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
-                                                                                            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
-                                                                                        </svg>
-                                                                                    </button>
-                                                                                }
-                                                                                else
-                                                                                {
-                                                                                    <button class="btn p-0" onclick="AddTaskToTodayTask(@task.UserId, @task.TeamId, @task.TaskId)" id="task_@task.TaskId">
-                                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
-                                                                                            <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
-                                                                                        </svg>
-                                                                                    </button>
-                                                                                }
+{
+    @foreach (var team in Model)
+    {
+        <div class="teamContainer">
+            <div class="row">
+                <div class="col">
+                    <div class="col d-flex justify-content-between align-items-center">
+                        <p class="teamName m-0">@team.TeamName</p>
+                        <div class="d-flex justify-content-start align-items-center">
+                            <button type="button" class="threeDotButton me-2" data-bs-toggle="modal"
+                            data-bs-target="#AddTaskModal" onclick="GetDataForAddTask(@team.TeamId, @team.UserId)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                             fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                  d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="m-0 mt-2 text-muted">All Tasks</p>
+                    <div class="allTasksContainer">
+                        <div class="col-12">
+                            <div class="accordion accordion-flush" id="accordionFlushExample">
+                                @if (team.MyTasks.Count() != 0)
+                                {
+                                    <div class="accordion-item accordionItem" style="border-radius: 10px;">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" style="background-color: #ffffff;color: #000000;border-radius: 10px;box-shadow: none;" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                                <p class="m-0 fs-5">My Tasks</p>
+                                            </button>
+                                        </h2>
+                                        <div id="flush-collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionFlushExample">
+                                            <div class="accordion-body">
+                                                <div class="taskList">
+                                                    <ul>
+                                                        @foreach (var task in team.MyTasks)
+                                                        {
+                                                            <li>
+                                                                <div>
+                                                                    <p class="m-0">@task.TaskName</p>
+                                                                    <span>
+                                                                        @if (task.IsTodayTask == true)
+                                                                        {
+                                                                            <button class="btn p-0" onclick="AddTaskToTodayTask(@task.UserId, @task.TeamId, @task.TaskId)" id="task_@task.TaskId">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                                                                                    <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+                                                                                </svg>
+                                                                            </button>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <button class="btn p-0" onclick="AddTaskToTodayTask(@task.UserId, @task.TeamId, @task.TaskId)" id="task_@task.TaskId">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                                                                                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+                                                                                </svg>
+                                                                            </button>
+                                                                        }
 
-                                                                                @if (task.IsCompleted == true)
-                                                                                {
-                                                                                    <button class="btn p-0" onclick="MarkTaskAsCompleteOrUncomplete(@task.UserId, @task.TeamId, @task.TaskId)" id="Task_@task.TaskId">
-                                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                                                                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-                                                                                        </svg>
-                                                                                    </button>
-                                                                                }
-                                                                                else
-                                                                                {
-                                                                                    <button class="btn p-0" onclick="MarkTaskAsCompleteOrUncomplete(@task.UserId, @task.TeamId, @task.TaskId)" id="Task_@task.TaskId">
-                                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
-                                                                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                                                            <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
-                                                                                        </svg>
-                                                                                    </button>
-                                                                                }
-                                                                            </span>
-                                                                        </div>
-                                                                    </li>
-                                                                }
-                                                            </ul>
-                                                        </div>
+                                                                        @if (task.IsCompleted == true)
+                                                                        {
+                                                                            <button class="btn p-0" onclick="MarkTaskAsCompleteOrUncomplete(@task.UserId, @task.TeamId, @task.TaskId)" id="Task_@task.TaskId">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                                                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                                                                                </svg>
+                                                                            </button>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <button class="btn p-0" onclick="MarkTaskAsCompleteOrUncomplete(@task.UserId, @task.TeamId, @task.TaskId)" id="Task_@task.TaskId">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                                                                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                                                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                                                                                </svg>
+                                                                            </button>
+                                                                        }
+                                                                    </span>
+                                                                </div>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                @if (team.TeamMembersTaasks.Count() != 0)
+                                {
+                                    @foreach (var member in team.TeamMembersTaasks)
+                                    {
+                                        var idCount = 1;
+                                        var id = "Member" + idCount;
+
+                                        <div class="accordion-item accordionItem" style="border-radius: 10px;">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed" style="background-color: #ffffff;color: #000000;border-radius: 10px;box-shadow: none;" type="button" data-bs-toggle="collapse" data-bs-target="#@id" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                                    <div class="d-flex justify-content-start align-items-center">
+                                                        <img src="@member.Avatar" class="userAvatar " alt="" />
+                                                        &nbsp;&nbsp;
+                                                        <p class="m-0 fs-5">@member.UserName</p>
+                                                    </div>
+                                                </button>
+                                            </h2>
+                                            <div id="@id" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                                <div class="accordion-body">
+                                                    <div class="taskList">
+                                                        <ul>
+                                                            @foreach (var task in member.TodayTasks)
+                                                            {
+                                                                <li>
+                                                                    <div>
+                                                                        <p class="m-0">@task.TaskName</p>
+                                                                        <span>
+                                                                            @if (task.IsTodayTask == true)
+                                                                            {
+                                                                                <button class="btn p-0" onclick="AddTaskToTodayTask(@task.UserId, @task.TeamId, @task.TaskId)" id="task_@task.TaskId">
+                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                                                                                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+                                                                                    </svg>
+                                                                                </button>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <button class="btn p-0" onclick="AddTaskToTodayTask(@task.UserId, @task.TeamId, @task.TaskId)" id="task_@task.TaskId">
+                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                                                                                        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+                                                                                    </svg>
+                                                                                </button>
+                                                                            }
+                                                                            @if (task.IsCompleted == true)
+                                                                            {
+                                                                                <button class="btn p-0">
+                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                                                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                                                                                    </svg>
+                                                                                </button>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <button class="btn p-0">
+                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                                                                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                                                        <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                                                                                    </svg>
+                                                                                </button>
+                                                                            }
+                                                                        </span>
+                                                                    </div>
+                                                                </li>
+                                                            }
+                                                        </ul>
                                                     </div>
                                                 </div>
                                             </div>
-                                        }
-                                        @if (team.TeamMembersTaasks.Count() != 0)
-                                        {
-                                            @foreach (var member in team.TeamMembersTaasks)
-                                            {
-                                                var idCount = 1;
-                                                var id = "Member" + idCount;
-
-                                                <div class="accordion-item accordionItem" style="border-radius: 10px;">
-                                                    <h2 class="accordion-header">
-                                                        <button class="accordion-button collapsed" style="background-color: #ffffff;color: #000000;border-radius: 10px;box-shadow: none;" type="button" data-bs-toggle="collapse" data-bs-target="#@id" aria-expanded="false" aria-controls="flush-collapseTwo">
-                                                            <div class="d-flex justify-content-start align-items-center">
-                                                                <img src="@member.Avatar" class="userAvatar " alt="" />
-                                                                &nbsp;&nbsp;
-                                                                <p class="m-0 fs-5">@member.UserName</p>
-                                                            </div>
-                                                        </button>
-                                                    </h2>
-                                                    <div id="@id" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                                        <div class="accordion-body">
-                                                            <div class="taskList">
-                                                                <ul>
-                                                                    @foreach (var task in member.TodayTasks)
-                                                                    {
-                                                                        <li>
-                                                                            <div>
-                                                                                <p class="m-0">@task.TaskName</p>
-                                                                                <span>
-                                                                                    @if (task.IsTodayTask == true)
-                                                                                {
-                                                                                    <button class="btn p-0" onclick="AddTaskToTodayTask(@task.UserId, @task.TeamId, @task.TaskId)" id="task_@task.TaskId">
-                                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
-                                                                                            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
-                                                                                        </svg>
-                                                                                    </button>
-                                                                                }
-                                                                                else
-                                                                                {
-                                                                                    <button class="btn p-0" onclick="AddTaskToTodayTask(@task.UserId, @task.TeamId, @task.TaskId)" id="task_@task.TaskId">
-                                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
-                                                                                            <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
-                                                                                        </svg>
-                                                                                    </button>
-                                                                                }
-                                                                                    @if (task.IsCompleted == true)
-                                                                                    {
-                                                                                        <button class="btn p-0">
-                                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                                                                                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-                                                                                            </svg>
-                                                                                        </button>
-                                                                                    }
-                                                                                    else
-                                                                                    {
-                                                                                        <button class="btn p-0">
-                                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
-                                                                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                                                                <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
-                                                                                            </svg>
-                                                                                        </button>
-                                                                                    }
-                                                                                </span>
-                                                                            </div>
-                                                                        </li>
-                                                                    }
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            }
-                                        }
-                                    </div>
-                                </div>
+                                        </div>
+                                    }
+                                }
                             </div>
                         </div>
                     </div>
                 </div>
-            }
-        }
+            </div>
+        </div>
+    }
+}

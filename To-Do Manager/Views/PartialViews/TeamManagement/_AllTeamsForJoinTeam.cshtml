@@ -1,0 +1,63 @@
+﻿@using Entities.ViewModels.HomeViewModels;
+
+@model List<AllTeamsViewModel>
+
+<div class="row">
+    <div class="modal fade" id="JoinTeamModal" tabindex="-1" aria-labelledby="JoinTeamModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="border: none;">
+                    <h1 class="modal-title fs-5" id="JoinTeamModalLabel">Request to join Team</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <input type="hidden" id="ViewTeamTeamId">
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="Name" class="form-label">Team Name</label>
+                                <input type="text" class="form-control" id="Name" autocomplete="off" disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label for="Description" class="form-label">Description</label>
+                                <textarea class="form-control" id="Description" rows="3" disabled></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border: none;">
+                    <div class="mt-4">
+                        <a href="/Login.html" type="button" class="CancelCreateTeamButton">Cancel</a>
+                    </div>
+                    <div class="mt-4">
+                        <a role="button" class="createTeamButton" onclick="RequestToJoinTeam()" style="width: fit-content;">Send Request</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <h2 style="font-family: sans-serif;margin-bottom: 25px;margin-top: 25px;">Available Teams</h2>
+        <div class="allTeamContainer">
+            @if (Model != null)
+            {
+                foreach (var team in Model)
+                {
+                    if (team.Status != null)
+                    {
+                        <a role="button" onclick="GetTeamDetails(@team.TeamId)" id=@team.TeamId class="requestSendButton" disabled>
+                            @team.TeamName
+                        </a>
+                    }
+                    else
+                    {
+                        <a role="button" onclick="GetTeamDetails(@team.TeamId)" id=@team.TeamId class="joinTeamButton">
+                            @team.TeamName
+                        </a>
+                    }
+                }
+            }
+        </div>
+    </div>
+</div>

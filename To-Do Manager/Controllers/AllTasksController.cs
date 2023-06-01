@@ -1,4 +1,5 @@
 ﻿using BAL;
+using Entities.ViewModels.AllTasksViewModel;
 using Entities.ViewModels.HomeViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +19,7 @@ namespace To_Do_Manager.Controllers
             ViewBag.UserName = HttpContext.Session.GetString("UserName");
             ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
 
-            return View();
+            return View(_AllTaksBAL.GetTasksForCalenderView(long.Parse(HttpContext.Session.GetString("UserId")!)));
         }
 
         public bool AddTaskToTodayTask(TaskDetailViewModel task)

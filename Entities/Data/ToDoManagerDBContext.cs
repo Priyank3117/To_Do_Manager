@@ -20,6 +20,8 @@ namespace Entities.Data
 
         public DbSet<Tasks> Tasks { get; set; }
 
+        public DbSet<InvitedUsers> InvitedUsers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

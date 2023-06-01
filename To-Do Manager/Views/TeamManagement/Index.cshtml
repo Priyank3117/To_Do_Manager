@@ -1,0 +1,118 @@
+﻿<div class="row mt-3 mb-3">
+    <div class="col d-flex justify-content-end align-items-center teamManagementTopRow">
+
+        <a role="button" onclick="GetAllTeamDetailsPartialView()" style="display: none;color:black;" class="backToTeamManagementPage">
+            <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+            </svg>
+        </a>
+
+        <div class="d-flex justify-content-center align-items-center">
+            <button type="button" class="loginButton me-2" onclick="GetJoinTeamPartialView()">Join Team</button>
+
+            <!-- Button trigger modal -->
+            <button type="button" class="loginButton me-2" data-bs-toggle="modal"
+                    data-bs-target="#CreateTeamModal">
+                Create Team
+            </button>
+
+            <!-- Create Team Modal -->
+            <div class="modal fade" id="CreateTeamModal" tabindex="-1" aria-labelledby="CreateTeamModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header" style="border: none;">
+                            <h1 class="modal-title fs-5" id="CreateTeamModalLabel">Create Team</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="TeamName" class="form-label">Team Name</label>
+                                        <input type="text" class="form-control" id="TeamName" autocomplete="off"
+                                               placeholder="Enter Team Name">
+                                        <span class="text-danger" id="TeamNameSpan"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="TeamDescription" class="form-label">Description</label>
+                                        <textarea class="form-control" id="TeamDescription" placeholder="Enter Team Description"
+                                                  rows="3"></textarea>
+                                        <span class="text-danger" id="TeamDescriptionSpan"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="AddUser" class="form-label">Add Users</label>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div style="width: -webkit-fill-available;" class="me-2">
+                                                <input type="text" class="form-control" id="AddUser" autocomplete="off"
+                                                       placeholder="Enter Email">
+                                                <span class="text-danger" id="AddUserSpan"></span>
+                                            </div>
+                                            <button type="button" class="addUser" style="height: 38px;">Add</button>
+                                        </div>
+                                    </div>
+                                    <div class="AddedUserContainer">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="border: none;">
+                            <div class="mt-4">
+                                <a href="/Login.html" type="button" class="CancelCreateTeamButton">Cancel</a>
+                            </div>
+                            <div class="mt-4">
+                                <button type="button" class="createTeamButton" onclick="CreateTeam()">Create</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add User Modal -->
+<div class="modal fade" id="AddUserModal" tabindex="-1" aria-labelledby="AddUserModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="border: none;">
+                <h1 class="modal-title fs-5" id="AddUserModalLabel">Add User</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label for="AddUserInTeam" class="form-label">Add Users</label>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div style="width: -webkit-fill-available;" class="me-2">
+                                    <input type="text" class="form-control" id="AddUserInTeam" autocomplete="off"
+                                           placeholder="Enter Email">
+                                    <span class="text-danger" id="AddUserInTeamSpan"></span>
+                                </div>
+                                <button type="button" class="addUserInTeam" style="height: 38px;">Add</button>
+                            </div>
+                        </div>
+                        <div class="AddedUserInTeamContainer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border: none;">
+                <div class="mt-4">
+                    <a href="/Login.html" type="button" class="CancelCreateTeamButton">Cancel</a>
+                </div>
+                <div class="mt-4">
+                    <button type="button" class="createTeamButton" onclick="AddUserInTeam()">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="TeamRowContainer">
+</div>
+
+<script src="~/js/TeamManagement.js"></script>

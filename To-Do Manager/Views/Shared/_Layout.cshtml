@@ -17,51 +17,63 @@
 
 <body style="background-color: #ffffff !important;">
 
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #ebebeb;">
         <div class="container">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="Toggle navigation">
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
-            <div class="collapse navbar-collapse" style="padding-left: 200px;" id="navbarSupportedContent">
+            <a class="navbar-brand" asp-action="Index" asp-controller="Home">To-Do Manager</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item dropdown my-1 px-2" style="list-style-type: none;">
-
+                    <li class="nav-item mx-2">
+                        <a class="nav-link active" asp-action="Index" asp-controller="Home">Home</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link active" asp-action="Index" asp-controller="AllTasks">All Tasks</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link active" asp-action="Index" asp-controller="TeamManagement">Teams</a>
                     </li>
                 </ul>
             </div>
-
-            <div class="d-flex justify-content-between align-items-center" id="profileSecion">
+            <a class="d-flex justify-content-between align-items-center" id="profileSecion">
                 <div class="notificationContainer">
                     <ul class="navbar-nav text-center">
                         <li class="nav-item dropdown" style="list-style-type: none;">
-                            <a style="color: black;padding: 0px;" class="nav-link" id="notificationDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">
+                            <a style="color: black;padding: 0px;" class="nav-link" id="notificationDropdown"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="/images/bell.png" class="notoficationImage" />
                             </a>
-                            <ul class="dropdown-menu notificationDropdown mainNotificationDropdown" style="width: 470px;position: absolute;"
-                                aria-labelledby="notificationDropdown" id="forReopenThis">
+                            <ul class="dropdown-menu notificationDropdown mainNotificationDropdown"
+                                style="width: 470px;position: absolute;" aria-labelledby="notificationDropdown"
+                                id="forReopenThis">
                                 <li class="firstRowNotification">
                                     <p class="p-0 m-0" style="font-weight: 500;">Notification</p>
                                     <a role="button" class="text-muted" id="clearAllNotification">Clear All</a>
                                 </li>
                                 <li class="dropdown-item">
                                     <img src="/HTML/images/user1.png" alt="">
-                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress</bold></p>
+                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress
+                                        </bold>
+                                    </p>
                                     <div class="dot"></div>
                                 </li>
                                 <hr class="text-muted p-0 m-0">
                                 <li class="dropdown-item">
                                     <img src="/HTML/images/add.png" alt="">
-                                    <p class="m-0  dropRow">John Deo Recommended this mission- <bold>Grow Tress</bold></p>
+                                    <p class="m-0  dropRow">John Deo Recommended this mission- <bold>Grow Tress
+                                        </bold>
+                                    </p>
                                     <img src="/HTML/images/checked.png" alt="">
                                 </li>
                                 <hr class="text-muted p-0 m-0">
                                 <li class="dropdown-item">
                                     <img src="/HTML/images/new-message.png" alt="">
-                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress</bold></p>
+                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress
+                                        </bold>
+                                    </p>
                                     <img src="/HTML/images/checked.png" alt="">
                                 </li>
                                 <div class="breakNotificationList bg-light">
@@ -70,19 +82,25 @@
                                 <hr class="text-muted p-0 m-0">
                                 <li class="dropdown-item">
                                     <img src="/HTML/images/user1.png" alt="">
-                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress</bold></p>
+                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress
+                                        </bold>
+                                    </p>
                                     <div class="dot"></div>
                                 </li>
                                 <hr class="text-muted p-0 m-0">
                                 <li class="dropdown-item">
                                     <img src="/HTML/images/add.png" alt="">
-                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress</bold></p>
+                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress
+                                        </bold>
+                                    </p>
                                     <img src="/HTML/images/checked.png" alt="">
                                 </li>
                                 <hr class="text-muted p-0 m-0">
                                 <li class="dropdown-item">
                                     <img src="/HTML/images/new-message.png" alt="">
-                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress</bold></p>
+                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress
+                                        </bold>
+                                    </p>
                                     <img src="/HTML/images/checked.png" alt="">
                                 </li>
                                 <div class="breakNotificationList bg-light">
@@ -91,19 +109,25 @@
                                 <hr class="text-muted p-0 m-0">
                                 <li class="dropdown-item">
                                     <img src="/HTML/images/user1.png" alt="">
-                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress</bold></p>
+                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress
+                                        </bold>
+                                    </p>
                                     <div class="dot"></div>
                                 </li>
                                 <hr class="text-muted p-0 m-0">
                                 <li class="dropdown-item">
                                     <img src="/HTML/images/add.png" alt="">
-                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress</bold></p>
+                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress
+                                        </bold>
+                                    </p>
                                     <img src="/HTML/images/checked.png" alt="">
                                 </li>
                                 <hr class="text-muted p-0 m-0">
                                 <li class="dropdown-item">
                                     <img src="/HTML/images/new-message.png" alt="">
-                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress</bold></p>
+                                    <p class="m-0 dropRow">John Deo Recommended this mission- <bold>Grow Tress
+                                        </bold>
+                                    </p>
                                     <img src="/HTML/images/checked.png" alt="">
                                 </li>
                                 <div class="breakNotificationList bg-light">
@@ -111,7 +135,8 @@
                                 </div>
                             </ul>
 
-                            <ul class="dropdown-menu notificationDropdown noNotificationDropdown" style="width: 470px;position: absolute;">
+                            <ul class="dropdown-menu notificationDropdown noNotificationDropdown"
+                                style="width: 470px;position: absolute;">
                                 <li class="firstRowNotification">
                                     <p class="p-0 m-0" style="font-weight: 500;">Notification</p>
                                     <a role="button" class="text-muted">Clear All</a>
@@ -129,24 +154,27 @@
                     </div>
                 </div>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <img src="@ViewBag.Avatar" class="userAvatar " alt="" />
-                &nbsp;
                 <ul class="navbar-nav text-center" id="userDropdown" style="padding: 0px;margin: 0px;">
                     <li class="nav-item dropdown" style="list-style-type: none;">
-                        <a style="color: black;padding: 0px;" class="nav-link d-flex justify-content-between align-items-center" href="#" id="navbarDropdownMenuLink"
-                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            @ViewBag.UserName &nbsp;
-                            <img src="/images/drop-down.png" alt="">
+                        <a style="color: black;padding: 0px;"
+                            class="nav-link d-flex justify-content-between align-items-center" href="#"
+                            id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="/images/EmptyProfile.png" class="userAvatar " alt="" />
+                            &nbsp;
+                            <div id="UserName">
+                                @ViewBag.UserName &nbsp;
+                                <img src="/images/drop-down.png" alt="">
+                            </div>
                         </a>
                         <ul class="dropdown-menu" id="profileDropdown" aria-labelledby="navbarDropdownMenuLink" style="left: -65px;
-                    top: 30px;position: absolute;">
+                            top: 30px;position: absolute;">
                             <li><a class="dropdown-item" asp-action="Index" asp-controller="Home">Home</a></li>
                             <li><a class="dropdown-item" asp-action="Index" asp-controller="UserProfile">Profile</a></li>
                             <li><a class="dropdown-item" asp-action="Logout" asp-controller="Home">Logout</a></li>
                         </ul>
                     </li>
                 </ul>
-            </div>
+            </a>
         </div>
     </nav>
 

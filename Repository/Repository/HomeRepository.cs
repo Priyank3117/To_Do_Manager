@@ -61,6 +61,13 @@ namespace Repository.Repository
             }
             else
             {
+                InvitedUsers invitedUsers = new();
+                invitedUsers.TeamId = teamId;
+                invitedUsers.Email = email;
+
+                _db.Add(invitedUsers);
+                _db.SaveChanges();
+
                 return false;
             }
         }

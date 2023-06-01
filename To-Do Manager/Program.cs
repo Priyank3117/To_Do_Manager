@@ -14,10 +14,12 @@ builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IHomeRepository, HomeRepository>();
 builder.Services.AddScoped<IAllTasksRepository, AllTasksRepository>();
 builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+builder.Services.AddScoped<ITeamManagementRepository, TeamManagementRepository>();
 builder.Services.AddScoped<AccountBAL>();
 builder.Services.AddScoped<HomeBAL>();
 builder.Services.AddScoped<AllTasksBAL>();
 builder.Services.AddScoped<UserProfileBAL>();
+builder.Services.AddScoped<TeamManagementBAL>();
 
 var app = builder.Build();
 

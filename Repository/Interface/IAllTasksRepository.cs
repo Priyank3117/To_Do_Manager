@@ -8,5 +8,7 @@ namespace Repository.Interface
         public List<AllTasksOfAllTeams> GetAllTasks(long userId, string searchTerm);
 
         public bool AddTaskToTodayTask(TaskDetailViewModel taskDetail);
+
+        public List<AllTaskForCalenderView> GetTasksForCalenderView(long userId);
     }
 }

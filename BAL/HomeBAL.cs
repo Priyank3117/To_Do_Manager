@@ -35,7 +35,17 @@ namespace BAL
                     {
                         SendEmailViewModel sendEmailViewModel = new()
                         {
-                            Body = "You have an invitation to join <b>" + team.TeamName + "</b> Team",
+                            Body = "You have an invitation to join <b>" + team.TeamName + "</b> Team click below link to see https://localhost:7100/Account/Registration",
+                            Subject = "Invitation to join a Team",
+                            ToEmail = userEmail
+                        };
+                        InviteUser(sendEmailViewModel);
+                    }
+                    else
+                    {
+                        SendEmailViewModel sendEmailViewModel = new()
+                        {
+                            Body = "You have an invitation to join <b>" + team.TeamName + "</b> Team click below link to see https://localhost:7100",
                             Subject = "Invitation to join a Team",
                             ToEmail = userEmail
                         };

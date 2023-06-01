@@ -97,7 +97,7 @@ namespace Repository.Repository
         {
             var task = _db.Tasks.FirstOrDefault(task => task.TaskId == taskDetail.TaskId && task.TeamId == taskDetail.TeamId && task.UserId == taskDetail.UserId)!;
 
-            if(task.IsTaskForToday == false)
+            if (task.IsTaskForToday == false)
             {
                 task.IsTaskForToday = true;
                 task.StartDate = DateTime.Now;
@@ -117,6 +117,56 @@ namespace Repository.Repository
 
                 return false;
             }
+        }
+
+        public List<AllTaskForCalenderView> GetTasksForCalenderView(long userId)
+        {
+            var query = _db.Tasks.AsQueryable();
+
+            var totalTeams = query.Where(task => task.UserId == userId).Select(task => task.TeamId).Distinct().ToList();
+
+            List<AllTaskForCalenderView> AllTasks = new();
+
+            foreach (var teamId in totalTeams)
+            {
+                var myTasks = query.Where(task => task.UserId == userId && task.TeamId == teamId);
+
+                foreach (var mytask in myTasks)
+                {
+                    AllTaskForCalenderView task = new();
+                    task.TaskName = mytask.TaskName;
+                    task.IsCompleted = mytask.TaskStatus;
+                    task.StartDate = mytask.StartDate.ToString("yyyy-MM-dd");
+                    task.EndDate = mytask.EndDate.ToString("yyyy-MM-dd");
+
+                    AllTasks.Add(task);
+                }
+
+                if (_db.TeamMembers.FirstOrDefault(teamMember => teamMember.UserId == userId && teamMember.TeamId == teamId)!.Role.ToString() != "TeamMember")
+                {
+                    var totalMembers = query.Where(task => task.UserId != userId && task.TeamId == teamId).Select(p => p.UserId).Distinct().ToList();
+
+                    foreach (var memberTask in totalMembers)
+                    {
+                        var teamMemberTasks = query.Where(task => task.UserId == memberTask && task.TeamId == teamId);
+
+                        if (teamMemberTasks.Any())
+                        {
+                            foreach (var task in teamMemberTasks)
+                            {
+                                AllTaskForCalenderView taskOfMember = new();
+                                taskOfMember.TaskName = task.TaskName;
+                                taskOfMember.IsCompleted = task.TaskStatus;
+                                taskOfMember.StartDate = task.StartDate.ToString("yyyy-MM-dd");
+                                taskOfMember.EndDate = task.EndDate.ToString("yyyy-MM-dd");
+
+                                AllTasks.Add(taskOfMember);
+                            }
+                        }
+                    }
+                }
+            }
+            return AllTasks;
         }
     }
 }

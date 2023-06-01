@@ -22,5 +22,10 @@ namespace BAL
         {
             return _AllTasksRepo.AddTaskToTodayTask(taskDetail);
         }
+
+        public List<AllTaskForCalenderView> GetTasksForCalenderView(long userId)
+        {
+            return _AllTasksRepo.GetTasksForCalenderView(userId);
+        }
     }
 }

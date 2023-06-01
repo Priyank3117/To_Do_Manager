@@ -9,7 +9,7 @@
     })
 
     $("#TeamDescription").focusout(function () {
-        if ($("#TeamDescription").val() == "") {GetAllTeams
+        if ($("#TeamDescription").val() == "") {
             $("#TeamDescriptionSpan").html("Description is required")
         } else {
             $("#TeamDescriptionSpan").html("")
