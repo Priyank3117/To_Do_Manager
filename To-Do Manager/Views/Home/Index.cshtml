@@ -1,7 +1,7 @@
 ﻿<div class="row mt-3 mb-3">
     <div class="col d-flex justify-content-between align-items-center">
         <div>
-            <input class="form-control searchTeam" type="search" placeholder="Search Team" onkeyup="SearchTeam()" id="searchTeam" aria-label="Search">
+            <input class="form-control searchTeam" type="search" placeholder="Search Team" onkeyup="searchTeam()" id="searchTeam" aria-label="Search">
         </div>
         <div class="d-flex justify-content-center align-items-center">
             <!-- Button trigger modal -->
@@ -94,7 +94,7 @@
                         <a href="/Login.html" type="button" class="CancelCreateTeamButton">Cancel</a>
                     </div>
                     <div class="mt-4">
-                        <a role="button" class="createTeamButton" onclick="RequestToJoinTeam()" style="width: fit-content;">Send Request</a>
+                        <a role="button" class="createTeamButton" onclick="requestToJoinTeam()" style="width: fit-content;">Send Request</a>
                     </div>
                 </div>
             </div>
@@ -113,7 +113,7 @@
 <script>
     $(document).ready(function () {
 
-    SearchTeam();
+    searchTeam();
 
     })
 </script>

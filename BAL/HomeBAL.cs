@@ -106,5 +106,10 @@ namespace BAL
         {
             return _HomeRepo.MarkTaskAsCompleteOrUncomplete(task);
         }
+
+        public TaskDetailViewModel GetTaskDetails(long taskId)
+        {
+            return _HomeRepo.GetTaskDetails(taskId);
+        }
     }
 }

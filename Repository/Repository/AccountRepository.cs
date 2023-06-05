@@ -148,7 +148,7 @@ namespace Repository.Repository
 
         public bool IsUserHaveAnyTeam(long userID)
         {
-            return _db.TeamMembers.Any(teamMember => teamMember.UserId == userID && teamMember.Status != TeamMembers.MemberStatus.Declined);
+            return _db.TeamMembers.Any(teamMember => teamMember.UserId == userID && teamMember.Status == TeamMembers.MemberStatus.Approved);
         }
     }
 }

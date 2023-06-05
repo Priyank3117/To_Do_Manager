@@ -124,13 +124,7 @@ namespace Repository.Repository
             List<TodayTasksViewModel> teams = new();
 
             var query = _db.Tasks.AsQueryable();
-
-            var totalTeams = query.Where(task => task.UserId == userId).Select(task => task.TeamId).Distinct().ToList();
-
-            if(totalTeams.Count == 0)
-            {
-                totalTeams = _db.TeamMembers.Where(teamMembers =>  teamMembers.UserId == userId).Select( teamMember => teamMember.TeamId).ToList();
-            }
+            var totalTeams = _db.TeamMembers.Where(teamMembers =>  teamMembers.UserId == userId).Select( teamMember => teamMember.TeamId).ToList();
 
             foreach (var teamId in totalTeams)
             {
@@ -211,20 +205,40 @@ namespace Repository.Repository
         {
             if(task != null)
             {
-                Tasks addTask = new()
+                if(task.StartDate == null && task.EndDate == null)
                 {
-                    TaskStatus = false,
-                    TeamId = task.TeamId,
-                    TaskName = task.TaskName,
-                    UserId = task.UserId,
-                    IsTaskForToday = true,
-                    StartDate = DateTime.Now,
-                    EndDate = DateTime.Now
-                };
+                    Tasks addTask = new()
+                    {
+                        TaskStatus = false,
+                        TeamId = task.TeamId,
+                        TaskName = task.TaskName,
+                        TaskDescription = task.TaskDescription,
+                        UserId = task.UserId,
+                        IsTaskForToday = true,
+                        StartDate = DateTime.Now,
+                        EndDate = DateTime.Now
+                    };
 
-                _db.Add(addTask);
-                _db.SaveChanges();
+                    _db.Add(addTask);
+                    _db.SaveChanges();
+                }
+                else
+                {
+                    Tasks addTask = new()
+                    {
+                        TaskStatus = false,
+                        TeamId = task.TeamId,
+                        TaskName = task.TaskName,
+                        TaskDescription = task.TaskDescription,
+                        UserId = task.UserId,
+                        IsTaskForToday = true,
+                        StartDate = (DateTime)task.StartDate!,
+                        EndDate = (DateTime)task.EndDate!
+                    };
 
+                    _db.Add(addTask);
+                    _db.SaveChanges();
+                }
                 return true;
             }
             return false;
@@ -249,6 +263,36 @@ namespace Repository.Repository
                 _db.SaveChanges();
 
                 return true;
+            }
+        }
+
+        public TaskDetailViewModel GetTaskDetails(long taskId)
+        {
+            if(taskId != 0)
+            {
+                var taskdetail = _db.Tasks.Where(t => t.TaskId == taskId).Select( task => new TaskDetailViewModel()
+                {
+                    TaskDescription = task.TaskDescription,
+                    TaskId = taskId,
+                    TaskName = task.TaskName,
+                    TeamName = task.Teams.TeamName,
+                    StartDateForDisplay = task.StartDate.ToString("yyyy-MM-dd"),
+                    EndDateForDisplay = task.EndDate.ToString("yyyy-MM-dd"),
+                    IsCompleted = task.TaskStatus
+                }).FirstOrDefault();
+
+                if(taskdetail != null)
+                {
+                    return taskdetail;
+                }
+                else
+                {
+                    return new TaskDetailViewModel();
+                }
+            }
+            else
+            {
+                return new TaskDetailViewModel();
             }
         }
     }

@@ -18,7 +18,7 @@ namespace Repository.Repository
             var query = _db.TeamMembers.AsQueryable();
             var users = _db.Users.AsQueryable();
                 
-               var teams = query.Where(team => team.UserId == userId).Select(team => new TeamManagementViewModel()
+               var teams = query.Where(team => team.UserId == userId && team.Status == Entities.Models.TeamMembers.MemberStatus.Approved).Select(team => new TeamManagementViewModel()
             {
                 TeamId = team.TeamId,
                 TeamName = team.Teams.TeamName,
@@ -42,6 +42,112 @@ namespace Repository.Repository
             }).ToList();
 
             return teams;
+        }
+
+        public bool RemoveUserFromTeam(long userId, long teamId)
+        {
+            if(userId != 0 && teamId != 0)
+            {
+                var usersTask = _db.Tasks.Where(tasks => tasks.UserId == userId && tasks.TeamId == teamId);
+
+                if (usersTask.Any())
+                {
+                    foreach (var user in usersTask)
+                    {
+                        _db.Remove(user);
+                    }
+                    _db.SaveChanges();
+                }
+
+                var member = _db.TeamMembers.FirstOrDefault(teamMember => teamMember.UserId == userId && teamMember.TeamId == teamId);
+
+                if (member != null)
+                {
+                    _db.Remove(member);
+                    _db.SaveChanges();
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
+        }
+
+        public List<UserDetailOfTeam> GetAllMemberToSetReportingPerson(long userId, long teamId)
+        {
+            return _db.TeamMembers.Where(teamMember => teamMember.UserId != userId && teamMember.TeamId == teamId && teamMember.Status == Entities.Models.TeamMembers.MemberStatus.Approved).Select( user => new UserDetailOfTeam()
+            {
+                UserId = user.UserId,
+                Avatar = user.Users.Avatar,
+                UserName = user.Users.FirstName + " " + user.Users.LastName
+            }).ToList();
+        }
+
+        public bool SetReportingPerson(long userIdOfTeamMember, long userIdOfReportingPerson, long teamId)
+        {
+            var teamMember = _db.TeamMembers.FirstOrDefault(teamMember => teamMember.UserId == userIdOfTeamMember && teamMember.TeamId == teamId);
+
+            if(teamMember != null)
+            {
+                teamMember.ReportinPersonUserId = userIdOfReportingPerson;
+
+                _db.Update(teamMember);
+                _db.SaveChanges();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool RemoveReportingPerson(long teamMemberUserId, long reportingPersonUserId, long teamId)
+        {
+            if(teamMemberUserId != 0 && reportingPersonUserId != 0 && teamId != 0)
+            {
+                var teamMember = _db.TeamMembers.FirstOrDefault(teamMember => teamMember.UserId == teamMemberUserId && teamMember.TeamId == teamId && teamMember.ReportinPersonUserId == reportingPersonUserId);
+
+                if( teamMember != null)
+                {
+                    teamMember.ReportinPersonUserId = null;
+
+                    _db.Update(teamMember);
+                    _db.SaveChanges();
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return false;
+        }
+
+        public bool AcceptJoinRequest(long userId, long teamId)
+        {
+            if(userId != 0 && teamId != 0)
+            {
+                var teamMember = _db.TeamMembers.FirstOrDefault(teamMember => teamMember.UserId == userId && teamMember.TeamId == teamId);
+
+                if(teamMember != null)
+                {
+                    teamMember.Status = Entities.Models.TeamMembers.MemberStatus.Approved;
+
+                    _db.Update(teamMember);
+                    _db.SaveChanges();
+
+                    return true;
+                }
+
+                return false;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

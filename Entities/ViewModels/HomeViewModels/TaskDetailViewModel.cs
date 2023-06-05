@@ -12,8 +12,20 @@
 
         public string TaskName { get; set; } = string.Empty;
 
+        public string TeamName { get; set; } = string.Empty;
+
+        public string StartDateForDisplay { get; set; } = string.Empty;
+
+        public string EndDateForDisplay { get; set; } = string.Empty;
+
+        public string? TaskDescription { get; set; }
+
         public bool IsCompleted { get; set; } = false;
 
         public bool IsTodayTask { get; set; }
+
+        public DateTime? StartDate { get; set; }
+
+        public DateTime? EndDate { get; set; }
     }
 }

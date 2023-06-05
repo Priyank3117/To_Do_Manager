@@ -19,8 +19,17 @@
     $("#AddUser").focusout(function () {
         $("#AddUserSpan").html("")
     })
+
+    //$("body").click(function () {
+    //    if ($("#TaskDetailOffCanvas").hasClass("show")) {
+    //        $("#TaskDetailOffCanvas").removeClass("show")
+    //    }
+    //})
 })
 
+// Add User In Team Validation
+
+var usersEmail = []
 $(".addUser").click(function () {
     if ($("#AddUser").val() == "") {
         $("#AddUserSpan").html("Email is required")
@@ -28,24 +37,36 @@ $(".addUser").click(function () {
         $("#AddUserSpan").html("Invalid Email")
     } else {
         $("#AddUserSpan").html("")
-        debugger
         var idOfEmailText = $(".AddedUser").length + 1;
+        var canAdd = true;
+        debugger
+        for (var i = 0; i < usersEmail.length; i++) {
+            if (usersEmail[i] == `` + $("#AddUser").val() + ``) {
+                $("#AddUserSpan").html("Already Added")
+                canAdd = false;
+            } else {
+                $("#AddUserSpan").html("")
+            }
+        }
 
-        var emailHTML = `<div class="AddedUser mt-2" id=` + idOfEmailText + `>
+        if (canAdd) {
+            var emailHTML = `<div class="AddedUser mt-2" id=` + idOfEmailText + `>
                                             <p class="text-muted m-0 userEmail">`+ $("#AddUser").val() + `</p>
-                                            <a role="button" onclick="RemoveUser(`+ idOfEmailText + `)" class="ms-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                            <a role="button" onclick="removeUser(`+ idOfEmailText + `)" class="ms-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color: black;" fill="currentColor"
                                                      class="bi bi-x-lg" viewBox="0 0 16 16">
                                                     <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
                                                 </svg>
                                             </a>
                                         </div>`
-        $(".AddedUserContainer").append(emailHTML)
-        $("#AddUser").val("")
+            $(".AddedUserContainer").append(emailHTML)
+            usersEmail.push($("#AddUser").val())
+            $("#AddUser").val("")
+        }
     }
 })
 
-function RemoveUser(idOfEmailText) {
+function removeUser(idOfEmailText) {
     $('#' + idOfEmailText + '').remove();
 }
 
@@ -75,7 +96,7 @@ $(".createTeamButton").click(function () {
     })
 })
 
-function SearchTeam() {
+function searchTeam() {
     $.ajax({
         type: "GET",
         url: "/Home/GetAllTeams",
@@ -85,11 +106,11 @@ function SearchTeam() {
             $(".allTeamContainer").empty()
             for (var i = 0; i < result.length; i++) {
                 if (result[i].status == "Pending") {
-                    $(".allTeamContainer").append(`<a role="button" onclick="GetTeamDetails(` + result[i].teamId + `)" id=` + result[i].teamId + ` class="requestSendButton" disabled>
+                    $(".allTeamContainer").append(`<a role="button" onclick="getTeamDetails(` + result[i].teamId + `)" id=` + result[i].teamId + ` class="requestSendButton" disabled>
                         `+ result[i].teamName + `
                     </a>`)
                 } else {
-                    $(".allTeamContainer").append(`<a role="button" onclick="GetTeamDetails(` + result[i].teamId + `)" id=` + result[i].teamId + ` class="joinTeamButton">
+                    $(".allTeamContainer").append(`<a role="button" onclick="getTeamDetails(` + result[i].teamId + `)" id=` + result[i].teamId + ` class="joinTeamButton">
                         `+ result[i].teamName + `
                     </a>`)
                 }
@@ -98,7 +119,7 @@ function SearchTeam() {
     })
 }
 
-function GetTeamDetails(teamId) {
+function getTeamDetails(teamId) {
 
     if (!($('#' + teamId + '').hasClass("requestSendButton"))) {
         $.ajax({
@@ -115,7 +136,7 @@ function GetTeamDetails(teamId) {
     }
 }
 
-function RequestToJoinTeam() {
+function requestToJoinTeam() {
     var userRequest = {
         "TeamId": $("#ViewTeamTeamId").val()
     }
@@ -132,7 +153,7 @@ function RequestToJoinTeam() {
     })
 }
 
-function GetDataForAddTask(teamId, userId) {
+function getDataForAddTask(teamId, userId) {
     $.ajax({
         type: "POST",
         url: "/Home/GetDataForAddTask",
@@ -152,18 +173,24 @@ function GetDataForAddTask(teamId, userId) {
     })
 }
 
-function AddTask() {
+function addTask() {
+
+    $("#TaskNameSpan").html("")
+    $("#TaskDescriptionSpan").html("")
 
     if ($("#TaskName").val() == "") {
         $("#TaskNameSpan").html("Task name is required")
     }
+    else if ($("#TaskDescription").val() == "") {
+        $("#TaskDescriptionSpan").html("Task Description is required")
+    }
     else {
-        $("#TaskNameSpan").html("")
 
         var task = {
             TeamId: $("#TeamId").val(),
             UserId: $('#TaskAssignTo option:selected').val(),
             TaskName: $("#TaskName").val(),
+            TaskDescription: $("#TaskDescription").val(),
         }
 
         $.ajax({
@@ -179,7 +206,7 @@ function AddTask() {
     }
 }
 
-function MarkTaskAsCompleteOrUncomplete(userId, teamId, taskId) {
+function markTaskAsCompleteOrUncomplete(userId, teamId, taskId) {
 
     var task = {
         TeamId: teamId,
@@ -213,25 +240,33 @@ function MarkTaskAsCompleteOrUncomplete(userId, teamId, taskId) {
     })
 }
 
-//function SearchTeamInAllTeamsPage() {
-//    $.ajax({
-//        type: "GET",
-//        url: "/Home/GetAllTeams",
-//        data: { searchTerm: $("#searchTeam").val() },
-//        success: function (result) {
+function openTaskDetailOffcanvas(taskId) {
+        $.ajax({
+            type: "POST",
+            url: "/Home/GetTaskDetails",
+            data: { taskId: taskId },
+            beforeSend: function () {
+                $("#TaskDetailOffCanvas").removeClass("show")
+            },
+            success: function (result) {
+                console.log(result)
+                $("#TeamNameInOffcanvas").empty()
+                $("#TeamNameInOffcanvas").html('' + result.teamName + '')
+                $("#TaskNameInOffcanvas").val('' + result.taskName + '')
+                $("#TaskDescriptionInOffcanvas").val('' + result.taskDescription + '')
+                $("#StartDateInOffcanvas").val('' + result.startDateForDisplay + '')
+                $("#EndDateInOffcanvas").val('' + result.endDateForDisplay + '')
+                if (result.isCompleted == true) {
+                    $(".isTaskCompletedOrNot").html(`<button type="button" class="completeTaskButton" disabled>Completed</button>`)
+                } else {
+                    $(".isTaskCompletedOrNot").html(`<button type="button" class="inCompleteTaskButton" disabled>Incomplete</button>`)
+                }
+                
+                $("#TaskDetailOffCanvas").addClass("show")
+            }
+        })
+}
 
-//            $(".allTeamContainer").empty()
-//            for (var i = 0; i < result.length; i++) {
-//                if (result[i].status == "Pending") {
-//                    $(".allTeamContainer").append(`<a role="button" onclick="GetTeamDetails(` + result[i].teamId + `)" id=` + result[i].teamId + ` class="requestSendButton" disabled>
-//                        `+ result[i].teamName + `
-//                    </a>`)
-//                } else {
-//                    $(".allTeamContainer").append(`<a role="button" onclick="GetTeamDetails(` + result[i].teamId + `)" id=` + result[i].teamId + ` class="joinTeamButton">
-//                        `+ result[i].teamName + `
-//                    </a>`)
-//                }
-//            }
-//        }
-//    })
-//}
+$(".closeTaskDetailOffCanvas").click(function () {
+    $("#TaskDetailOffCanvas").removeClass("show")
+})

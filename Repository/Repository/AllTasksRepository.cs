@@ -25,14 +25,8 @@ namespace Repository.Repository
                 query = query.Where(task => task.Teams.TeamName.ToLower().Contains(searchTerm.ToLower()) || task.TaskName.ToLower().Contains(searchTerm.ToLower()));
             }
 
-            //query = query.OrderByDescending(task => task.IsTodayTask);
-
-            var totalTeams = query.Where(task => task.UserId == userId).Select(task => task.TeamId).Distinct().ToList();
-
-            if (totalTeams.Count == 0 && searchTerm == null)
-            {
-                totalTeams = _db.TeamMembers.Where(teamMembers => teamMembers.UserId == userId).Select(teamMember => teamMember.TeamId).ToList();
-            }
+            //query = query.OrderByDescending(task => task.IsTodayTask);            
+            var totalTeams = _db.TeamMembers.Where(teamMembers => teamMembers.UserId == userId && teamMembers.Status == Entities.Models.TeamMembers.MemberStatus.Approved).Select(teamMember => teamMember.TeamId).ToList();
 
             foreach (var teamId in totalTeams)
             {

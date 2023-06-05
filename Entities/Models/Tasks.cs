@@ -10,6 +10,8 @@ namespace Entities.Models
 
         public string TaskName { get; set; } = string.Empty;
 
+        public string? TaskDescription { get; set; }
+
         public bool TaskStatus { get; set; } = false;
 
         [ForeignKey("Users")]

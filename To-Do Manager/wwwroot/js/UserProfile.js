@@ -59,7 +59,7 @@ $(document).ready(function () {
 })
 
 // Change Password
-function ChangePassword() {
+function changePassword() {
     var oldPassword = $('#oldPassword').val();
     var newPassword = $('#newPassword').val();
     if ($('#oldPassword').val() == '') {
@@ -128,7 +128,7 @@ var loadFile = function (event) {
 };
 
 // Leave From Team
-function GetAllTeams() {
+function getAllTeams() {
     $.ajax({
         type: "POST",
         url: "/UserProfile/GetTeamNames",
@@ -145,7 +145,7 @@ function GetAllTeams() {
                                 Requsted
                             </button>`
                 } else {
-                    button = `<button type="button" class="leaveTeamSmallButton" id="` + data[i].teamId + `" onclick="LeaveFromTeam(` + data[i].teamId + `,` + data[i].userId + `, \'` + data[i].teamName +`\')">
+                    button = `<button type="button" class="leaveTeamSmallButton" id="` + data[i].teamId + `" onclick="leaveFromTeam(` + data[i].teamId + `,` + data[i].userId + `, \'` + data[i].teamName +`\')">
                                 Leave
                             </button>`
                 }
@@ -162,19 +162,19 @@ function GetAllTeams() {
     });
 }
 
-function LeaveFromTeam(teamId, userId, teamName) {
+function leaveFromTeam(teamId, userId, teamName) {
     $(".warningText").html(`Are you sure to leave from <span class="h5">` + teamName + `</span> team?`)
     $(".leaveTeamButtonContainer").html(`<button type="button" class="CancelCreateTeamButton me-2"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#LeaveTeamsModal">
                                                 Cancel
                                             </button>
-                                            <button type="button" class="leaveTeamsButton" onclick="FinalLeaveFromTeam(` + teamId + `,` + userId + `)">Leave</button>`)
+                                            <button type="button" class="leaveTeamsButton" onclick="finalLeaveFromTeam(` + teamId + `,` + userId + `)">Leave</button>`)
     $("#LeaveWarningModal").modal("show")
     $("#LeaveTeamsModal").modal("hide")
 }
 
-function FinalLeaveFromTeam(teamId, userId) {
+function finalLeaveFromTeam(teamId, userId) {
     $.ajax({
         type: "POST",
         url: "/UserProfile/LeaveFromTeam",
@@ -191,19 +191,19 @@ function FinalLeaveFromTeam(teamId, userId) {
 }
 
 // Leave All Teams
-function LeaveAllTeams() {
+function leaveAllTeams() {
     $(".warningText").html(`Are you sure to leave from all teams?`)
     $(".leaveTeamButtonContainer").html(`<button type="button" class="CancelCreateTeamButton me-2"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#LeaveTeamsModal">
                                                 Cancel
                                             </button>
-                                            <button type="button" class="leaveTeamsButton" onclick="LeaveFromAllTeam()">Yes</button>`)
+                                            <button type="button" class="leaveTeamsButton" onclick="leaveFromAllTeam()">Yes</button>`)
     $("#LeaveWarningModal").modal("show")
     $("#LeaveTeamsModal").modal("hide")
 }
 
-function LeaveFromAllTeam() {
+function leaveFromAllTeam() {
     $.ajax({
         type: "POST",
         url: "/UserProfile/LeaveFromAllTeam",

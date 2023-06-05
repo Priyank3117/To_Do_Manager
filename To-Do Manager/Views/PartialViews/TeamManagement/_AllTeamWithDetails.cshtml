@@ -17,8 +17,7 @@
                                 {
                                     <div class="d-flex justify-content-start align-items-center">
                                         <button type="button" class="threeDotButton me-2"
-                                    style="height: 30px;width: 30px;" data-bs-toggle="modal"
-                                    data-bs-target="#AddUserModal">
+                                    style="height: 30px;width: 30px;" onclick="OpenAddUserModal(@team.TeamId, '@team.TeamName')">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17"
                                      fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
                                                 <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z" />
@@ -57,7 +56,7 @@
                                                                                 </div>
                                                                                 @if (team.Role == "TeamLeader")
                                                                                 {
-                                                                                    <button class="removeButton">
+                                                                                    <button class="removeButton" onclick="openRemoveUserModal('@teamMember.UserName',@teamMember.UserId, @team.TeamId)">
                                                                                         remove
                                                                                     </button>
                                                                                 }
@@ -72,7 +71,7 @@
                                                                                 </div>
                                                                                 @if (team.Role == "TeamLeader")
                                                                                 {
-                                                                                    <button class="removeButton">
+                                                                                    <button class="removeButton" onclick="removeReportingPerson(@teamMember.UserId, @teamMember.ReportingPersonUserId, @team.TeamId)">
                                                                                         remove
                                                                                     </button>
                                                                                 }
@@ -96,10 +95,10 @@
                                                                     @if (team.Role == "TeamLeader")
                                                                     {
                                                                         <div>
-                                                                            <button class="removeButton">
+                                                                            <button class="removeButton me-2" onclick="openRemoveUserModal('@teamMember.UserName',@teamMember.UserId, @team.TeamId)">
                                                                                 remove
                                                                             </button>
-                                                                            <button class="reportingPersonButton">
+                                                                            <button class="reportingPersonButton" onclick="openModalForSetReportingPerson(@teamMember.UserId, @team.TeamId)">
                                                                                 set R.P.
                                                                             </button>
                                                                         </div>
@@ -126,9 +125,15 @@
                                                          class="userAvatar me-2" alt="" />
                                                                     <p class="m-0">@joinReaquest.UserName</p>
                                                                 </div>
-                                                                <button class="approveButton">
-                                                                    accept
-                                                                </button>
+                                                                <div>
+                                                                    <button class="approveButton" onclick="acceptJoinRequest(@joinReaquest.UserId, @team.TeamId)">
+                                                                        accept
+                                                                    </button>
+                                                                    <button class="removeButton ms-2" onclick="declineJoinRequest(@joinReaquest.UserId, @team.TeamId)">
+                                                                        decline
+                                                                    </button>
+                                                                </div>
+
                                                             </div>
                                                         </div>
                                                     </div>

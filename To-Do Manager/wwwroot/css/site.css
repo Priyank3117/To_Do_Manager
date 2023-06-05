@@ -814,3 +814,94 @@ input[type=checkbox] {
     width: 24px;
     border-radius: 50%;
 }
+
+.form-check-input:checked {
+    background-color: #333 !important;
+    border-color: #333 !important;
+}
+
+.selectReportingPerson {
+    overflow-y: scroll;
+    max-height: 400px;
+    height: fit-content;
+    padding: 0px 0px 0px 15px;
+}
+
+.selectReportingPerson::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.selectReportingPerson {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    /*scrollbar-width: none;*/
+    /* Firefox */
+}
+
+.TaskList{
+    list-style-type: none;
+}
+
+.taskContainer {
+    padding: 2px 5px 2px 5px;
+    margin: 5px 0px 5px 0px;
+    border-radius: 10px;
+}
+
+    .taskContainer:hover {
+        background-color: #ebebeb;
+        cursor: pointer;
+    }
+
+.taskDescription {
+    text-align: justify;
+    padding-right: 10px !important;
+}
+
+.taskNameContainer{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border-bottom: dotted;
+    border-width: 1px;
+}
+
+.taskDetailContainer {
+    background-color: #ffffff;
+    border-radius: 20px;
+    height: fit-content;
+    padding: 25px;
+}
+
+.completeTaskButton {
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 1.2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 17px;
+    height: 45px;
+    background-color: #4fd355;
+    border-radius: 27px;
+    border: 1px solid #4fd355;
+}
+
+.inCompleteTaskButton {
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 1.2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 17px;
+    height: 45px;
+    background-color: #ffbb33;
+    border-radius: 27px;
+    border: 1px solid #ffbb33;
+}

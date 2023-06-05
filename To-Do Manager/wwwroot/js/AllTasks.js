@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    SearchTeams();
+    searchTeams();
 
     $("#CalenderView").css("display", "none")
     $(".allTeamsContainer").css("display", "block")
@@ -10,7 +10,7 @@
     $(".fc-today-button").css("color", "#000000")
 })
 
-function GetDataForAddTask(teamId, userId) {
+function getDataForAddTask(teamId, userId) {
     $.ajax({
         type: "POST",
         url: "/Home/GetDataForAddTask",
@@ -30,18 +30,40 @@ function GetDataForAddTask(teamId, userId) {
     })
 }
 
-function AddTask() {
+function addTask() {
+
+    $("#TaskNameSpan").html("")
+    $("#TaskDescriptionSpan").html("")
+    $("#StartDateSpan").html("")
+    $("#EndDateSpan").html("")
+
+    var startDate = new Date($("#StartDate").val());
+    var endDate = new Date($("#EndDate").val());
 
     if ($("#TaskName").val() == "") {
         $("#TaskNameSpan").html("Task name is required")
     }
+    else if ($("#TaskDescription").val() == "") {
+        $("#TaskDescriptionSpan").html("Task DescriptionSpan is required")
+    }
+    else if ($("#StartDate").val() == "") {
+        $("#StartDateSpan").html("Start Date is required")
+    }
+    else if ($("#EndDate").val() == "") {
+        $("#EndDateSpan").html("End Date is required")
+    }
+    else if (startDate > endDate) {
+        $("#StartDateSpan").html("Enter valid start & end date")
+    }
     else {
-        $("#TaskNameSpan").html("")
 
         var task = {
             TeamId: $("#TeamId").val(),
             UserId: $('#TaskAssignTo option:selected').val(),
             TaskName: $("#TaskName").val(),
+            TaskDescription: $("#TaskDescription").val(),
+            StartDate: $("#StartDate").val(),
+            EndDate: $("#EndDate").val(),
         }
 
         $.ajax({
@@ -57,7 +79,7 @@ function AddTask() {
     }
 }
 
-function MarkTaskAsCompleteOrUncomplete(userId, teamId, taskId) {
+function markTaskAsCompleteOrUncomplete(userId, teamId, taskId) {
 
     var task = {
         TeamId: teamId,
@@ -91,7 +113,7 @@ function MarkTaskAsCompleteOrUncomplete(userId, teamId, taskId) {
     })
 }
 
-function AddTaskToTodayTask(userId, teamId, taskId) {
+function addTaskToTodayTask(userId, teamId, taskId) {
 
     var task = {
         TeamId: teamId,
@@ -119,7 +141,7 @@ function AddTaskToTodayTask(userId, teamId, taskId) {
     })
 }
 
-function SearchTeams() {
+function searchTeams() {
     $.ajax({
         type: "GET",
         url: "/AllTasks/GetAllTaskOfAllTeams",
