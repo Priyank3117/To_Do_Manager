@@ -5,7 +5,7 @@ namespace Repository.Interface
 {
     public interface IAllTasksRepository
     {
-        public List<AllTasksOfAllTeams> GetAllTasks(long userId, string searchTerm);
+        public List<AllTasksOfAllTeams> GetAllTasks(Filter filter);
 
         public bool AddTaskToTodayTask(TaskDetailViewModel taskDetail);
 

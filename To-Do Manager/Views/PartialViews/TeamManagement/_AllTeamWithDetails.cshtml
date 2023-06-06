@@ -26,6 +26,10 @@
                                             </svg>
                                         </button>
                                     </div>
+                                }else{
+                                    <div class="d-flex justify-content-start align-items-center">
+                                        <button type="button" class="leaveTeamButton" onclick="leaveFromTeam(@team.TeamId, @team.UserId, '@team.TeamName')">Leave</button>
+                                    </div>
                                 }
                             </div>
                             <p class="m-0 mt-2 text-muted">Team Details</p>

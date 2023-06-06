@@ -21,6 +21,7 @@ namespace Repository.Repository
                var teams = query.Where(team => team.UserId == userId && team.Status == Entities.Models.TeamMembers.MemberStatus.Approved).Select(team => new TeamManagementViewModel()
             {
                 TeamId = team.TeamId,
+                UserId = userId,
                 TeamName = team.Teams.TeamName,
                 TeamDescription = team.Teams.TeamDescription,
                 Role = team.Role.ToString(),

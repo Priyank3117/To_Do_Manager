@@ -256,7 +256,6 @@ function RemoveUser() {
 }
 
 // Set Reporting Person
-
 var teamIdForSetReportingPerson = 0;
 var userIdOfTeamMember = 0;
 
@@ -354,4 +353,30 @@ function declineJoinRequest(userId, teamId) {
             }
         }
     })
+}
+
+// Leave From Team
+function leaveFromTeam(teamId, userId, teamName) {
+    $(".warningText").html(`Are you sure to leave from <span class="h5">` + teamName + `</span> team?`)
+    $(".leaveTeamButtonContainer").html(`<button type="button" class="CancelCreateTeamButton me-2"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#LeaveTeamsModal">
+                                                Cancel
+                                            </button>
+                                            <button type="button" class="leaveTeamsButton" onclick="finalLeaveFromTeam(` + teamId + `,` + userId + `)">Leave</button>`)
+    $("#LeaveWarningModal").modal("show")
+    $("#LeaveTeamsModal").modal("hide")
+}
+
+function finalLeaveFromTeam(teamId, userId) {
+    $.ajax({
+        type: "POST",
+        url: "/UserProfile/LeaveFromTeam",
+        data: { teamId: teamId, userId: userId },
+        success: function (data) {
+            if (data == true) {
+                location.reload(true)
+            }
+        }
+    });
 }

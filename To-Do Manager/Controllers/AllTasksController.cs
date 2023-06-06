@@ -1,4 +1,5 @@
 ﻿using BAL;
+using Entities.ViewModels.AllTasksViewModel;
 using Entities.ViewModels.HomeViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,9 +41,11 @@ namespace To_Do_Manager.Controllers
         /// </summary>
         /// <param name="searchTerm">Search Keyword</param>
         /// <returns>Partial Views Team wise with Tasks data</returns>
-        public IActionResult GetAllTaskOfAllTeams(string searchTerm)
+        public IActionResult GetAllTaskOfAllTeams(Filter filter)
         {
-            return PartialView("~/Views/PartialViews/AllTasks/_Team.cshtml", _AllTaksBAL.GetAllTasks(long.Parse(HttpContext.Session.GetString("UserId")!), searchTerm));
+            filter.UserId = long.Parse(HttpContext.Session.GetString("UserId")!);
+
+            return PartialView("~/Views/PartialViews/AllTasks/_Team.cshtml", _AllTaksBAL.GetAllTasks(filter));
         }
     }
 }

@@ -11,14 +11,14 @@
             timeZone: 'UTC',
             initialView: 'dayGridMonth',
             events:[
-                @foreach(var task in Model)
+                @foreach (var task in Model)
     {
         <text>
-        {
-                    title: '@task.TaskName',
-                    start: '@task.StartDate',
-                    end: '@task.EndDate'
-                },
+                        {
+                                    title: '@task.TaskName',
+                                    start: '@task.StartDate',
+                                    end: '@task.EndDate'
+                                },
         </text>
     }
     ],
@@ -34,7 +34,7 @@
 <div class="row mt-3 mb-3">
     <div class="col d-flex justify-content-between align-items-center">
         <div>
-            <input class="form-control searchTeam" type="search" placeholder="Search" id="searchTeam" onkeyup="searchTeams()" aria-label="Search">
+            <a role="button" class="CancelCreateTeamButton" data-bs-toggle="modal" data-bs-target="#FilterModal">Filters</a>
         </div>
         <div class="d-flex justify-content-center align-items-center">
             <button class="btn allTaskButton me-2" id="grid">
@@ -51,6 +51,77 @@
 
     </div>
 </div>
+
+<!-- Filter Modal -->
+<div class="modal fade" id="FilterModal" tabindex="-1" aria-labelledby="FilterModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="border: none;">
+                <h1 class="modal-title fs-5" id="FilterModalLabel">Filter</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label for="TeamNameForFilter" class="form-label">Team Name</label>
+                            <input type="text" class="form-control me-2" id="TeamNameForFilter"
+                                   placeholder="Enter Team Name" autocomplete="off">
+                        </div>
+                        <div class="mb-3">
+                            <label for="TaskNameForFilter" class="form-label">Task Name</label>
+                            <input type="text" class="form-control me-2" id="TaskNameForFilter"
+                                   placeholder="Enter Task Name" autocomplete="off">
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label for="StartDateForFilter" class="form-label">Start Date</label>
+                                    <input type="date" class="form-control" id="StartDateForFilter">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label for="EndDateForFilter" class="form-label">End Date</label>
+                                    <input type="date" class="form-control" id="EndDateForFilter">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col">
+                                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                    <input type="radio" class="btn-check" name="TaskStatusForFilter" id="TaskCompleteForFilter" value=true autocomplete="off">
+                                    <label class="btn btn-outline-primary" for="TaskCompleteForFilter">Complete</label>
+
+                                    <input type="radio" class="btn-check" name="TaskStatusForFilter" id="TaskIncompleteForFilter" value=false autocomplete="off">
+                                    <label class="btn btn-outline-primary" for="TaskIncompleteForFilter">Incomplete</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border: none;">
+                <div class="mt-4">
+                    <a data-bs-dismiss="modal" role="button" class="CancelCreateTeamButton">Cancel</a>
+                </div>
+                <div class="mt-4">
+                    <button type="button" class="createTeamButton" onclick="searchTeams()">Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-3 filterRowContainer">
+    <div class="col">
+        <div class="filterRow" id="filterapplied">
+        </div>
+    </div>
+</div>
+
+
 <div class="row">
     <!-- Add Task Modal -->
     <div class="modal fade" id="AddTaskModal" tabindex="-1" aria-labelledby="AddTaskModalLabel"
@@ -118,6 +189,49 @@
         </div>
     </div>
 
+    <!-- Task Detail Offcanvas-->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="TaskDetailOffCanvas"
+         aria-labelledby="offcanvasRightLabel" style="width: 500px;background-color: #ebebeb;">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">Task Detail</h5>
+            <button type="button" class="btn-close closeTaskDetailOffCanvas" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body d-flex align-items-center justify-content-center">
+            <div class="taskDetailContainer">
+                <div class="row">
+                    <div class="col">
+                        <p class="h4 mb-3" id="TeamNameInOffcanvas">Team Anand</p>
+                        <div class="mb-3">
+                            <label for="TaskNameInOffcanvas" class="form-label">Task Name</label>
+                            <input type="text" class="form-control" id="TaskNameInOffcanvas" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="TaskDescriptionInOffcanvas" class="form-label">Task Description</label>
+                            <textarea class="form-control" id="TaskDescriptionInOffcanvas" disabled style="height: 170px"></textarea>
+                        </div>
+                        <div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label for="StartDateInOffcanvas" class="form-label">Start Date</label>
+                                        <input type="date" class="form-control" id="StartDateInOffcanvas" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label for="EndDateInOffcanvas" class="form-label">End Date</label>
+                                        <input type="date" class="form-control" id="EndDateInOffcanvas" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="isTaskCompletedOrNot">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="col-12 allTeamsContainer">
     </div>

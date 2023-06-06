@@ -905,3 +905,76 @@ input[type=checkbox] {
     border-radius: 27px;
     border: 1px solid #ffbb33;
 }
+
+.leaveTeamButton {
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 1.2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 17px;
+    height: 30px;
+    background-color: #fd4d4d;
+    border-radius: 20px;
+    transition: .4s;
+    border: 1px solid #fd4d4d;
+    margin-right: 5px;
+}
+
+.taskRowInAllTask {
+    padding: 4px;
+}
+
+    .taskRowInAllTask:hover {
+        background-color: #ebebeb;
+        border-radius: 20px;
+    }
+
+.filterRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.filterTag {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+    .filterTag img {
+        height: 10px;
+        width: 10px;
+        margin: 0px 0px 0px 8px;
+    }
+
+#clearAll {
+    text-decoration: none;
+    color: black;
+}
+
+.btn-check:checked + .btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check) + .btn:active {
+    color: var(--bs-btn-active-color);
+    background-color: #555 !important;
+    border-color: #555 !important;
+}
+
+.btn-outline-primary {
+    --bs-btn-color: black !important;
+    --bs-btn-border-color: black !important;
+}
+
+.filterTag a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

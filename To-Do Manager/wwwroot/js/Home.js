@@ -240,6 +240,7 @@ function markTaskAsCompleteOrUncomplete(userId, teamId, taskId) {
     })
 }
 
+// View Task Details
 function openTaskDetailOffcanvas(taskId) {
         $.ajax({
             type: "POST",

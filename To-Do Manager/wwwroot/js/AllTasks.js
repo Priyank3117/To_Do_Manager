@@ -141,25 +141,130 @@ function addTaskToTodayTask(userId, teamId, taskId) {
     })
 }
 
-function searchTeams() {
+function searchTeams(isClearAll) {
+
+    if (isClearAll == true) {
+        teamName = ""
+        taskName = ""
+        startDate = ""
+        endDate = ""
+
+        $('input[name="TaskStatusForFilter"]:checked').prop('checked', false)
+    }
+    else {
+        var teamName = $("#TeamNameForFilter").val()
+        var taskName = $("#TaskNameForFilter").val()
+        var startDate = $("#StartDateForFilter").val()
+        var endDate = $("#EndDateForFilter").val()
+        var taskStatus = $('input[name="TaskStatusForFilter"]:checked').val()
+    }    
+
+    var filter = {
+        TeamName: teamName,
+        TaskName: taskName,
+        StartDate: startDate,
+        EndDate: endDate,
+        TaskStatus: taskStatus
+    }
+
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: "/AllTasks/GetAllTaskOfAllTeams",
-        data: { searchTerm: $("#searchTeam").val() },
+        data: { filter: filter },
         success: function (result) {
             $(".allTeamsContainer").empty()
             $(".allTeamsContainer").html(result)
+            $("#filterapplied").empty()
+
+            if (teamName != "")
+                $("#filterapplied").append(`<div class="filterTag">
+                <p class="m-0 p-0"><b>Team Name - </b>`+ teamName + `</p>
+                <a role="button" class="teamNameApplied"><img src="/images/cancel.png"></a>
+            </div>`)
+
+            if (taskName != "")
+                $("#filterapplied").append(`<div class="filterTag">
+                <p class="m-0 p-0"><b>Task Name - </b>`+ taskName + `</p>
+                <a role="button" class="taskNameApplied"><img src="/images/cancel.png"></a>
+            </div>`)
+
+            if (startDate != "")
+                $("#filterapplied").append(`<div class="filterTag">
+                <p class="m-0 p-0"><b>Start Date - </b>`+ startDate + `</p>
+                <a role="button" class="startDateApplied"><img src="/images/cancel.png"></a>
+            </div>`)
+
+            if (endDate != "")
+                $("#filterapplied").append(`<div class="filterTag">
+                <p class="m-0 p-0"><b>End Date - </b>`+ endDate + `</p>
+                <a role="button" class="endDateApplied"><img src="/images/cancel.png"></a>
+            </div>`)
+
+            if (taskStatus != "" && taskStatus == "true") {
+                $("#filterapplied").append(`<div class="filterTag">
+                <p class="m-0 p-0"><b>Task Status - </b>Complete</p>
+                <a role="button" class="taskStatusApplied"><img src="/images/cancel.png"></a>
+            </div>`)
+            }
+            else if (taskStatus != "" && taskStatus == "false") {
+                $("#filterapplied").append(`<div class="filterTag">
+                <p class="m-0 p-0"><b>Task Status - </b>Incomplete</p>
+                <a role="button" class="taskStatusApplied"><img src="/images/cancel.png"></a>
+            </div>`)
+            }
+
+            if (teamName != "" || taskName != "" || startDate != "" || endDate != "" || taskStatus != undefined) {
+                $("#filterapplied").append(`<div class="filterTag">
+                <a role="button" onclick="searchTeams(true)"
+                   class="text-muted d-flex justify-content-center align-items-center"
+                   style="text-decoration: none;color:black">
+                    <p class="m-0 p-0">
+                        Clear all
+                    </p>
+                    &nbsp;
+                    <img src="/images/cancel.png" alt="" style="width: 10px;height: 10px;">
+                </a>
+            </div>`)
+            }
+
+            $("#FilterModal").modal("hide")
         }
     })
 }
 
+$("body").on("click", ".teamNameApplied", function () {
+    $("#TeamNameForFilter").val("")
+    searchTeams();
+})
+
+$("body").on("click", ".taskNameApplied", function () {
+    $("#TaskNameForFilter").val("")
+    searchTeams();
+})
+
+$("body").on("click", ".startDateApplied", function () {
+    $("#StartDateForFilter").val("")
+    searchTeams();
+})
+
+$("body").on("click", ".endDateApplied", function () {
+    $("#EndDateForFilter").val("")
+    searchTeams();
+})
+
+$("body").on("click", ".taskStatusApplied", function () {
+    $('input[name="TaskStatusForFilter"]:checked').prop('checked', false)
+    searchTeams();
+})
+
 $("#grid").click(function () {
-    $("#CalenderView").css("display","block")
+    $("#CalenderView").css("display", "block")
     $(".allTeamsContainer").css("display", "none")
     $("#grid").css("background-color", "#333")
     $("#grid").css("color", "white")
     $("#list").css("background-color", "white")
     $("#list").css("color", "#333")
+    $(".filterRowContainer").css("display", "none")
 })
 
 $("#list").click(function () {
@@ -169,4 +274,36 @@ $("#list").click(function () {
     $("#list").css("color", "white")
     $("#grid").css("background-color", "white")
     $("#grid").css("color", "#333")
+    $(".filterRowContainer").css("display", "block")
+})
+
+// View Task Details
+function openTaskDetailOffcanvas(taskId) {
+    $.ajax({
+        type: "POST",
+        url: "/Home/GetTaskDetails",
+        data: { taskId: taskId },
+        beforeSend: function () {
+            $("#TaskDetailOffCanvas").removeClass("show")
+        },
+        success: function (result) {
+            $("#TeamNameInOffcanvas").empty()
+            $("#TeamNameInOffcanvas").html('' + result.teamName + '')
+            $("#TaskNameInOffcanvas").val('' + result.taskName + '')
+            $("#TaskDescriptionInOffcanvas").val('' + result.taskDescription + '')
+            $("#StartDateInOffcanvas").val('' + result.startDateForDisplay + '')
+            $("#EndDateInOffcanvas").val('' + result.endDateForDisplay + '')
+            if (result.isCompleted == true) {
+                $(".isTaskCompletedOrNot").html(`<button type="button" class="completeTaskButton" disabled>Completed</button>`)
+            } else {
+                $(".isTaskCompletedOrNot").html(`<button type="button" class="inCompleteTaskButton" disabled>Incomplete</button>`)
+            }
+
+            $("#TaskDetailOffCanvas").addClass("show")
+        }
+    })
+}
+
+$(".closeTaskDetailOffCanvas").click(function () {
+    $("#TaskDetailOffCanvas").removeClass("show")
 })

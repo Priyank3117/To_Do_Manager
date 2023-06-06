@@ -13,9 +13,9 @@ namespace BAL
             _AllTasksRepo = allTasksRepo;
         }
 
-        public List<AllTasksOfAllTeams> GetAllTasks(long userId, string searchTerm)
+        public List<AllTasksOfAllTeams> GetAllTasks(Filter filter)
         {
-            return _AllTasksRepo.GetAllTasks(userId, searchTerm);
+            return _AllTasksRepo.GetAllTasks(filter);
         }
 
         public bool AddTaskToTodayTask(TaskDetailViewModel taskDetail)

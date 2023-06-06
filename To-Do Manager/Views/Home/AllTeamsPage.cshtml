@@ -120,47 +120,47 @@
 
     <!-- Task Detail Offcanvas-->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="TaskDetailOffCanvas"
-                aria-labelledby="offcanvasRightLabel" style="width: 500px;background-color: #ebebeb;">
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasRightLabel">Task Detail</h5>
-                    <button type="button" class="btn-close closeTaskDetailOffCanvas" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body d-flex align-items-center justify-content-center">
-                    <div class="taskDetailContainer">
-                        <div class="row">
-                            <div class="col">
-                                <p class="h4 mb-3" id="TeamNameInOffcanvas">Team Anand</p>
-                                <div class="mb-3">
-                                    <label for="TaskNameInOffcanvas" class="form-label">Task Name</label>
-                                    <input type="text" class="form-control" id="TaskNameInOffcanvas" disabled>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="TaskDescriptionInOffcanvas" class="form-label">Task Description</label>
-                                    <textarea class="form-control" id="TaskDescriptionInOffcanvas" disabled style="height: 170px"></textarea>
-                                </div>
-                                <div>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="mb-3">
-                                                <label for="StartDateInOffcanvas" class="form-label">Start Date</label>
-                                                <input type="date" class="form-control" id="StartDateInOffcanvas" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="mb-3">
-                                                <label for="EndDateInOffcanvas" class="form-label">End Date</label>
-                                                <input type="date" class="form-control" id="EndDateInOffcanvas" disabled>
-                                            </div>
-                                        </div>
+         aria-labelledby="offcanvasRightLabel" style="width: 500px;background-color: #ebebeb;">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">Task Detail</h5>
+            <button type="button" class="btn-close closeTaskDetailOffCanvas" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body d-flex align-items-center justify-content-center">
+            <div class="taskDetailContainer">
+                <div class="row">
+                    <div class="col">
+                        <p class="h4 mb-3" id="TeamNameInOffcanvas">Team Anand</p>
+                        <div class="mb-3">
+                            <label for="TaskNameInOffcanvas" class="form-label">Task Name</label>
+                            <input type="text" class="form-control" id="TaskNameInOffcanvas" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="TaskDescriptionInOffcanvas" class="form-label">Task Description</label>
+                            <textarea class="form-control" id="TaskDescriptionInOffcanvas" disabled style="height: 170px"></textarea>
+                        </div>
+                        <div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label for="StartDateInOffcanvas" class="form-label">Start Date</label>
+                                        <input type="date" class="form-control" id="StartDateInOffcanvas" disabled>
                                     </div>
                                 </div>
-                                <div class="isTaskCompletedOrNot">
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label for="EndDateInOffcanvas" class="form-label">End Date</label>
+                                        <input type="date" class="form-control" id="EndDateInOffcanvas" disabled>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="isTaskCompletedOrNot">
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
     @if (Model != null)
     {
@@ -223,37 +223,6 @@
                                                 </div>
                                             }
 
-                                            @* <ul class="TaskList">
-                                                @foreach (var myTasks in task.TodayTasks)
-                                                {
-                                                <li>
-                                                <div>
-                                                <p class="m-0">@myTasks.TaskName</p>
-                                                @if (myTasks.IsCompleted == true)
-                                                {
-                                                <button class="btn p-0" onclick="markTaskAsCompleteOrUncomplete(@task.UserId, @task.TeamId, @myTasks.TaskId)" id="Task_@myTasks.TaskId">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                                height="20" fill="currentColor"
-                                                class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-                                                </svg>
-                                                </button>
-                                                }
-                                                else
-                                                {
-                                                <button class="btn p-0" onclick="markTaskAsCompleteOrUncomplete(@task.UserId, @task.TeamId, @myTasks.TaskId)" id="Task_@myTasks.TaskId">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                                height="20" fill="currentColor"
-                                                class="bi bi-check-circle" viewBox="0 0 16 16">
-                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
-                                                </svg>
-                                                </button>
-                                                }
-                                                </div>
-                                                </li>
-                                                }
-                                                </ul>*@
                                         </div>
                                     </div>
                                 }
@@ -268,7 +237,6 @@
                                                 <p class="m-0 fs-5">@userTask.UserName</p>
                                             </div>
                                             <div class="taskList">
-
                                                 @foreach (var tasksofUser in userTask.TodayTasks)
                                                 {
                                                     <div class="taskContainer">
@@ -302,38 +270,6 @@
                                                         </div>
                                                     </div>
                                                 }
-
-                                                @* <ul class="TaskList">
-                                                    @foreach (var tasksofUser in userTask.TodayTasks)
-                                                    {
-                                                    <li>
-                                                    <div>
-                                                    <p class="m-0">@tasksofUser.TaskName</p>
-                                                    @if (tasksofUser.IsCompleted == true)
-                                                    {
-                                                    <button class="btn p-0">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                                    height="20" fill="currentColor"
-                                                    class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-                                                    </svg>
-                                                    </button>
-                                                    }
-                                                    else
-                                                    {
-                                                    <button class="btn p-0">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                                    height="20" fill="currentColor"
-                                                    class="bi bi-check-circle" viewBox="0 0 16 16">
-                                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
-                                                    </svg>
-                                                    </button>
-                                                    }
-                                                    </div>
-                                                    </li>
-                                                    }
-                                                    </ul>*@
                                             </div>
                                         </div>
                                     }
