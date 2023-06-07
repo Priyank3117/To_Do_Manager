@@ -138,7 +138,7 @@ namespace Repository.Repository
         {
             if (userId != 0)
             {
-                var teams = _db.TeamMembers.Where(teamMember => teamMember.UserId == userId);
+                var teams = _db.TeamMembers.Where(teamMember => teamMember.UserId == userId && teamMember.Role != TeamMembers.Roles.TeamLeader);
 
                 if (teams != null)
                 {

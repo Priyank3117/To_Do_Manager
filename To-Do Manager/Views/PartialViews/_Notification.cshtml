@@ -1,0 +1,193 @@
+﻿@using Entities.ViewModels.HomeViewModels;
+
+@model List<Notification>
+
+<ul class="navbar-nav text-center">
+    <li class="nav-item dropdown" style="list-style-type: none;">
+        <a style="color: black;padding: 0px;" class="nav-link" id="notificationDropdown"
+           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="/images/bell.png" class="notoficationImage" />
+        </a>
+        <ul class="dropdown-menu notificationDropdown mainNotificationDropdown"
+            style="width: 470px;position: absolute;" aria-labelledby="notificationDropdown"
+            id="forReopenThis">
+            <li class="firstRowNotification">
+                <p class="p-0 m-0" style="font-weight: 500;">Notification</p>
+                <a role="button" class="text-muted" id="clearAllNotification">Clear All</a>
+            </li>
+            
+            @if (Model != null && Model.Count() != 0 )
+            {
+                foreach (var notificaton in Model)
+                {
+                    if (notificaton.NotificationType == "SetReportingPerson")
+                    {
+                        <li class="dropdown-item">
+                            <span class="badge text-bg-success">Reprting Person</span>
+                            <p class="m-0 dropRow">@notificaton.Message</p>
+                            @if (notificaton.IsRead == true)
+                            {
+                                <img src="/images/checked.png" alt="">
+                            }
+                            else
+                            {
+                                <div class="dot"></div>
+                            }
+                        </li>
+                        <hr class="text-muted p-0 m-0">
+                    }
+                    else if (notificaton.NotificationType == "RemovedReportingPerson")
+                    {
+                        <li class="dropdown-item">
+                            <span class="badge text-bg-danger">Reprting Person</span>
+                            <p class="m-0 dropRow">@notificaton.Message</p>
+                            @if (notificaton.IsRead == true)
+                            {
+                                <img src="/images/checked.png" alt="">
+                            }
+                            else
+                            {
+                                <div class="dot"></div>
+                            }
+                        </li>
+                        <hr class="text-muted p-0 m-0">
+                    }
+                    else if (notificaton.NotificationType == "ApprovedJoinRequest")
+                    {
+                        <li class="dropdown-item">
+                            <span class="badge text-bg-success">Join Request</span>
+                            <p class="m-0 dropRow">@notificaton.Message</p>
+                            @if (notificaton.IsRead == true)
+                            {
+                                <img src="/images/checked.png" alt="">
+                            }
+                            else
+                            {
+                                <div class="dot"></div>
+                            }
+                        </li>
+                        <hr class="text-muted p-0 m-0">
+                    }
+                    else if (notificaton.NotificationType == "DeclinedJoinRequest")
+                    {
+                        <li class="dropdown-item">
+                            <span class="badge text-bg-danger">Join Request</span>
+                            <p class="m-0 dropRow">@notificaton.Message</p>
+                            @if (notificaton.IsRead == true)
+                            {
+                                <img src="/images/checked.png" alt="">
+                            }
+                            else
+                            {
+                                <div class="dot"></div>
+                            }
+                        </li>
+                        <hr class="text-muted p-0 m-0">
+                    }
+                    else if (notificaton.NotificationType == "ApprovedLeaveRequest")
+                    {
+                        <li class="dropdown-item">
+                            <span class="badge text-bg-success">Leave Request</span>
+                            <p class="m-0 dropRow">@notificaton.Message</p>
+                            @if (notificaton.IsRead == true)
+                            {
+                                <img src="/images/checked.png" alt="">
+                            }
+                            else
+                            {
+                                <div class="dot"></div>
+                            }
+                        </li>
+                        <hr class="text-muted p-0 m-0">
+                    }
+                    else if (notificaton.NotificationType == "DeclinedLeaveRequest")
+                    {
+                        <li class="dropdown-item">
+                            <span class="badge text-bg-danger">Leave Request</span>
+                            <p class="m-0 dropRow">@notificaton.Message</p>
+                            @if (notificaton.IsRead == true)
+                            {
+                                <img src="/images/checked.png" alt="">
+                            }
+                            else
+                            {
+                                <div class="dot"></div>
+                            }
+                        </li>
+                        <hr class="text-muted p-0 m-0">
+                    }
+                    else if (notificaton.NotificationType == "NewTaskAssigned")
+                    {
+                        <li class="dropdown-item">
+                            <span class="badge text-bg-secondary">New Task</span>
+                            <p class="m-0 dropRow">@notificaton.Message</p>
+                            @if (notificaton.IsRead == true)
+                            {
+                                <img src="/images/checked.png" alt="">
+                            }
+                            else
+                            {
+                                <div class="dot"></div>
+                            }
+                        </li>
+                        <hr class="text-muted p-0 m-0">
+                    }
+                    else if (notificaton.NotificationType == "AddedToTeam")
+                    {
+                        <li class="dropdown-item">
+                            <span class="badge text-bg-success">Added</span>
+                            <p class="m-0 dropRow">@notificaton.Message</p>
+                            @if (notificaton.IsRead == true)
+                            {
+                                <img src="/images/checked.png" alt="">
+                            }
+                            else
+                            {
+                                <div class="dot"></div>
+                            }
+                        </li>
+                        <hr class="text-muted p-0 m-0">
+                    }
+                    else if (notificaton.NotificationType == "RemovedFromTeam")
+                    {
+                        <li class="dropdown-item">
+                            <span class="badge text-bg-danger">Removed</span>
+                            <p class="m-0 dropRow">@notificaton.Message</p>
+                            @if (notificaton.IsRead == true)
+                            {
+                                <img src="/images/checked.png" alt="">
+                            }
+                            else
+                            {
+                                <div class="dot"></div>
+                            }
+                        </li>
+                        <hr class="text-muted p-0 m-0">
+                    }
+                }
+            }
+            else
+            {
+                <li class="noNotification">
+                    <img src="/HTML/images/bell-big.png" alt="">
+                    <p class="p-0 m-0 text-muted">You do not have any new notification</p>
+                </li>
+            }
+        </ul>
+        <ul class="dropdown-menu notificationDropdown noNotificationDropdown"
+            style="width: 470px;position: absolute;">
+            <li class="firstRowNotification">
+                <p class="p-0 m-0" style="font-weight: 500;">Notification</p>
+                <a role="button" class="text-muted">Clear All</a>
+            </li>
+            <hr class="text-muted p-0 m-0">
+            <li class="noNotification">
+                <img src="/HTML/images/bell-big.png" alt="">
+                <p class="p-0 m-0 text-muted">You do not have any new notification</p>
+            </li>
+        </ul>
+    </li>
+</ul>
+<div class="notificationDot">
+    <p class="p-0 m-0">11</p>
+</div>

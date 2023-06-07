@@ -80,5 +80,16 @@ namespace BAL
         {
             return _TeamManagementRepo.AcceptJoinRequest(userId, teamId);
         }
+
+        /// <summary>
+        /// Decline Leave Request
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <param name="teamId">Team Id of User</param>
+        /// <returns>True - If successfuly declined join request else Fasle</returns>
+        public bool DeclineLeaveRequest(long userId, long teamId)
+        {
+            return _TeamManagementRepo.DeclineLeaveRequest(userId, teamId);
+        }
     }
 }

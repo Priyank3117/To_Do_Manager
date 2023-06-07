@@ -147,6 +147,26 @@ namespace To_Do_Manager.Controllers
             return _HomeBAL.GetTaskDetails(taskId);
         }
 
+        /// <summary>
+        /// Get All Notifications
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <returns>List od all notifications</returns>
+        public IActionResult GetNotifications(long userId)
+        {
+            return PartialView("~/Views/PartialViews/_Notification.cshtml", _HomeBAL.GetNotifications(userId));
+        }
+
+        /// <summary>
+        /// Clear All Notification
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <returns>True - If all notifications cleared else False</returns>
+        public bool ClearAllNotifications(long userId)
+        {
+            return _HomeBAL.ClearAllNotifications(userId);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

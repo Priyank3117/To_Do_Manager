@@ -26,7 +26,12 @@
                                             </svg>
                                         </button>
                                     </div>
-                                }else{
+                                }else if(team.MemberStatus == "RequestedForLeave"){
+                                    <div class="d-flex justify-content-start align-items-center">
+                                        <button type="button" class="leaveTeamButton" disabled>Leave Requested</button>
+                                    </div>
+                                }
+                                else{
                                     <div class="d-flex justify-content-start align-items-center">
                                         <button type="button" class="leaveTeamButton" onclick="leaveFromTeam(@team.TeamId, @team.UserId, '@team.TeamName')">Leave</button>
                                     </div>
@@ -134,6 +139,36 @@
                                                                         accept
                                                                     </button>
                                                                     <button class="removeButton ms-2" onclick="declineJoinRequest(@joinReaquest.UserId, @team.TeamId)">
+                                                                        decline
+                                                                    </button>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        }
+
+                                        @if (team.LeaveRequests.Count() != 0 && team.Role == "TeamLeader")
+                                        {
+                                            <div class="oneUserTasksContainer mt-3">
+                                                <p class="m-0 fs-5 mb-3">Leave Requests</p>
+                                                @foreach (var leaveReaquest in team.LeaveRequests)
+                                                {
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="userListRow d-flex justify-content-between align-items-center">
+                                                                <div class="d-flex justify-content-between align-items-center">
+                                                                    <img src="@leaveReaquest.Avatar"
+                                                         class="userAvatar me-2" alt="" />
+                                                                    <p class="m-0">@leaveReaquest.UserName</p>
+                                                                </div>
+                                                                <div>
+                                                                    <button class="approveButton" onclick="acceptLeaveRequest(@leaveReaquest.UserId, @team.TeamId)">
+                                                                        accept
+                                                                    </button>
+                                                                    <button class="removeButton ms-2" onclick="declineLeaveRequest(@leaveReaquest.UserId, @team.TeamId)">
                                                                         decline
                                                                     </button>
                                                                 </div>

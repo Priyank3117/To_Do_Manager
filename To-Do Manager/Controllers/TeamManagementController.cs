@@ -128,5 +128,27 @@ namespace To_Do_Manager.Controllers
             return _TeamManagementBAL.RemoveUserFromTeam(userId, teamId);
         }
         #endregion
+
+        /// <summary>
+        /// Accept Leave Request
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <param name="teamId">Team Id of User</param>
+        /// <returns>True - If successfuly removed from team else Fasle</returns>
+        public bool AcceptLeaveRequest(long userId, long teamId)
+        {
+            return _TeamManagementBAL.RemoveUserFromTeam(userId, teamId);
+        }
+
+        /// <summary>
+        /// Decline Leave Request
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <param name="teamId">Team Id of User</param>
+        /// <returns>True - If successfuly declined join request else Fasle</returns>
+        public bool DeclineLeaveRequest(long userId, long teamId)
+        {
+            return _TeamManagementBAL.DeclineLeaveRequest(userId, teamId);
+        }
     }
 }

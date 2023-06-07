@@ -194,13 +194,11 @@ function finalLeaveFromTeam(teamId, userId) {
 function leaveAllTeams() {
     $(".warningText").html(`Are you sure to leave from all teams?`)
     $(".leaveTeamButtonContainer").html(`<button type="button" class="CancelCreateTeamButton me-2"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#LeaveTeamsModal">
+                                                    data-bs-toggle="modal">
                                                 Cancel
                                             </button>
                                             <button type="button" class="leaveTeamsButton" onclick="leaveFromAllTeam()">Yes</button>`)
     $("#LeaveWarningModal").modal("show")
-    $("#LeaveTeamsModal").modal("hide")
 }
 
 function leaveFromAllTeam() {
@@ -214,7 +212,6 @@ function leaveFromAllTeam() {
                 $(".leaveTeamSmallButton").html("Requsted")
 
                 $("#LeaveWarningModal").modal("hide")
-                $("#LeaveTeamsModal").modal("show")
             }
         }
     });

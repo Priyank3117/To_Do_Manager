@@ -34,7 +34,7 @@
 <div class="row mt-3 mb-3">
     <div class="col d-flex justify-content-between align-items-center">
         <div>
-            <a role="button" class="CancelCreateTeamButton" data-bs-toggle="modal" data-bs-target="#FilterModal">Filters</a>
+            <a role="button" class="CancelCreateTeamButton filterButton" data-bs-toggle="modal" data-bs-target="#FilterModal">Filters</a>
         </div>
         <div class="d-flex justify-content-center align-items-center">
             <button class="btn allTaskButton me-2" id="grid">
@@ -179,7 +179,7 @@
                 </div>
                 <div class="modal-footer" style="border: none;">
                     <div class="mt-4">
-                        <a href="/Login.html" type="button" class="CancelCreateTeamButton">Cancel</a>
+                        <a data-bs-toggle="modal" role="button" class="CancelCreateTeamButton">Cancel</a>
                     </div>
                     <div class="mt-4">
                         <button type="button" class="addTaskButton" onclick="addTask()">Add Task</button>

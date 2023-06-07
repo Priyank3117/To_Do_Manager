@@ -48,5 +48,10 @@ namespace Entities.Data
                 .HasConversion<string>()
                 .HasMaxLength(50);
         }
+
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+        {
+            configurationBuilder.Conventions.Add(_ => new BlankTriggerAddingConvention());
+        }
     }
 }

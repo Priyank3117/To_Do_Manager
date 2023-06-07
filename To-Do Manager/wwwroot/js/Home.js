@@ -20,11 +20,14 @@
         $("#AddUserSpan").html("")
     })
 
-    //$("body").click(function () {
-    //    if ($("#TaskDetailOffCanvas").hasClass("show")) {
-    //        $("#TaskDetailOffCanvas").removeClass("show")
-    //    }
-    //})
+    $.ajax({
+        type: "POST",
+        url: "/Home/GetNotifications",
+        data: {},
+        success: function (result) {
+            $(".notificationContainer").html(result)
+        }
+    })
 })
 
 // Add User In Team Validation
@@ -159,11 +162,13 @@ function getDataForAddTask(teamId, userId) {
         url: "/Home/GetDataForAddTask",
         data: { teamId: teamId, userId: userId },
         success: function (result) {
+            console.log(result)
             if (result.length != 0) {
                 $("#TaskAssignTo").empty()
                 for (var i = 0; i < result.length; i++) {
                     $("#TaskAssignTo").append('<option value="' + result[i].userId + '">' + result[i].userName + '</option>')
                 }
+                $(".assignedTo").css("display", "block")
             } else {
                 $(".assignedTo").css("display", "none")
             }

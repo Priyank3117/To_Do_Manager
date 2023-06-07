@@ -29,7 +29,7 @@ namespace To_Do_Manager.Controllers
         /// <summary>
         /// Add Task To To-Do Page
         /// </summary>
-        /// <param name="task">Teak Detail View Model for storing Task name</param>
+        /// <param name="task">Teak Detail View Model for storing Task Id, Team Id and User Id</param>
         /// <returns>True - If Successfully Added alse False</returns>
         public bool AddTaskToTodayTask(TaskDetailViewModel task)
         {
@@ -37,10 +37,10 @@ namespace To_Do_Manager.Controllers
         }
 
         /// <summary>
-        /// Get All Tasks for List View
+        /// Get All Task In All Task Page Team Wise
         /// </summary>
-        /// <param name="searchTerm">Search Keyword</param>
-        /// <returns>Partial Views Team wise with Tasks data</returns>
+        /// <param name="filter">filter params like Team Name, Task Name, Start Date, End Date and Task Status</param>
+        /// <returns>List of All Task Team wise</returns>
         public IActionResult GetAllTaskOfAllTeams(Filter filter)
         {
             filter.UserId = long.Parse(HttpContext.Session.GetString("UserId")!);

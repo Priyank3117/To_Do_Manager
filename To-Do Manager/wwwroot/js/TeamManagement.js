@@ -103,28 +103,39 @@ function removeUserFromTeam(idOfEmailText) {
 
 function createTeam() {
 
-    var team = new FormData();
-    team.append('TeamName', $("#TeamName").val());
-    team.append('TeamDescription', $("#TeamDescription").val());
-
-    var allUsersEmails = $(".userEmail")
-
-    for (var i = 0; i < allUsersEmails.length; i++) {
-        team.append('UserEmails', allUsersEmails[i].innerHTML);
+    if ($("#TeamName").val() == "") {
+        $("#TeamNameSpan").html("Team name is required")
     }
+    else if ($("#TeamDescription").val() == "") {
+        $("#TeamDescriptionSpan").html("Description is required")
+    }
+    else {
+        $("#TeamNameSpan").html("")
+        $("#TeamDescriptionSpan").html("")
 
-    $.ajax({
-        type: "POST",
-        url: "/Home/CreateTeam",
-        processData: false,
-        contentType: false,
-        data: team,
-        success: function (result) {
-            if (result == true) {
-                $("#CreateTeamModal").modal("hide")
-            }
+        var team = new FormData();
+        team.append('TeamName', $("#TeamName").val());
+        team.append('TeamDescription', $("#TeamDescription").val());
+
+        var allUsersEmails = $(".userEmail")
+
+        for (var i = 0; i < allUsersEmails.length; i++) {
+            team.append('UserEmails', allUsersEmails[i].innerHTML);
         }
-    })
+
+        $.ajax({
+            type: "POST",
+            url: "/Home/CreateTeam",
+            processData: false,
+            contentType: false,
+            data: team,
+            success: function (result) {
+                if (result == true) {
+                    $("#CreateTeamModal").modal("hide")
+                }
+            }
+        })
+    }
 }
 
 function getJoinTeamPartialView() {
@@ -346,6 +357,34 @@ function declineJoinRequest(userId, teamId) {
     $.ajax({
         type: "POST",
         url: "/TeamManagement/DeclineJoinRequest",
+        data: { userId: userId, teamId: teamId },
+        success: function (result) {
+            if (result == true) {
+                location.reload(true)
+            }
+        }
+    })
+}
+
+// Accept Leave Request
+function acceptLeaveRequest(userId, teamId) {
+    $.ajax({
+        type: "POST",
+        url: "/TeamManagement/AcceptLeaveRequest",
+        data: { userId: userId, teamId: teamId },
+        success: function (result) {
+            if (result == true) {
+                location.reload(true)
+            }
+        }
+    })
+}
+
+// Decline Join Request
+function declineLeaveRequest(userId, teamId) {
+    $.ajax({
+        type: "POST",
+        url: "/TeamManagement/DeclineLeaveRequest",
         data: { userId: userId, teamId: teamId },
         success: function (result) {
             if (result == true) {

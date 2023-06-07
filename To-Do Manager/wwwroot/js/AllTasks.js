@@ -21,6 +21,7 @@ function getDataForAddTask(teamId, userId) {
                 for (var i = 0; i < result.length; i++) {
                     $("#TaskAssignTo").append('<option value="' + result[i].userId + '">' + result[i].userName + '</option>')
                 }
+                $(".assignedTo").css("display", "block")
             } else {
                 $(".assignedTo").css("display", "none")
             }
@@ -141,6 +142,14 @@ function addTaskToTodayTask(userId, teamId, taskId) {
     })
 }
 
+$("#StartDateForFilter").change(function () {
+    $("#EndDateForFilter").attr("min", $("#StartDateForFilter").val())
+})
+
+$("#EndDateForFilter").change(function () {
+    $("#StartDateForFilter").attr("max", $("#EndDateForFilter").val())
+})
+
 function searchTeams(isClearAll) {
 
     if (isClearAll == true) {
@@ -148,7 +157,6 @@ function searchTeams(isClearAll) {
         taskName = ""
         startDate = ""
         endDate = ""
-
         $('input[name="TaskStatusForFilter"]:checked').prop('checked', false)
     }
     else {
@@ -265,6 +273,7 @@ $("#grid").click(function () {
     $("#list").css("background-color", "white")
     $("#list").css("color", "#333")
     $(".filterRowContainer").css("display", "none")
+    $(".filterButton").css("display", "none")
 })
 
 $("#list").click(function () {
@@ -275,6 +284,7 @@ $("#list").click(function () {
     $("#grid").css("background-color", "white")
     $("#grid").css("color", "#333")
     $(".filterRowContainer").css("display", "block")
+    $(".filterButton").css("display", "flex")
 })
 
 // View Task Details

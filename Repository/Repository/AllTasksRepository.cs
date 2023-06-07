@@ -14,11 +14,17 @@ namespace Repository.Repository
             _db = db;
         }
 
+        /// <summary>
+        /// Get All Task In All Task Page Team Wise
+        /// </summary>
+        /// <param name="filter">filter params like Team Name, Task Name, Start Date, End Date and Task Status</param>
+        /// <returns>List of All Task Team wise</returns>
         public List<AllTasksOfAllTeams> GetAllTasks(Filter filter)
         {
             List<AllTasksOfAllTeams> teams = new();
 
             var query = _db.Tasks.AsQueryable();
+            var teamMemberQuery = _db.TeamMembers.AsQueryable();
 
             if (!string.IsNullOrEmpty(filter.TeamName))
             {
@@ -40,13 +46,13 @@ namespace Repository.Repository
                 query = query.Where(task => task.EndDate <= filter.EndDate);
             }
 
-            if(filter.TaskStatus != null)
+            if (filter.TaskStatus != null)
             {
                 query = query.Where(task => task.TaskStatus == filter.TaskStatus);
             }
 
             //query = query.OrderByDescending(task => task.IsTodayTask);
-            var totalTeams = _db.TeamMembers.Where(teamMembers => teamMembers.UserId == filter.UserId && teamMembers.Status == Entities.Models.TeamMembers.MemberStatus.Approved).Select(teamMember => teamMember.TeamId).ToList();
+            var totalTeams = teamMemberQuery.Where(teamMembers => teamMembers.UserId == filter.UserId && (teamMembers.Status == Entities.Models.TeamMembers.MemberStatus.Approved || teamMembers.Status == Entities.Models.TeamMembers.MemberStatus.RequestedForLeave)).Select(teamMember => teamMember.TeamId).ToList();
 
             foreach (var teamId in totalTeams)
             {
@@ -55,7 +61,7 @@ namespace Repository.Repository
                 team.TeamId = teamId;
                 team.TeamName = query.Where(p => p.Teams.TeamId == teamId).Select(p => p.Teams.TeamName).FirstOrDefault()!;
                 team.UserId = filter.UserId;
-                team.Role = _db.TeamMembers.FirstOrDefault(teamMember => teamMember.UserId == filter.UserId && teamMember.TeamId == teamId)!.Role.ToString();
+                team.Role = teamMemberQuery.FirstOrDefault(teamMember => teamMember.UserId == filter.UserId && teamMember.TeamId == teamId)!.Role.ToString();
 
                 foreach (var mytask in myTasks)
                 {
@@ -72,36 +78,42 @@ namespace Repository.Repository
                     team.MyTasks.Add(taskDetailViewModel);
                 }
 
-                if (team.Role != "TeamMember")
+                List<long> totalMembers = new();
+
+                if (team.Role == "TeamLeader")
                 {
-                    var totalMembers = query.Where(task => task.UserId != filter.UserId && task.TeamId == teamId).Select(p => p.UserId).Distinct().ToList();
+                    totalMembers = query.Where(task => task.UserId != filter.UserId && task.TeamId == teamId).Select(p => p.UserId).Distinct().ToList();
+                }
+                else if (team.Role == "ReportingPerson")
+                {
+                    totalMembers = teamMemberQuery.Where(task => task.UserId != filter.UserId && task.TeamId == teamId && task.ReportinPersonUserId == filter.UserId).Select(p => p.UserId).Distinct().ToList();
+                }
 
-                    foreach (var memberTask in totalMembers)
+                foreach (var memberTask in totalMembers)
+                {
+                    var teamMemberTasks = query.Where(task => task.UserId == memberTask && task.TeamId == teamId);
+
+                    if (teamMemberTasks.Any())
                     {
-                        var teamMemberTasks = query.Where(task => task.UserId == memberTask && task.TeamId == teamId);
+                        TeamMembersTaskDetails teamMembersTaskDetails = new();
+                        teamMembersTaskDetails.Avatar = teamMemberTasks.Select(p => p.Users.Avatar).FirstOrDefault()!.ToString();
+                        teamMembersTaskDetails.UserName = teamMemberTasks.Select(p => p.Users.FirstName).FirstOrDefault()!.ToString() + " " + teamMemberTasks.Select(p => p.Users.LastName).FirstOrDefault()!.ToString();
 
-                        if (teamMemberTasks.Any())
+                        foreach (var task in teamMemberTasks)
                         {
-                            TeamMembersTaskDetails teamMembersTaskDetails = new();
-                            teamMembersTaskDetails.Avatar = teamMemberTasks.Select(p => p.Users.Avatar).FirstOrDefault()!.ToString();
-                            teamMembersTaskDetails.UserName = teamMemberTasks.Select(p => p.Users.FirstName).FirstOrDefault()!.ToString() + " " + teamMemberTasks.Select(p => p.Users.LastName).FirstOrDefault()!.ToString();
+                            TaskDetailViewModel taskDetailViewModel = new();
+                            taskDetailViewModel.TaskName = task.TaskName;
+                            taskDetailViewModel.IsCompleted = task.TaskStatus;
+                            taskDetailViewModel.TaskId = task.TaskId;
+                            taskDetailViewModel.UserId = memberTask;
+                            taskDetailViewModel.TeamId = teamId;
+                            taskDetailViewModel.IsTodayTask = task.StartDate.Date <= DateTime.Now.Date && task.EndDate.Date >= DateTime.Now.Date && task.IsTaskForToday == true ? true : false;
+                            taskDetailViewModel.StartDateForDisplay = task.StartDate.Date.ToString("dd/MM/yyyy");
+                            taskDetailViewModel.EndDateForDisplay = task.EndDate.Date.ToString("dd/MM/yyyy");
 
-                            foreach (var task in teamMemberTasks)
-                            {
-                                TaskDetailViewModel taskDetailViewModel = new();
-                                taskDetailViewModel.TaskName = task.TaskName;
-                                taskDetailViewModel.IsCompleted = task.TaskStatus;
-                                taskDetailViewModel.TaskId = task.TaskId;
-                                taskDetailViewModel.UserId = memberTask;
-                                taskDetailViewModel.TeamId = teamId;
-                                taskDetailViewModel.IsTodayTask = task.StartDate.Date <= DateTime.Now.Date && task.EndDate.Date >= DateTime.Now.Date && task.IsTaskForToday == true ? true : false;
-                                taskDetailViewModel.StartDateForDisplay = task.StartDate.Date.ToString("dd/MM/yyyy");
-                                taskDetailViewModel.EndDateForDisplay = task.EndDate.Date.ToString("dd/MM/yyyy");
-
-                                teamMembersTaskDetails.TodayTasks.Add(taskDetailViewModel);
-                            }
-                            team.TeamMembersTaasks.Add(teamMembersTaskDetails);
+                            teamMembersTaskDetails.TodayTasks.Add(taskDetailViewModel);
                         }
+                        team.TeamMembersTaasks.Add(teamMembersTaskDetails);
                     }
                 }
 
@@ -111,6 +123,11 @@ namespace Repository.Repository
             return teams;
         }
 
+        /// <summary>
+        /// Add Task To To-Do Page
+        /// </summary>
+        /// <param name="taskDetail">Teak Detail View Model for storing Task Id, Team Id and User Id</param>
+        /// <returns>True - If Successfully Added alse False</returns>
         public bool AddTaskToTodayTask(TaskDetailViewModel taskDetail)
         {
             var task = _db.Tasks.FirstOrDefault(task => task.TaskId == taskDetail.TaskId && task.TeamId == taskDetail.TeamId && task.UserId == taskDetail.UserId)!;
@@ -137,6 +154,12 @@ namespace Repository.Repository
             }
         }
 
+        /// <summary>
+        /// Get All Task Name for Calender View
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <returns>List of all task for that user with task details like 
+        /// Start Date, End Date and Task Status whether it is completed or not</returns>
         public List<AllTaskForCalenderView> GetTasksForCalenderView(long userId)
         {
             var query = _db.Tasks.AsQueryable();

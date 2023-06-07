@@ -31,6 +31,7 @@ namespace Entities.Models
             DeclinedLeaveRequest,
             AddedToTeam,
             RemovedFromTeam,
+            NewTaskAssigned
         }
 
         public NotificationType Type { get; set; }           

@@ -23,5 +23,9 @@ namespace Repository.Interface
         public bool MarkTaskAsCompleteOrUncomplete(TaskDetailViewModel task);
 
         public TaskDetailViewModel GetTaskDetails(long taskId);
+
+        public List<Notification> GetNotifications(long userId);
+
+        public bool ClearAllNotifications(long userId);
     }
 }
