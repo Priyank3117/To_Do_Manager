@@ -86,12 +86,26 @@ namespace Repository.Repository
 
         public List<UserDetailOfTeam> GetAllMemberToSetReportingPerson(long userId, long teamId)
         {
-            return _db.TeamMembers.Where(teamMember => teamMember.UserId != userId && teamMember.TeamId == teamId && teamMember.Status == Entities.Models.TeamMembers.MemberStatus.Approved).Select(user => new UserDetailOfTeam()
+            var query = _db.TeamMembers.AsQueryable();
+
+            var allMembers = query.Where(teamMember => teamMember.UserId != userId && teamMember.TeamId == teamId && teamMember.Status == Entities.Models.TeamMembers.MemberStatus.Approved && teamMember.Role != Entities.Models.TeamMembers.Roles.TeamLeader && teamMember.ReportinPersonUserId == null).Select(user => new UserDetailOfTeam()
             {
                 UserId = user.UserId,
                 Avatar = user.Users.Avatar,
                 UserName = user.Users.FirstName + " " + user.Users.LastName
             }).ToList();
+
+            List<UserDetailOfTeam> allTeamMembers = new();
+
+            foreach (var teamMember in allMembers)
+            {
+                if(!query.Any(member => member.ReportinPersonUserId == userId && member.TeamId == teamId))
+                {
+                    allTeamMembers.Add(teamMember);
+                }
+            }
+
+            return allTeamMembers;
         }
 
         public bool SetReportingPerson(long userIdOfTeamMember, long userIdOfReportingPerson, long teamId)
@@ -106,7 +120,7 @@ namespace Repository.Repository
                 teamMember.ReportinPersonUserId = userIdOfReportingPerson;
 
                 _db.Update(teamMember);
-
+                _db.SaveChanges();
                 reportingPerson.Role = Entities.Models.TeamMembers.Roles.ReportingPerson;
 
                 _db.Update(reportingPerson);

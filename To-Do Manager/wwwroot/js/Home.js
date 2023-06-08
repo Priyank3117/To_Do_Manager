@@ -247,30 +247,30 @@ function markTaskAsCompleteOrUncomplete(userId, teamId, taskId) {
 
 // View Task Details
 function openTaskDetailOffcanvas(taskId) {
-        $.ajax({
-            type: "POST",
-            url: "/Home/GetTaskDetails",
-            data: { taskId: taskId },
-            beforeSend: function () {
-                $("#TaskDetailOffCanvas").removeClass("show")
-            },
-            success: function (result) {
-                console.log(result)
-                $("#TeamNameInOffcanvas").empty()
-                $("#TeamNameInOffcanvas").html('' + result.teamName + '')
-                $("#TaskNameInOffcanvas").val('' + result.taskName + '')
-                $("#TaskDescriptionInOffcanvas").val('' + result.taskDescription + '')
-                $("#StartDateInOffcanvas").val('' + result.startDateForDisplay + '')
-                $("#EndDateInOffcanvas").val('' + result.endDateForDisplay + '')
-                if (result.isCompleted == true) {
-                    $(".isTaskCompletedOrNot").html(`<button type="button" class="completeTaskButton" disabled>Completed</button>`)
-                } else {
-                    $(".isTaskCompletedOrNot").html(`<button type="button" class="inCompleteTaskButton" disabled>Incomplete</button>`)
-                }
-                
-                $("#TaskDetailOffCanvas").addClass("show")
+    $.ajax({
+        type: "POST",
+        url: "/Home/GetTaskDetails",
+        data: { taskId: taskId },
+        beforeSend: function () {
+            $("#TaskDetailOffCanvas").removeClass("show")
+        },
+        success: function (result) {
+            console.log(result)
+            $("#TeamNameInOffcanvas").empty()
+            $("#TeamNameInOffcanvas").html('' + result.teamName + '')
+            $("#TaskNameInOffcanvas").val('' + result.taskName + '')
+            $("#TaskDescriptionInOffcanvas").val('' + result.taskDescription + '')
+            $("#StartDateInOffcanvas").val('' + result.startDateForDisplay + '')
+            $("#EndDateInOffcanvas").val('' + result.endDateForDisplay + '')
+            if (result.isCompleted == true) {
+                $(".isTaskCompletedOrNot").html(`<button type="button" class="completeTaskButton" disabled>Completed</button>`)
+            } else {
+                $(".isTaskCompletedOrNot").html(`<button type="button" class="inCompleteTaskButton" disabled>Incomplete</button>`)
             }
-        })
+
+            $("#TaskDetailOffCanvas").addClass("show")
+        }
+    })
 }
 
 $(".closeTaskDetailOffCanvas").click(function () {

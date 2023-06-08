@@ -8,10 +8,12 @@ namespace BAL
     public class HomeBAL
     {
         private readonly IHomeRepository _HomeRepo;
+        private readonly INotificationRepository _NotificationRepo;
 
-        public HomeBAL(IHomeRepository homeRepo)
+        public HomeBAL(IHomeRepository homeRepo, INotificationRepository notificationRepo)
         {
             _HomeRepo = homeRepo;
+            _NotificationRepo = notificationRepo;
         }
         
         /// <summary>
@@ -171,7 +173,7 @@ namespace BAL
         /// <returns>List of all notifications</returns>
         public List<Notification> GetNotifications(long userId)
         {
-            return _HomeRepo.GetNotifications(userId);
+            return _NotificationRepo.GetNotifications(userId);
         }
 
         /// <summary>
@@ -181,7 +183,12 @@ namespace BAL
         /// <returns>True - If all notifications cleared else False</returns>
         public bool ClearAllNotifications(long userId)
         {
-            return _HomeRepo.ClearAllNotifications(userId);
+            return _NotificationRepo.ClearAllNotifications(userId);
+        }
+
+        public bool MarkNotificationAsRead(long notificationId)
+        {
+            return _NotificationRepo.MarkNotificationAsRead(notificationId);
         }
     }
 }

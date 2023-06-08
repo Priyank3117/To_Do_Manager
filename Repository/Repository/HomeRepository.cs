@@ -353,55 +353,6 @@ namespace Repository.Repository
             {
                 return new TaskDetailViewModel();
             }
-        }
-
-        /// <summary>
-        /// Get All Notifications
-        /// </summary>
-        /// <param name="userId">User Id</param>
-        /// <returns>List of all notifications</returns>
-        public List<Notification> GetNotifications(long userId)
-        {
-            var allNotifications = _db.Notifications.Where(notification => notification.UserId == userId && notification.IsDeleted == false);
-
-            List<Notification> notifications = new();
-
-            foreach (var notificationRow in allNotifications)
-            {
-                Notification notification = new();
-                notification.NotificationId = notificationRow.NotificationId;
-                notification.NotificationType = notificationRow.Type.ToString();
-                notification.Message = notificationRow.Message;
-                notification.IsRead = notificationRow.IsRead;
-
-                notifications.Add(notification);
-            }
-
-            return notifications;
-        }
-
-        /// <summary>
-        /// Clear All Notification
-        /// </summary>
-        /// <param name="userId">User Id</param>
-        /// <returns>True - If all notifications cleared else False</returns>
-        public bool ClearAllNotifications(long userId)
-        {
-            var notifications = _db.Notifications.Where(notification => notification.UserId == userId);
-            if (notifications.Any())
-            {
-                foreach (var notification in notifications)
-                {
-                    notification.IsDeleted = true;
-
-                    _db.Update(notification);
-                }
-                _db.SaveChanges();
-
-                return true;
-            }
-
-            return false;
-        }
+        }        
     }
 }

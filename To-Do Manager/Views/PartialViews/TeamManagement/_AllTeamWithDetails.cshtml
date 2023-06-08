@@ -63,7 +63,7 @@
                                                                      class="teamMemberAvatar me-2" alt="" />
                                                                                     <p class="m-0">@teamMember.UserName</p>
                                                                                 </div>
-                                                                                @if (team.Role == "TeamLeader")
+                                                                                @if (team.Role == "TeamLeader" && team.UserId != teamMember.UserId)
                                                                                 {
                                                                                     <button class="removeButton" onclick="openRemoveUserModal('@teamMember.UserName',@teamMember.UserId, @team.TeamId)">
                                                                                         remove
@@ -78,7 +78,7 @@
                                                                      class="teamMemberAvatar me-2" alt="" />
                                                                                     <p class="m-0">@teamMember.ReportingPersonUserName</p>
                                                                                 </div>
-                                                                                @if (team.Role == "TeamLeader")
+                                                                                @if (team.Role == "TeamLeader" && team.UserId != teamMember.UserId)
                                                                                 {
                                                                                     <button class="removeButton" onclick="removeReportingPerson(@teamMember.UserId, @teamMember.ReportingPersonUserId, @team.TeamId)">
                                                                                         remove
@@ -101,7 +101,7 @@
                                                          class="userAvatar me-2" alt="" />
                                                                         <p class="m-0">@teamMember.UserName</p>
                                                                     </div>
-                                                                    @if (team.Role == "TeamLeader")
+                                                                    @if (team.Role == "TeamLeader" && team.UserId != teamMember.UserId)
                                                                     {
                                                                         <div>
                                                                             <button class="removeButton me-2" onclick="openRemoveUserModal('@teamMember.UserName',@teamMember.UserId, @team.TeamId)">

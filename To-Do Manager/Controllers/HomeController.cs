@@ -152,9 +152,9 @@ namespace To_Do_Manager.Controllers
         /// </summary>
         /// <param name="userId">User Id</param>
         /// <returns>List od all notifications</returns>
-        public IActionResult GetNotifications(long userId)
+        public IActionResult GetNotifications()
         {
-            return PartialView("~/Views/PartialViews/_Notification.cshtml", _HomeBAL.GetNotifications(userId));
+            return PartialView("~/Views/PartialViews/_Notification.cshtml", _HomeBAL.GetNotifications(long.Parse(HttpContext.Session.GetString("UserId")!)));
         }
 
         /// <summary>
@@ -162,9 +162,14 @@ namespace To_Do_Manager.Controllers
         /// </summary>
         /// <param name="userId">User Id</param>
         /// <returns>True - If all notifications cleared else False</returns>
-        public bool ClearAllNotifications(long userId)
+        public bool ClearAllNotifications()
         {
-            return _HomeBAL.ClearAllNotifications(userId);
+            return _HomeBAL.ClearAllNotifications(long.Parse(HttpContext.Session.GetString("UserId")!));
+        }
+
+        public bool MarkNotificationAsRead(long notificationId)
+        {
+            return _HomeBAL.MarkNotificationAsRead(notificationId);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

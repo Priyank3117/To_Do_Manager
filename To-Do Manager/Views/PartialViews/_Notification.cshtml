@@ -13,7 +13,7 @@
             id="forReopenThis">
             <li class="firstRowNotification">
                 <p class="p-0 m-0" style="font-weight: 500;">Notification</p>
-                <a role="button" class="text-muted" id="clearAllNotification">Clear All</a>
+                <a role="button" class="text-muted" id="clearAllNotification" onclick="ClearAllNotifications()">Clear All</a>
             </li>
             
             @if (Model != null && Model.Count() != 0 )
@@ -22,9 +22,9 @@
                 {
                     if (notificaton.NotificationType == "SetReportingPerson")
                     {
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" onclick="GetTeamManagementPage(@notificaton.NotificationId)">
                             <span class="badge text-bg-success">Reprting Person</span>
-                            <p class="m-0 dropRow">@notificaton.Message</p>
+                            <p class="m-0 dropRow">@Html.Raw(notificaton.Message)</p>
                             @if (notificaton.IsRead == true)
                             {
                                 <img src="/images/checked.png" alt="">
@@ -38,9 +38,9 @@
                     }
                     else if (notificaton.NotificationType == "RemovedReportingPerson")
                     {
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" onclick="GetTeamManagementPage(@notificaton.NotificationId)">
                             <span class="badge text-bg-danger">Reprting Person</span>
-                            <p class="m-0 dropRow">@notificaton.Message</p>
+                            <p class="m-0 dropRow">@Html.Raw(notificaton.Message)</p>
                             @if (notificaton.IsRead == true)
                             {
                                 <img src="/images/checked.png" alt="">
@@ -54,9 +54,9 @@
                     }
                     else if (notificaton.NotificationType == "ApprovedJoinRequest")
                     {
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" onclick="GetTeamManagementPage(@notificaton.NotificationId)">
                             <span class="badge text-bg-success">Join Request</span>
-                            <p class="m-0 dropRow">@notificaton.Message</p>
+                            <p class="m-0 dropRow">@Html.Raw(notificaton.Message)</p>
                             @if (notificaton.IsRead == true)
                             {
                                 <img src="/images/checked.png" alt="">
@@ -70,9 +70,9 @@
                     }
                     else if (notificaton.NotificationType == "DeclinedJoinRequest")
                     {
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" onclick="GetTeamManagementPage(@notificaton.NotificationId)">
                             <span class="badge text-bg-danger">Join Request</span>
-                            <p class="m-0 dropRow">@notificaton.Message</p>
+                            <p class="m-0 dropRow">@Html.Raw(notificaton.Message)</p>
                             @if (notificaton.IsRead == true)
                             {
                                 <img src="/images/checked.png" alt="">
@@ -86,9 +86,9 @@
                     }
                     else if (notificaton.NotificationType == "ApprovedLeaveRequest")
                     {
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" onclick="GetTeamManagementPage(@notificaton.NotificationId)">
                             <span class="badge text-bg-success">Leave Request</span>
-                            <p class="m-0 dropRow">@notificaton.Message</p>
+                            <p class="m-0 dropRow">@Html.Raw(notificaton.Message)</p>
                             @if (notificaton.IsRead == true)
                             {
                                 <img src="/images/checked.png" alt="">
@@ -102,9 +102,9 @@
                     }
                     else if (notificaton.NotificationType == "DeclinedLeaveRequest")
                     {
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" onclick="GetTeamManagementPage(@notificaton.NotificationId)">
                             <span class="badge text-bg-danger">Leave Request</span>
-                            <p class="m-0 dropRow">@notificaton.Message</p>
+                            <p class="m-0 dropRow">@Html.Raw(notificaton.Message)</p>
                             @if (notificaton.IsRead == true)
                             {
                                 <img src="/images/checked.png" alt="">
@@ -118,9 +118,9 @@
                     }
                     else if (notificaton.NotificationType == "NewTaskAssigned")
                     {
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" onclick="GetToDoPage(@notificaton.NotificationId)">
                             <span class="badge text-bg-secondary">New Task</span>
-                            <p class="m-0 dropRow">@notificaton.Message</p>
+                            <p class="m-0 dropRow">@Html.Raw(notificaton.Message)</p>
                             @if (notificaton.IsRead == true)
                             {
                                 <img src="/images/checked.png" alt="">
@@ -134,9 +134,9 @@
                     }
                     else if (notificaton.NotificationType == "AddedToTeam")
                     {
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" onclick="GetTeamManagementPage(@notificaton.NotificationId)">
                             <span class="badge text-bg-success">Added</span>
-                            <p class="m-0 dropRow">@notificaton.Message</p>
+                            <p class="m-0 dropRow">@Html.Raw(notificaton.Message)</p>
                             @if (notificaton.IsRead == true)
                             {
                                 <img src="/images/checked.png" alt="">
@@ -150,9 +150,9 @@
                     }
                     else if (notificaton.NotificationType == "RemovedFromTeam")
                     {
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" onclick="GetTeamManagementPage(@notificaton.NotificationId)">
                             <span class="badge text-bg-danger">Removed</span>
-                            <p class="m-0 dropRow">@notificaton.Message</p>
+                            <p class="m-0 dropRow">@Html.Raw(notificaton.Message)</p>
                             @if (notificaton.IsRead == true)
                             {
                                 <img src="/images/checked.png" alt="">

@@ -15,6 +15,11 @@ namespace Repository.Repository
             _db = db;
         }
 
+        /// <summary>
+        /// Get User Profile Details like firstname, lastname, gender and avatar
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <returns>Details of user</returns>
         public UserProfileViewModel GetUserProfileDetails(long userId)
         {
             var user = _db.Users.Where(user => user.UserId == userId).Select(user => new UserProfileViewModel()
@@ -38,6 +43,11 @@ namespace Repository.Repository
             }
         }
 
+        /// <summary>
+        /// Save User Profile's Data
+        /// </summary>
+        /// <param name="userDetails">User's Details like FirstName, LastName, Gender, Department and LinkedInURL</param>
+        /// <returns>User Profile Page if any validation error then with error</returns>
         public bool SaveUserProfileDetails(UserProfileViewModel userDetails)
         {
             if (userDetails != null)
@@ -63,6 +73,12 @@ namespace Repository.Repository
             return false;
         }
 
+        /// <summary>
+        /// Change Password
+        /// </summary>
+        /// <param name="oldPassword">Old Password of User</param>
+        /// <param name="newPassword">New Password of User</param>
+        /// <returns>String with operation status</returns>
         public string ChangePassword(long userId, string newPassword, string oldPassword)
         {
             if(!BCrypt.Net.BCrypt.Verify(oldPassword, _db.Users.FirstOrDefault(p => p.UserId == userId)?.Password))
@@ -79,6 +95,12 @@ namespace Repository.Repository
             return "Changed";
         }
 
+        /// <summary>
+        /// Change User's Avatar
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <param name="imageURL">Image file that selected by user</param>
+        /// <returns>"Changed" if successfully changed</returns>
         public string ChangeImage(long userId, string imageURL)
         {
             _db.Users
@@ -88,6 +110,11 @@ namespace Repository.Repository
             return "Changed";
         }
 
+        /// <summary>
+        /// Get All Teams Name for Leave Team
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <returns>List of all team names</returns>
         public List<ListOfTeamsName> GetTeamNames(long userId)
         {
             if(userId != 0)
@@ -108,6 +135,12 @@ namespace Repository.Repository
             }
         }
 
+        /// <summary>
+        /// Leave From Team
+        /// </summary>
+        /// <param name="teamId">Team Id</param>
+        /// <param name="userId">User Id</param>
+        /// <returns>True - If successfully leaved from team else False</returns>
         public bool LeaveFromTeam(long teamId, long userId)
         {
             if(teamId != 0 && userId != 0)
@@ -134,6 +167,11 @@ namespace Repository.Repository
             }
         }
 
+        /// <summary>
+        /// Leave from All Team
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <returns>True - If successfully leaved from all teams else False</returns>
         public bool LeaveFromAllTeam(long userId)
         {
             if (userId != 0)

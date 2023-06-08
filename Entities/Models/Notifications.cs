@@ -27,8 +27,10 @@ namespace Entities.Models
             RemovedReportingPerson,
             ApprovedJoinRequest,
             DeclinedJoinRequest,
+            ReceivedJoinRequest,
             ApprovedLeaveRequest,
             DeclinedLeaveRequest,
+            ReceivedLeaveRequest,
             AddedToTeam,
             RemovedFromTeam,
             NewTaskAssigned

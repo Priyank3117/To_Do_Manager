@@ -47,6 +47,7 @@ namespace Entities.Data
                 .Property(U => U.Type)
                 .HasConversion<string>()
                 .HasMaxLength(50);
+            //modelBuilder.Entity<TeamMembers>().ToTable(tb => tb.HasTrigger("TriggerName"));
         }
 
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
