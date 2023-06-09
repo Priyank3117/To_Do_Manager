@@ -36,6 +36,6 @@ namespace Entities.Models
             NewTaskAssigned
         }
 
-        public NotificationType Type { get; set; }           
+        public NotificationType Type { get; set; }
     }
 }

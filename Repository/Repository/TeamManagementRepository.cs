@@ -119,11 +119,8 @@ namespace Repository.Repository
             {
                 teamMember.ReportinPersonUserId = userIdOfReportingPerson;
 
-                _db.Update(teamMember);
-                _db.SaveChanges();
                 reportingPerson.Role = Entities.Models.TeamMembers.Roles.ReportingPerson;
 
-                _db.Update(reportingPerson);
                 _db.SaveChanges();
 
                 return true;
@@ -144,7 +141,6 @@ namespace Repository.Repository
                 {
                     teamMember.ReportinPersonUserId = null;
 
-                    _db.Update(teamMember);
                     _db.SaveChanges();
 
                     if (!query.Any(teamMember => teamMember.ReportinPersonUserId == reportingPersonUserId))
@@ -154,7 +150,6 @@ namespace Repository.Repository
                         {
                             reportingPerson.Role = Entities.Models.TeamMembers.Roles.TeamMember;
 
-                            _db.Update(reportingPerson);
                             _db.SaveChanges();
                         }
                     }
@@ -179,7 +174,6 @@ namespace Repository.Repository
                 {
                     teamMember.Status = Entities.Models.TeamMembers.MemberStatus.Approved;
 
-                    _db.Update(teamMember);
                     _db.SaveChanges();
 
                     return true;
@@ -209,7 +203,6 @@ namespace Repository.Repository
                 {
                     teamMember.Status = Entities.Models.TeamMembers.MemberStatus.Approved;
 
-                    _db.Update(teamMember);
                     _db.SaveChanges();
 
                     return true;

@@ -21,10 +21,17 @@ namespace To_Do_Manager.Controllers
         /// <returns>User Profile Page</returns>
         public IActionResult Index()
         {
-            ViewBag.UserName = HttpContext.Session.GetString("UserName");
-            ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            else
+            {
+                ViewBag.UserName = HttpContext.Session.GetString("UserName");
+                ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
 
-            return View(_UserProfileBAL.GetUserProfileDetails(long.Parse(HttpContext.Session.GetString("UserId")!)));
+                return View(_UserProfileBAL.GetUserProfileDetails(long.Parse(HttpContext.Session.GetString("UserId")!)));
+            }
         }
 
         /// <summary>

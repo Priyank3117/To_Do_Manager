@@ -265,7 +265,8 @@ namespace Repository.Repository
                         UserId = task.UserId,
                         IsTaskForToday = true,
                         StartDate = DateTime.Now,
-                        EndDate = DateTime.Now
+                        EndDate = DateTime.Now,
+                        AssignedBy = task.FromUserId != task.UserId ? Tasks.AssignBy.TeamLeader : Tasks.AssignBy.Self
                     };
 
                     _db.Add(addTask);
@@ -282,7 +283,8 @@ namespace Repository.Repository
                         UserId = task.UserId,
                         IsTaskForToday = true,
                         StartDate = (DateTime)task.StartDate!,
-                        EndDate = (DateTime)task.EndDate!
+                        EndDate = (DateTime)task.EndDate!,
+                        AssignedBy = task.FromUserId != task.UserId ? Tasks.AssignBy.TeamLeader : Tasks.AssignBy.Self
                     };
 
                     _db.Add(addTask);

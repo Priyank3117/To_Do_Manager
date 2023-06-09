@@ -151,7 +151,6 @@ namespace Repository.Repository
                 {
                     teamMember.Status = TeamMembers.MemberStatus.RequestedForLeave;
 
-                    _db.Update(teamMember);
                     _db.SaveChanges();
 
                     return true;
@@ -183,10 +182,8 @@ namespace Repository.Repository
                     foreach(var team in teams)
                     {
                         team.Status = TeamMembers.MemberStatus.RequestedForLeave;
-                        _db.Update(team);
-                    }
-                    
-                    _db.SaveChanges();
+                        _db.SaveChanges();
+                    }                   
 
                     return true;
                 }

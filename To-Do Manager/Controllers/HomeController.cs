@@ -25,10 +25,17 @@ namespace To_Do_Manager.Controllers
         /// <returns>Availale Teams Page</returns>
         public IActionResult Index()
         {
-            ViewBag.UserName = HttpContext.Session.GetString("UserName");
-            ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            else
+            {
+                ViewBag.UserName = HttpContext.Session.GetString("UserName");
+                ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
 
-            return View();
+                return View();
+            }
         }
 
         /// <summary>
@@ -37,10 +44,17 @@ namespace To_Do_Manager.Controllers
         /// <returns>Return All Teams Page if user have any team else return All Available Team Page</returns>
         public IActionResult GoToHome()
         {
-            if (!_AccountBAL.IsUserHaveAnyTeam(long.Parse(HttpContext.Session.GetString("UserId")!)))
-                return RedirectToAction("Index", "Home");
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                return RedirectToAction("Logout", "Account");
+            }
             else
-                return RedirectToAction("AllTeamsPage", "Home");
+            {
+                if (!_AccountBAL.IsUserHaveAnyTeam(long.Parse(HttpContext.Session.GetString("UserId")!)))
+                    return RedirectToAction("Index", "Home");
+                else
+                    return RedirectToAction("AllTeamsPage", "Home");
+            }
         }
 
         /// <summary>
@@ -49,11 +63,18 @@ namespace To_Do_Manager.Controllers
         /// <returns>All Teams with Today's Task</returns>
         public IActionResult AllTeamsPage()
         {
-            ViewBag.UserName = HttpContext.Session.GetString("UserName");
-            ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
-            return View(_HomeBAL.GetAllTodayTasks(long.Parse(HttpContext.Session.GetString("UserId")!)));
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            else
+            {
+                ViewBag.UserName = HttpContext.Session.GetString("UserName");
+                ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
+                return View(_HomeBAL.GetAllTodayTasks(long.Parse(HttpContext.Session.GetString("UserId")!)));
+            }
         }
-        
+
         /// <summary>
         /// Get Available All Teams with Team Name
         /// </summary>
@@ -119,10 +140,12 @@ namespace To_Do_Manager.Controllers
         /// <returns>True - If successfully Add Task alse False</returns>
         public bool AddTask(TaskDetailViewModel task)
         {
-            if(task.UserId == 0)
+            if (task.UserId == 0)
             {
                 task.UserId = long.Parse(HttpContext.Session.GetString("UserId")!);
             }
+            task.FromUserId = long.Parse(HttpContext.Session.GetString("UserId")!);
+
             return _HomeBAL.AddTask(task);
         }
         #endregion
@@ -154,7 +177,14 @@ namespace To_Do_Manager.Controllers
         /// <returns>List od all notifications</returns>
         public IActionResult GetNotifications()
         {
-            return PartialView("~/Views/PartialViews/_Notification.cshtml", _HomeBAL.GetNotifications(long.Parse(HttpContext.Session.GetString("UserId")!)));
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            else
+            {
+                return PartialView("~/Views/PartialViews/_Notification.cshtml", _HomeBAL.GetNotifications(long.Parse(HttpContext.Session.GetString("UserId")!)));
+            }
         }
 
         /// <summary>

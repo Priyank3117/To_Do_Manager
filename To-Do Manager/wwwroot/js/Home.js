@@ -26,6 +26,14 @@
         data: {},
         success: function (result) {
             $(".notificationContainer").html(result)
+
+            var notificationCount = $(".dot").length;
+            if (notificationCount == 0) {
+                $(".notificationDot").css("display", "none")
+            } else {
+                $(".notificationDot p").html(notificationCount)
+            }
+            
         }
     })
 })

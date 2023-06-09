@@ -13,5 +13,7 @@
         public string ReportingPersonUserName { get; set; } = string.Empty;
 
         public string ReportingPersonAvatar { get; set; } = string.Empty;
+
+        public string MemberStatus { get; set; } = string.Empty;
     }
 }

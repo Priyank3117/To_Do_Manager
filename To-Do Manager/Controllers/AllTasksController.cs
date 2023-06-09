@@ -20,10 +20,17 @@ namespace To_Do_Manager.Controllers
         /// <returns>All Tasks Page With Calender and List View</returns>
         public IActionResult Index()
         {
-            ViewBag.UserName = HttpContext.Session.GetString("UserName");
-            ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            else
+            {
+                ViewBag.UserName = HttpContext.Session.GetString("UserName");
+                ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
 
-            return View(_AllTaksBAL.GetTasksForCalenderView(long.Parse(HttpContext.Session.GetString("UserId")!)));
+                return View(_AllTaksBAL.GetTasksForCalenderView(long.Parse(HttpContext.Session.GetString("UserId")!)));
+            }
         }
 
         /// <summary>
@@ -43,9 +50,16 @@ namespace To_Do_Manager.Controllers
         /// <returns>List of All Task Team wise</returns>
         public IActionResult GetAllTaskOfAllTeams(Filter filter)
         {
-            filter.UserId = long.Parse(HttpContext.Session.GetString("UserId")!);
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            else
+            {
+                filter.UserId = long.Parse(HttpContext.Session.GetString("UserId")!);
 
-            return PartialView("~/Views/PartialViews/AllTasks/_Team.cshtml", _AllTaksBAL.GetAllTasks(filter));
+                return PartialView("~/Views/PartialViews/AllTasks/_Team.cshtml", _AllTaksBAL.GetAllTasks(filter));
+            }
         }
     }
 }
