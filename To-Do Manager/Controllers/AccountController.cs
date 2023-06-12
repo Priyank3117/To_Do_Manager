@@ -1,18 +1,20 @@
 ﻿using BAL;
+using Entities;
 using Entities.ViewModels.AccountViewModels;
+using Entities.ViewModels.HomeViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using System.Net.Mail;
 
 namespace To_Do_Manager.Controllers
 {
     public class AccountController : Controller
     {
         private readonly AccountBAL _AccountBAL;
+        private readonly MailHelper _MailHelper;
 
-        public AccountController(AccountBAL accountBAL)
+        public AccountController(AccountBAL accountBAL, MailHelper mail)
         {
             _AccountBAL = accountBAL;
+            _MailHelper = mail;
         }
 
         #region Login
@@ -119,29 +121,18 @@ namespace To_Do_Manager.Controllers
         {
             if (_AccountBAL.IsUserAlreadyRegistered(forgotPassword.Email))
             {
-                var fromEmail = new MailAddress("chavdaanand2002@gmail.com");
                 Random otp = new Random();
                 var OTP = otp.Next(0000, 9999);
-
-                MailMessage message = new MailMessage(fromEmail, new MailAddress(forgotPassword.Email))
-                {
-                    Subject = "OTP for Reset Password",
-                    Body = "Your OTP is " + OTP,
-                    IsBodyHtml = true
-                };
-
-                new SmtpClient()
-                {
-                    Host = "smtp.gmail.com",
-                    Port = 587,
-                    EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(fromEmail.Address, "aaafknrnkglrohrn")
-                }.Send(message);
-
                 forgotPassword.OTP = OTP;
-                if (_AccountBAL.StoreOTP(forgotPassword))
+
+                SendEmailViewModel sendEmailViewModel = new()
+                {
+                    Body = "Your OTP is " + OTP,
+                    Subject = "OTP for Reset Password",
+                    ToEmail = forgotPassword.Email,
+                };
+                
+                if (_AccountBAL.StoreOTP(forgotPassword) && _MailHelper.SendEmail(sendEmailViewModel))
                     return true;
             }
             return false;

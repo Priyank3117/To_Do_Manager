@@ -33,7 +33,9 @@ namespace Entities.Models
             ReceivedLeaveRequest,
             AddedToTeam,
             RemovedFromTeam,
-            NewTaskAssigned
+            NewTaskAssigned,
+            BecameAReportingPerson,
+            NoLongerReportingPerson
         }
 
         public NotificationType Type { get; set; }

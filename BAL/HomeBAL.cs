@@ -1,4 +1,5 @@
-﻿using Entities.ViewModels.HomeViewModels;
+﻿using Entities;
+using Entities.ViewModels.HomeViewModels;
 using Repository.Interface;
 using System.Net;
 using System.Net.Mail;
@@ -9,11 +10,13 @@ namespace BAL
     {
         private readonly IHomeRepository _HomeRepo;
         private readonly INotificationRepository _NotificationRepo;
+        private readonly MailHelper mailHelper;
 
-        public HomeBAL(IHomeRepository homeRepo, INotificationRepository notificationRepo)
+        public HomeBAL(IHomeRepository homeRepo, INotificationRepository notificationRepo, MailHelper mail)
         {
             _HomeRepo = homeRepo;
             _NotificationRepo = notificationRepo;
+            mailHelper = mail;
         }
         
         /// <summary>
@@ -57,7 +60,8 @@ namespace BAL
                             Subject = "Invitation to join a Team",
                             ToEmail = userEmail
                         };
-                        InviteUser(sendEmailViewModel);
+
+                        mailHelper.SendEmail(sendEmailViewModel);
                     }
                     else
                     {
@@ -67,7 +71,8 @@ namespace BAL
                             Subject = "Invitation to join a Team",
                             ToEmail = userEmail
                         };
-                        InviteUser(sendEmailViewModel);
+
+                        mailHelper.SendEmail(sendEmailViewModel);
                     }
                 }
                 return true;
@@ -83,36 +88,6 @@ namespace BAL
         public bool RequestToJoinTeam(TeamMemberViewModel userRequest)
         {
             return _HomeRepo.RequestToJoinTeam(userRequest);
-        }
-
-        /// <summary>
-        /// Invite User Via Email
-        /// </summary>
-        /// <param name="emailInfo">Email Subject, Email Body and Recevier's Email Id</param>
-        /// <returns>True - Id successfully email sent to user else False</returns>
-        public bool InviteUser(SendEmailViewModel emailInfo)
-        {
-            var fromEmail = new MailAddress("chavdaanand2002@gmail.com");
-
-            var smtp = new SmtpClient
-            {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(fromEmail.Address, "tomkciepchiqkbkx")
-            };
-
-            MailMessage message = new(fromEmail, new MailAddress(emailInfo.ToEmail))
-            {
-                Subject = emailInfo.Subject,
-                Body = emailInfo.Body,
-                IsBodyHtml = true
-            };
-            smtp.Send(message);
-
-            return true;
         }
 
         /// <summary>
@@ -186,6 +161,11 @@ namespace BAL
             return _NotificationRepo.ClearAllNotifications(userId);
         }
 
+        /// <summary>
+        /// Mark Notification as Read
+        /// </summary>
+        /// <param name="notificationId">Notification Id</param>
+        /// <returns>True - If Notification successfully mark as read else False</returns>
         public bool MarkNotificationAsRead(long notificationId)
         {
             return _NotificationRepo.MarkNotificationAsRead(notificationId);

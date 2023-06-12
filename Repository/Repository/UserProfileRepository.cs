@@ -48,7 +48,7 @@ namespace Repository.Repository
         /// </summary>
         /// <param name="userDetails">User's Details like FirstName, LastName, Gender, Department and LinkedInURL</param>
         /// <returns>User Profile Page if any validation error then with error</returns>
-        public bool SaveUserProfileDetails(UserProfileViewModel userDetails)
+        public UserProfileViewModel SaveUserProfileDetails(UserProfileViewModel userDetails)
         {
             if (userDetails != null)
             {
@@ -67,10 +67,15 @@ namespace Repository.Repository
                     _db.Update(user);
                     _db.SaveChanges();
 
-                    return true;
+                    return new UserProfileViewModel
+                    {
+                        Avatar = user.Avatar,
+                        FirstName = userDetails.FirstName,
+                        LastName = userDetails.LastName
+                    };
                 }
             }
-            return false;
+            return new UserProfileViewModel();
         }
 
         /// <summary>

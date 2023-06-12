@@ -16,6 +16,11 @@ namespace Repository.Repository
             _HomeRepo = homeRepo;
         }
 
+        /// <summary>
+        /// Register User
+        /// </summary>
+        /// <param name="registration">User's details like first name, last name, email, password</param>
+        /// <returns>True - If successfully register else False</returns>
         public bool RegisterUser(RegistrationViewModel registration)
         {
             if(registration != null)
@@ -46,11 +51,21 @@ namespace Repository.Repository
             return false;
         }
 
+        /// <summary>
+        /// Check User Already Register or Not
+        /// </summary>
+        /// <param name="email">Email of user</param>
+        /// <returns>True - If user already register else False</returns>
         public bool IsUserAlreadyRegistered(string email)
         {
             return _db.Users.Any(user => user.Email == email);
         }
 
+        /// <summary>
+        /// Ligin Method for User
+        /// </summary>
+        /// <param name="email">Email of User</param>
+        /// <returns>User's details like email, password, user Id</returns>
         public LoginViewModel UserLogin(string email)
         {
             LoginViewModel loginViewModel = new LoginViewModel();
@@ -67,6 +82,11 @@ namespace Repository.Repository
             return loginViewModel;
         }
 
+        /// <summary>
+        /// Store OTP
+        /// </summary>
+        /// <param name="forgotPassword">OTP and user's email Id</param>
+        /// <returns>True - If OTP successfully stored else False</returns>
         public bool StoreOTP(ForgotPasswordViewModel forgotPassword)
         {
             if (forgotPassword.Email != "")
@@ -101,6 +121,11 @@ namespace Repository.Repository
             }
         }
 
+        /// <summary>
+        /// Verify OTP
+        /// </summary>
+        /// <param name="forgotPassword">User's Email and their OTP</param>
+        /// <returns>"Valid OTP" - If OTP is valid</returns>
         public string VerifyOTP(ForgotPasswordViewModel forgotPassword)
         {
             var otpDetails = _db.ResetPassword.FirstOrDefault( resetPassword => resetPassword.Email == forgotPassword.Email);
@@ -124,6 +149,11 @@ namespace Repository.Repository
             }
         }
 
+        /// <summary>
+        /// Change Password
+        /// </summary>
+        /// <param name="resetPassword">old password, new password, email of user</param>
+        /// <returns>"Changed" - If password changed</returns>
         public string ChangePassword(ResetPasswordViewModel resetPassword)
         {
             var user = _db.Users.FirstOrDefault(user => user.Email == resetPassword.Email);
@@ -146,6 +176,11 @@ namespace Repository.Repository
             }
         }
 
+        /// <summary>
+        /// Check If User Have Any Team or Not
+        /// </summary>
+        /// <param name="userID">user id</param>
+        /// <returns>True - If User have team else False</returns>
         public bool IsUserHaveAnyTeam(long userID)
         {
             return _db.TeamMembers.Any(teamMember => teamMember.UserId == userID && teamMember.Status == TeamMembers.MemberStatus.Approved);

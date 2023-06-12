@@ -2,11 +2,15 @@
 
 @model List<TeamManagementViewModel>
 
+@{
+    bool isTeamsAvailable = false;
+}
 <div class="row">
     @if (Model != null)
     {
         foreach (var team in Model)
         {
+            isTeamsAvailable = true;
             <div class="col-lg-6 col-12">
                 <div class="teamContainer">
                     <div class="row">
@@ -26,12 +30,15 @@
                                             </svg>
                                         </button>
                                     </div>
-                                }else if(team.MemberStatus == "RequestedForLeave"){
+                                }
+                                else if (team.MemberStatus == "RequestedForLeave")
+                                {
                                     <div class="d-flex justify-content-start align-items-center">
                                         <button type="button" class="leaveTeamButton" disabled>Leave Requested</button>
                                     </div>
                                 }
-                                else{
+                                else
+                                {
                                     <div class="d-flex justify-content-start align-items-center">
                                         <button type="button" class="leaveTeamButton" onclick="leaveFromTeam(@team.TeamId, @team.UserId, '@team.TeamName')">Leave</button>
                                     </div>
@@ -47,7 +54,7 @@
                                             </p>
                                             @if (team.TeamMembers.Count() != 0)
                                             {
-                                                <p class="m-0 fs-5 mb-3">Team Members & their Reporting Person</p>
+                                                <p class="m-0 fs-5 mb-3">Team Members & Their Reporting Person</p>
                                                 @foreach (var teamMember in team.TeamMembers)
                                                 {
                                                     if (teamMember.ReportingPersonUserId != null)
@@ -111,6 +118,10 @@
                                                                                 set R.P.
                                                                             </button>
                                                                         </div>
+                                                                    }
+                                                                    @if (team.TeamLeaderUserId == teamMember.UserId)
+                                                                    {
+                                                                        <p class="text-success m-0 p-0">Team Leader</p>
                                                                     }
                                                                 </div>
                                                             </div>
@@ -190,3 +201,13 @@
     }
 </div>
 
+@if (!isTeamsAvailable)
+{
+    <div class="row">
+        <div class="col">
+            <div class="allTeamContainer" style="justify-content: center;">
+                <p class="text-muted mt-5" style="font-family: sans-serif;font-size:xx-large;">No Teams Available</p>
+            </div>
+        </div>
+    </div>
+}

@@ -2,12 +2,17 @@
 
 @model List<AllTasksOfAllTeams>
 
+@{
+    bool isTeamAvailable = true;
+}
+
 @if (Model != null)
 {
     @foreach (var team in Model)
     {
         if (team.TeamName != null)
         {
+            isTeamAvailable = false;
             <div class="teamContainer">
                 <div class="row">
                     <div class="col">
@@ -27,16 +32,20 @@
                         <p class="m-0 mt-2 text-muted">All Tasks</p>
                         <div class="allTasksContainer">
                             <div class="col-12">
-                                <div class="accordion accordion-flush" id="accordionFlushExample">
+                                <div class="accordion accordion-flush" id="Accordian_@team.TeamId">
+                                    @{
+                                        var idCount = 1;
+                                        var id = "Member" + @team.TeamId;
+                                    }
                                     @if (team.MyTasks.Count() != 0)
                                     {
                                         <div class="accordion-item accordionItem" style="border-radius: 10px;">
                                             <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" style="background-color: #ffffff;color: #000000;border-radius: 10px;box-shadow: none;" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                                <button class="accordion-button collapsed" style="background-color: #ffffff;color: #000000;border-radius: 10px;box-shadow: none;" type="button" data-bs-toggle="collapse" data-bs-target="#@(id+idCount)" aria-expanded="false" aria-controls="@(id+idCount)">
                                                     <p class="m-0 fs-5">My Tasks</p>
                                                 </button>
                                             </h2>
-                                            <div id="flush-collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionFlushExample">
+                                            <div id="@(id+idCount)" class="accordion-collapse collapse" data-bs-parent="#Accordian_@team.TeamId">
                                                 <div class="accordion-body">
                                                     @foreach (var task in team.MyTasks)
                                                     {
@@ -91,17 +100,16 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        idCount = idCount + 1;
                                     }
                                     @if (team.TeamMembersTaasks.Count() != 0)
                                     {
                                         @foreach (var member in team.TeamMembersTaasks)
                                         {
-                                            var idCount = 1;
-                                            var id = "Member" + idCount;
-
                                             <div class="accordion-item accordionItem" style="border-radius: 10px;">
                                                 <h2 class="accordion-header">
-                                                    <button class="accordion-button collapsed" style="background-color: #ffffff;color: #000000;border-radius: 10px;box-shadow: none;" type="button" data-bs-toggle="collapse" data-bs-target="#@id" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                                    <button class="accordion-button collapsed" style="background-color: #ffffff;color: #000000;border-radius: 10px;box-shadow: none;" type="button" data-bs-toggle="collapse" data-bs-target="#@(id+idCount)" aria-expanded="false" aria-controls="@(id+idCount)">
                                                         <div class="d-flex justify-content-start align-items-center">
                                                             <img src="@member.Avatar" class="userAvatar " alt="" />
                                                             &nbsp;&nbsp;
@@ -109,7 +117,7 @@
                                                         </div>
                                                     </button>
                                                 </h2>
-                                                <div id="@id" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                                <div id="@(id+idCount)" class="accordion-collapse collapse" data-bs-parent="#Accordian_@team.TeamId">
                                                     <div class="accordion-body">
                                                         @foreach (var task in member.TodayTasks)
                                                         {
@@ -164,6 +172,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            idCount = idCount + 1;
                                         }
                                     }
                                 </div>
@@ -174,4 +183,15 @@
             </div>
         }
     }
+}
+
+@if (isTeamAvailable)
+{
+    <div class="row">
+        <div class="col">
+            <div class="allTeamContainer" style="justify-content: center;">
+                <p class="text-muted mt-5" style="font-family: sans-serif;font-size:xx-large;">Result Not Available</p>
+            </div>
+        </div>
+    </div>
 }

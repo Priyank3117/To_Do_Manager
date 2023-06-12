@@ -27,7 +27,7 @@ namespace BAL
         /// </summary>
         /// <param name="userDetails">User's Details like FirstName, LastName, Gender, Department and LinkedInURL</param>
         /// <returns>User Profile Page if any validation error then with error</returns>
-        public bool SaveUserProfileDetails(UserProfileViewModel userDetails)
+        public UserProfileViewModel SaveUserProfileDetails(UserProfileViewModel userDetails)
         {
             return _UserProfileRepo.SaveUserProfileDetails(userDetails);
         }

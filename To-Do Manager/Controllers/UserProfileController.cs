@@ -44,10 +44,12 @@ namespace To_Do_Manager.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_UserProfileBAL.SaveUserProfileDetails(userProfile))
-                {
-                    return View();
-                }
+                var userDetails = _UserProfileBAL.SaveUserProfileDetails(userProfile);
+                ViewBag.Avatar = userDetails.Avatar;
+                ViewBag.UserName = userDetails.FirstName + " " + userDetails.LastName;
+                HttpContext.Session.SetString("UserName", userDetails.FirstName + " " + userDetails.LastName);
+
+                return View(userDetails);
             }
             return View();
         }

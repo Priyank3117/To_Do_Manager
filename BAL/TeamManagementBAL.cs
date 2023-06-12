@@ -1,4 +1,5 @@
-﻿using Entities.ViewModels.HomeViewModels;
+﻿using Entities;
+using Entities.ViewModels.HomeViewModels;
 using Entities.ViewModels.TeamManagement;
 using Repository.Interface;
 
@@ -8,20 +9,30 @@ namespace BAL
     {
         private readonly ITeamManagementRepository _TeamManagementRepo;
         private readonly IHomeRepository _HomeRepo;
-        private readonly HomeBAL _HomeBAL;
+        private readonly MailHelper _MailHelper;
 
-        public TeamManagementBAL(ITeamManagementRepository teamManagementRepo, IHomeRepository homeRepo, HomeBAL homeBAL)
+        public TeamManagementBAL(ITeamManagementRepository teamManagementRepo, IHomeRepository homeRepo, MailHelper mail)
         {
             _TeamManagementRepo = teamManagementRepo;
             _HomeRepo = homeRepo;
-            _HomeBAL = homeBAL;
+            _MailHelper = mail;
         }
 
+        /// <summary>
+        /// Get All teams Details
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <returns>List of team details like - Team Name, Team Members Details and thair Reporting Person, Join Requests and Leave Requests</returns>
         public List<TeamManagementViewModel> GetAllTeamsDetails(long userId)
         {
             return _TeamManagementRepo.GetAllTeamsDetails(userId);
         }
 
+        /// <summary>
+        /// Add User In Team
+        /// </summary>
+        /// <param name="addUsers">Email of user</param>
+        /// <returns>True - If successfully Added alse False</returns>
         public bool AddUser(AddUsersInTeam addUsers)
         {
             if(addUsers.TeamId != 0)
@@ -36,7 +47,8 @@ namespace BAL
                             Subject = "Invitation to join a Team",
                             ToEmail = userEmail
                         };
-                        _HomeBAL.InviteUser(sendEmailViewModel);
+
+                        _MailHelper.SendEmail(sendEmailViewModel);
                     }
                     else
                     {
@@ -46,7 +58,8 @@ namespace BAL
                             Subject = "Invitation to join a Team",
                             ToEmail = userEmail
                         };
-                        _HomeBAL.InviteUser(sendEmailViewModel);
+
+                        _MailHelper.SendEmail(sendEmailViewModel);
                     }
                 }
 
@@ -56,26 +69,58 @@ namespace BAL
             return false;
         }
 
+        /// <summary>
+        /// Remove User from Team
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <param name="teamId">Team Id</param>
+        /// <returns>True - If succesfully removed alse False</returns>
         public bool RemoveUserFromTeam(long userId, long teamId)
         {
             return _TeamManagementRepo.RemoveUserFromTeam(userId, teamId);
         }
 
+        /// <summary>
+        /// Get Al lMember To Set Reporting Person
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <param name="teamId">Team Id</param>
+        /// <returns>List of User's details</returns>
         public List<UserDetailOfTeam> GetAllMemberToSetReportingPerson(long userId, long teamId)
         {
             return _TeamManagementRepo.GetAllMemberToSetReportingPerson(userId, teamId);
         }
 
+        /// <summary>
+        /// Set Reporting Person
+        /// </summary>
+        /// <param name="userIdOfTeamMember">User Id of Team Member</param>
+        /// <param name="userIdOfReportingPerson">User Id of Reporting Person</param>
+        /// <param name="teamId">Team Id</param>
+        /// <returns>True - If successfully set alse False</returns>
         public bool SetReportingPerson(long userIdOfTeamMember, long userIdOfReportingPerson, long teamId)
         {
             return _TeamManagementRepo.SetReportingPerson(userIdOfTeamMember, userIdOfReportingPerson, teamId);
         }
 
+        /// <summary>
+        /// Remove Reporting Person
+        /// </summary>
+        /// <param name="teamMemberUserId">User Id of Team Member</param>
+        /// <param name="reportingPersonUserId">User Id of Reporting Person</param>
+        /// <param name="teamId">Team Id</param>
+        /// <returns>True - If successfully removed alse False</returns>
         public bool RemoveReportingPerson(long teamMemberUserId, long reportingPersonUserId, long teamId)
         {
             return _TeamManagementRepo.RemoveReportingPerson(teamMemberUserId, reportingPersonUserId, teamId);
         }
 
+        /// <summary>
+        /// Accept Join Request in Team
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <param name="teamId">Team Id</param>
+        /// <returns>True - If successfully accept the request</returns>
         public bool AcceptJoinRequest(long userId, long teamId)
         {
             return _TeamManagementRepo.AcceptJoinRequest(userId, teamId);

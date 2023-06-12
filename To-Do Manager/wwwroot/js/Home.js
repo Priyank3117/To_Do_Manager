@@ -19,23 +19,6 @@
     $("#AddUser").focusout(function () {
         $("#AddUserSpan").html("")
     })
-
-    $.ajax({
-        type: "POST",
-        url: "/Home/GetNotifications",
-        data: {},
-        success: function (result) {
-            $(".notificationContainer").html(result)
-
-            var notificationCount = $(".dot").length;
-            if (notificationCount == 0) {
-                $(".notificationDot").css("display", "none")
-            } else {
-                $(".notificationDot p").html(notificationCount)
-            }
-            
-        }
-    })
 })
 
 // Add User In Team Validation
@@ -115,16 +98,25 @@ function searchTeam() {
         success: function (result) {
 
             $(".allTeamContainer").empty()
-            for (var i = 0; i < result.length; i++) {
-                if (result[i].status == "Pending") {
-                    $(".allTeamContainer").append(`<a role="button" onclick="getTeamDetails(` + result[i].teamId + `)" id=` + result[i].teamId + ` class="requestSendButton" disabled>
+            if (result.length != 0) {
+                for (var i = 0; i < result.length; i++) {
+                    if (result[i].status == "Pending") {
+                        $(".allTeamContainer").append(`<a role="button" onclick="getTeamDetails(` + result[i].teamId + `)" id=` + result[i].teamId + ` class="requestSendButton" disabled>
                         `+ result[i].teamName + `
                     </a>`)
-                } else {
-                    $(".allTeamContainer").append(`<a role="button" onclick="getTeamDetails(` + result[i].teamId + `)" id=` + result[i].teamId + ` class="joinTeamButton">
+                    } else {
+                        $(".allTeamContainer").append(`<a role="button" onclick="getTeamDetails(` + result[i].teamId + `)" id=` + result[i].teamId + ` class="joinTeamButton">
                         `+ result[i].teamName + `
                     </a>`)
+                    }
                 }
+                $(".availableTeamsText").css("display", "block")
+            }
+            else {
+                $(".allTeamContainer").append(`<div class="allTeamContainer" style="justify-content: center;">
+                    <p class="text-muted mt-5" style="font-family: sans-serif;font-size:xx-large;">No Teams Available</p>
+                </div>`)
+                $(".availableTeamsText").css("display","none")
             }
         }
     })

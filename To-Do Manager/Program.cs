@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Repository.Repository;
 using Repository.Interface;
 using BAL;
+using Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,7 @@ builder.Services.AddScoped<HomeBAL>();
 builder.Services.AddScoped<AllTasksBAL>();
 builder.Services.AddScoped<UserProfileBAL>();
 builder.Services.AddScoped<TeamManagementBAL>();
+builder.Services.AddScoped<MailHelper>();
 
 var app = builder.Build();
 

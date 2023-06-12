@@ -6,6 +6,8 @@
 
         public long UserId { get; set; } = 0;
 
+        public long TeamLeaderUserId { get; set; } = 0;
+
         public string TeamName { get; set; } = string.Empty;
 
         public string TeamDescription { get; set; } = string.Empty;

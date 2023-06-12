@@ -13,6 +13,11 @@ namespace Repository.Repository
             _db = db;
         }
 
+        /// <summary>
+        /// Get All teams Details
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <returns>List of team details like - Team Name, Team Members Details and thair Reporting Person, Join Requests and Leave Requests</returns>
         public List<TeamManagementViewModel> GetAllTeamsDetails(long userId)
         {
             var query = _db.TeamMembers.AsQueryable();
@@ -26,6 +31,7 @@ namespace Repository.Repository
                 TeamDescription = team.Teams.TeamDescription,
                 Role = team.Role.ToString(),
                 MemberStatus = team.Status.ToString(),
+                TeamLeaderUserId = team.Teams.TeamMembers.FirstOrDefault(teamMember => teamMember.Role == Entities.Models.TeamMembers.Roles.TeamLeader && teamMember.TeamId == team.TeamId)!.UserId,
                 TeamMembers = query.Where(teamMember => teamMember.TeamId == team.TeamId && (teamMember.Status == Entities.Models.TeamMembers.MemberStatus.Approved || teamMember.Status == Entities.Models.TeamMembers.MemberStatus.RequestedForLeave)).Select(user => new UserDetailOfTeam()
                 {
                     UserId = user.UserId,
@@ -52,6 +58,12 @@ namespace Repository.Repository
             return teams;
         }
 
+        /// <summary>
+        /// Remove User from Team
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <param name="teamId">Team Id</param>
+        /// <returns>True - If succesfully removed alse False</returns>
         public bool RemoveUserFromTeam(long userId, long teamId)
         {
             if (userId != 0 && teamId != 0)
@@ -84,6 +96,12 @@ namespace Repository.Repository
 
         }
 
+        /// <summary>
+        /// Get Al lMember To Set Reporting Person
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <param name="teamId">Team Id</param>
+        /// <returns>List of User's details</returns>
         public List<UserDetailOfTeam> GetAllMemberToSetReportingPerson(long userId, long teamId)
         {
             var query = _db.TeamMembers.AsQueryable();
@@ -108,6 +126,13 @@ namespace Repository.Repository
             return allTeamMembers;
         }
 
+        /// <summary>
+        /// Set Reporting Person
+        /// </summary>
+        /// <param name="userIdOfTeamMember">User Id of Team Member</param>
+        /// <param name="userIdOfReportingPerson">User Id of Reporting Person</param>
+        /// <param name="teamId">Team Id</param>
+        /// <returns>True - If successfully set alse False</returns>
         public bool SetReportingPerson(long userIdOfTeamMember, long userIdOfReportingPerson, long teamId)
         {
             var query = _db.TeamMembers.Where(teamMember => teamMember.TeamId == teamId).AsQueryable();
@@ -129,6 +154,13 @@ namespace Repository.Repository
             return false;
         }
 
+        /// <summary>
+        /// Remove Reporting Person
+        /// </summary>
+        /// <param name="teamMemberUserId">User Id of Team Member</param>
+        /// <param name="reportingPersonUserId">User Id of Reporting Person</param>
+        /// <param name="teamId">Team Id</param>
+        /// <returns>True - If successfully removed alse False</returns>
         public bool RemoveReportingPerson(long teamMemberUserId, long reportingPersonUserId, long teamId)
         {
             if (teamMemberUserId != 0 && reportingPersonUserId != 0 && teamId != 0)
@@ -164,6 +196,12 @@ namespace Repository.Repository
             return false;
         }
 
+        /// <summary>
+        /// Accept Join Request in Team
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <param name="teamId">Team Id</param>
+        /// <returns>True - If successfully accept the request</returns>
         public bool AcceptJoinRequest(long userId, long teamId)
         {
             if (userId != 0 && teamId != 0)

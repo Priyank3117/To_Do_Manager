@@ -34,13 +34,13 @@ $(".addUser").click(function () {
         $("#AddUserSpan").html("Invalid Email")
     } else {
         $("#AddUserSpan").html("")
-        debugger
+
         var idOfEmailText = $(".AddedUser").length + 1;
 
         var emailHTML = `<div class="AddedUser mt-2" id=` + idOfEmailText + `>
                                             <p class="text-muted m-0 userEmail">`+ $("#AddUser").val() + `</p>
                                             <a role="button" onclick="RemoveUser(`+ idOfEmailText + `)" class="ms-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" style="color: black"
                                                      class="bi bi-x-lg" viewBox="0 0 16 16">
                                                     <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
                                                 </svg>
@@ -66,7 +66,7 @@ $(".addUserInTeam").click(function () {
         $("#AddUserInTeamSpan").html("")
         var idOfEmailText = $(".AddedUserInTeam").length + 1;
         var canAdd = true;
-        debugger
+        
         for (var i = 0; i < usersEmail.length; i++) {
             if (usersEmail[i] == `` + $("#AddUserInTeam").val() + ``) {
                 $("#AddUserInTeamSpan").html("Already Added")
@@ -128,10 +128,19 @@ function createTeam() {
             url: "/Home/CreateTeam",
             processData: false,
             contentType: false,
+            beforeSend: function () {
+                $("#CreateTeamButton").attr("disabled", true)
+                document.getElementById("CreateTeamButton").innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> &nbsp; Loading...`;
+            },
+            complete: function () {
+                $("#CreateTeamButton").html("Created")
+                $("#CreateTeamButton").removeAttr("disabled")
+            },
             data: team,
             success: function (result) {
                 if (result == true) {
                     $("#CreateTeamModal").modal("hide")
+                    location.reload(true)
                 }
             }
         })
@@ -232,6 +241,14 @@ function addUserInTeam() {
             url: "/TeamManagement/AddUserInTeam",
             processData: false,
             contentType: false,
+            beforeSend: function () {
+                $("#addUserInTeam").attr("disabled", true)
+                document.getElementById("addUserInTeam").innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> &nbsp; Loading...`;
+            },
+            complete: function () {
+                $("#addUserInTeam").html("Created")
+                $("#addUserInTeam").removeAttr("disabled")
+            },
             data: team,
             success: function (result) {
                 if (result == true) {

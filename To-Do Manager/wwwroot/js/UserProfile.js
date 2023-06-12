@@ -192,7 +192,7 @@ function finalLeaveFromTeam(teamId, userId) {
 
 // Leave All Teams
 function leaveAllTeams() {
-    $(".warningText").html(`Are you sure to leave from all teams?`)
+    $(".warningText").html(`Are you sure to leave from all the teams?`)
     $(".leaveTeamButtonContainer").html(`<button type="button" class="CancelCreateTeamButton me-2"
                                                     data-bs-toggle="modal">
                                                 Cancel

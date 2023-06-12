@@ -6,7 +6,7 @@ namespace Repository.Interface
     {
         public UserProfileViewModel GetUserProfileDetails(long userId);
 
-        public bool SaveUserProfileDetails(UserProfileViewModel userDetails);
+        public UserProfileViewModel SaveUserProfileDetails(UserProfileViewModel userDetails);
 
         public string ChangePassword(long userId, string newPassword, string oldPassword);
 

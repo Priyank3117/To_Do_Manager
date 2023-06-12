@@ -2,6 +2,24 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+$(document).ready(function () {
+    $.ajax({
+        type: "POST",
+        url: "/Home/GetNotifications",
+        data: {},
+        success: function (result) {
+            $(".notificationContainer").html(result)
+
+            var notificationCount = $(".dot").length;
+            if (notificationCount == 0) {
+                $(".notificationDot").css("display", "none")
+            } else {
+                $(".notificationDot p").html(notificationCount)
+            }
+
+        }
+    })
+})
 
 function getTeamManagementPage(notificationId) {
     markNotificationAsRead(notificationId)
