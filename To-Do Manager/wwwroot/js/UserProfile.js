@@ -58,6 +58,19 @@ $(document).ready(function () {
     })
 })
 
+//Open Change Password Modal
+function openChangePasswordModal() {
+    $('#oldPassword').val("")
+    $('#newPassword').val("")
+    $('#confirmPassword').val("")
+
+    $("#oldPasswordSpan").html('')
+    $("#newPasswordSpan").html('')
+    $("#confirmPasswordSpan").html('')
+
+    $("#changePasswordModal").modal("show")
+}
+
 // Change Password
 function changePassword() {
     var oldPassword = $('#oldPassword').val();

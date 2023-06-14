@@ -1,9 +1,11 @@
 ﻿using BAL;
 using Entities.ViewModels.TeamManagement;
 using Microsoft.AspNetCore.Mvc;
+using To_Do_Manager.Filters;
 
 namespace To_Do_Manager.Controllers
 {
+    [CheckSessionFilter]
     public class TeamManagementController : Controller
     {
         private TeamManagementBAL _TeamManagementBAL;
@@ -21,17 +23,10 @@ namespace To_Do_Manager.Controllers
         /// <returns>Team Management Page</returns>
         public IActionResult Index()
         {
-            if (HttpContext.Session.GetString("UserId") == null)
-            {
-                return RedirectToAction("Logout", "Account");
-            }
-            else
-            {
-                ViewBag.UserName = HttpContext.Session.GetString("UserName");
-                ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
+            ViewBag.UserName = HttpContext.Session.GetString("UserName");
+            ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
 
-                return View();
-            }
+            return View();
         }
 
         /// <summary>
@@ -40,14 +35,7 @@ namespace To_Do_Manager.Controllers
         /// <returns>List of available team with their name</returns>
         public IActionResult GetAllTeams()
         {
-            if (HttpContext.Session.GetString("UserId") == null)
-            {
-                return RedirectToAction("Logout", "Account");
-            }
-            else
-            {
-                return PartialView("~/Views/PartialViews/TeamManagement/_AllTeamsForJoinTeam.cshtml", _HomeBAL.GetAllTeams("", long.Parse(HttpContext.Session.GetString("UserId")!)));
-            }
+            return PartialView("~/Views/PartialViews/TeamManagement/_AllTeamsForJoinTeam.cshtml", _HomeBAL.GetAllTeams("", long.Parse(HttpContext.Session.GetString("UserId")!)));
         }
 
         /// <summary>
@@ -56,14 +44,7 @@ namespace To_Do_Manager.Controllers
         /// <returns>All Team Details Partial View</returns>
         public IActionResult GetAllTeamDetailsPartialView()
         {
-            if (HttpContext.Session.GetString("UserId") == null)
-            {
-                return RedirectToAction("Logout", "Account");
-            }
-            else
-            {
-                return PartialView("~/Views/PartialViews/TeamManagement/_AllTeamWithDetails.cshtml", _TeamManagementBAL.GetAllTeamsDetails(long.Parse(HttpContext.Session.GetString("UserId")!)));
-            }
+            return PartialView("~/Views/PartialViews/TeamManagement/_AllTeamWithDetails.cshtml", _TeamManagementBAL.GetAllTeamsDetails(long.Parse(HttpContext.Session.GetString("UserId")!)));
         }
 
         #region ManageUserInTeam
@@ -100,7 +81,7 @@ namespace To_Do_Manager.Controllers
         {
             return _TeamManagementBAL.GetAllMemberToSetReportingPerson(userId, teamId);
         }
-        
+
         /// <summary>
         /// Set Reporting Person
         /// </summary>
@@ -137,7 +118,7 @@ namespace To_Do_Manager.Controllers
         {
             return _TeamManagementBAL.AcceptJoinRequest(userId, teamId);
         }
-        
+
         /// <summary>
         /// Decline Join Request
         /// </summary>
@@ -173,5 +154,15 @@ namespace To_Do_Manager.Controllers
             return _TeamManagementBAL.DeclineLeaveRequest(userId, teamId);
         }
         #endregion
+
+        /// <summary>
+        /// Delete Team
+        /// </summary>
+        /// <param name="teamId">Team Id</param>
+        /// <returns>True - If successfully team deleted else False</returns>
+        public bool DeleteTeam(long teamId)
+        {
+            return _TeamManagementBAL.DeleteTeam(teamId);
+        }
     }
 }

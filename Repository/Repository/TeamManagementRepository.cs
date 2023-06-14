@@ -23,7 +23,7 @@ namespace Repository.Repository
             var query = _db.TeamMembers.AsQueryable();
             var users = _db.Users.AsQueryable();
 
-            var teams = query.Where(team => team.UserId == userId && ((team.Status == Entities.Models.TeamMembers.MemberStatus.Approved ) || (team.Status ==  Entities.Models.TeamMembers.MemberStatus.RequestedForLeave))).Select(team => new TeamManagementViewModel()
+            var teams = query.Where(team => team.UserId == userId && ((team.Status == Entities.Models.TeamMembers.MemberStatus.Approved) || (team.Status == Entities.Models.TeamMembers.MemberStatus.RequestedForLeave))).Select(team => new TeamManagementViewModel()
             {
                 TeamId = team.TeamId,
                 UserId = userId,
@@ -117,7 +117,7 @@ namespace Repository.Repository
 
             foreach (var teamMember in allMembers)
             {
-                if(!query.Any(member => member.ReportinPersonUserId == userId && member.TeamId == teamId))
+                if (!query.Any(member => member.ReportinPersonUserId == userId && member.TeamId == teamId))
                 {
                     allTeamMembers.Add(teamMember);
                 }
@@ -178,7 +178,7 @@ namespace Repository.Repository
                     if (!query.Any(teamMember => teamMember.ReportinPersonUserId == reportingPersonUserId))
                     {
                         var reportingPerson = query.FirstOrDefault(teamMember => teamMember.UserId == reportingPersonUserId);
-                        if(reportingPerson != null)
+                        if (reportingPerson != null)
                         {
                             reportingPerson.Role = Entities.Models.TeamMembers.Roles.TeamMember;
 
@@ -247,6 +247,33 @@ namespace Repository.Repository
                 }
 
                 return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Delete Team
+        /// </summary>
+        /// <param name="teamId">Team Id</param>
+        /// <returns>True - If successfully team deleted else False</returns>
+        public bool DeleteTeam(long teamId)
+        {
+            if (teamId != 0)
+            {
+                var teamMember = _db.TeamMembers.FirstOrDefault(teamMember => teamMember.TeamId == teamId && teamMember.Role == Entities.Models.TeamMembers.Roles.TeamLeader);
+                if (teamMember != null)
+                    _db.Remove(teamMember);
+
+                var team = _db.Teams.FirstOrDefault(team => team.TeamId == teamId);
+                if (team != null)
+                    _db.Remove(team);
+
+                _db.SaveChanges();
+
+                return true;
             }
             else
             {

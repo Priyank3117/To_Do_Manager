@@ -4,52 +4,6 @@
 
 <div class="row mt-5">
 
-    <!-- Add User Modal -->
-    <div class="modal fade" id="AddUserModal" tabindex="-1" aria-labelledby="AddUserModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header" style="border: none;">
-                    <h1 class="modal-title fs-5" id="AddUserModalLabel">Create Team</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col">
-                            <div class="mb-3">
-                                <label for="AddUser" class="form-label">Add Users</label>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <input type="text" class="form-control me-2" id="AddUser"
-                                           autocomplete="off" placeholder="Enter Email">
-                                    <button type="button" class="addUser">Add</button>
-                                </div>
-                            </div>
-                            <div class="AddedUser">
-                                <p class="text-muted m-0">chavdaanand2002@gmail.com</p>
-                                <a href="" class="ms-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                         fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer" style="border: none;">
-                    <div class="mt-4">
-                        <a role="button" class="CancelCreateTeamButton" data-bs-dismiss="modal">Cancel</a>
-                    </div>
-                    <div class="mt-4">
-                        <button type="button" class="createTeamButton">Done</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
     <!-- Add Task Modal -->
     <div class="modal fade" id="AddTaskModal" tabindex="-1" aria-labelledby="AddTaskModalLabel"
          aria-hidden="true">
@@ -194,7 +148,7 @@
                                                                 </button>
                                                             }
                                                         </div>
-                                                        <div class="col-10 taskNameContainer" onclick="openTaskDetailOffcanvas(@myTasks.TaskId)">
+                                                        <div class="col-10 taskNameContainer" onclick="openTaskDetailOffcanvas(event, @myTasks.TaskId)">
                                                             <p class="m-0">@myTasks.TaskName</p>
                                                         </div>
                                                     </div>
@@ -242,7 +196,7 @@
                                                                     </button>
                                                                 }
                                                             </div>
-                                                            <div class="col-10 taskNameContainer" onclick="openTaskDetailOffcanvas(@tasksofUser.TaskId)">
+                                                            <div class="col-10 taskNameContainer" onclick="openTaskDetailOffcanvas(event, @tasksofUser.TaskId)">
                                                                 <p class="m-0">@tasksofUser.TaskName</p>
                                                             </div>
                                                         </div>

@@ -231,12 +231,22 @@ namespace Repository.Repository
         {
             var query = _db.TeamMembers.AsQueryable();
 
-            if (query.Any(teamMember => teamMember.UserId == userId && teamMember.TeamId == teamId && teamMember.Role == TeamMembers.Roles.TeamLeader))
+            var memberRole = query.FirstOrDefault(teamMember => teamMember.TeamId == teamId && teamMember.UserId == userId)!.Role;
+
+            if (memberRole == TeamMembers.Roles.TeamLeader)
             {
                 return query.Where(teamMember => teamMember.TeamId == teamId).Select(task => new ListOfUsers()
                 {
                     UserId = task.UserId,
                     UserName = task.Users.FirstName + " " + task.Users.LastName
+                }).ToList();
+            }
+            else if (memberRole == TeamMembers.Roles.ReportingPerson)
+            {
+                return query.Where(teamMember => teamMember.TeamId == teamId && teamMember.ReportinPersonUserId == userId).Select(p => new ListOfUsers()
+                {
+                    UserName = p.Users.FirstName + " " + p.Users.LastName,
+                    UserId = p.UserId
                 }).ToList();
             }
             else
@@ -355,6 +365,6 @@ namespace Repository.Repository
             {
                 return new TaskDetailViewModel();
             }
-        }        
+        }
     }
 }

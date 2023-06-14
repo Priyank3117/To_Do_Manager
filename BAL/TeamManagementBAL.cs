@@ -136,5 +136,15 @@ namespace BAL
         {
             return _TeamManagementRepo.DeclineLeaveRequest(userId, teamId);
         }
+
+        /// <summary>
+        /// Delete Team
+        /// </summary>
+        /// <param name="teamId">Team Id</param>
+        /// <returns>True - If successfully team deleted else False</returns>
+        public bool DeleteTeam(long teamId)
+        {
+            return _TeamManagementRepo.DeleteTeam(teamId);
+        }
     }
 }

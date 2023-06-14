@@ -975,6 +975,10 @@ input[type=checkbox] {
     --bs-btn-border-color: black !important;
 }
 
+.fc-daygrid-more-link{
+    color: black !important;
+}
+
 .filterTag a {
     display: flex;
     justify-content: center;
@@ -987,4 +991,9 @@ input[type=checkbox] {
     display: flex;
     flex-wrap: wrap;
     padding-right: 3px !important;
+}
+
+.form-select option {
+    background-color: #d3d3d3;
+    color: #000000;
 }

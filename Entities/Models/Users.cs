@@ -32,5 +32,11 @@ namespace Entities.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public DateTime? UpdatedAt { get; set; }
+
+        public virtual ICollection<Notifications> Notifications { get; } = new List<Notifications>();
+
+        public virtual ICollection<Tasks> Tasks { get; } = new List<Tasks>();
+
+        public virtual ICollection<TeamMembers> TeamMembers { get; } = new List<TeamMembers>();
     }
 }

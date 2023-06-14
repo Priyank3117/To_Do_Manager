@@ -10,6 +10,7 @@
         var calendar = new FullCalendar.Calendar(calendarEl, {
             timeZone: 'UTC',
             initialView: 'dayGridMonth',
+            dayMaxEvents: true,
             events:[
                 @foreach (var task in Model)
     {
@@ -179,7 +180,7 @@
                 </div>
                 <div class="modal-footer" style="border: none;">
                     <div class="mt-4">
-                        <a data-bs-toggle="modal" role="button" class="CancelCreateTeamButton">Cancel</a>
+                        <a data-bs-dismiss="modal" role="button" class="CancelCreateTeamButton">Cancel</a>
                     </div>
                     <div class="mt-4">
                         <button type="button" class="addTaskButton" onclick="addTask()">Add Task</button>

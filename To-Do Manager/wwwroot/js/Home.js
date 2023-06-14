@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
 
     $("#TeamName").focusout(function () {
-        if ($("#TeamName").val() == "") {
+        if ($("#TeamName").val().trim() == "") {
             $("#TeamNameSpan").html("Team name is required")
         } else {
             $("#TeamNameSpan").html("")
@@ -9,7 +9,7 @@
     })
 
     $("#TeamDescription").focusout(function () {
-        if ($("#TeamDescription").val() == "") {
+        if ($("#TeamDescription").val().trim() == "") {
             $("#TeamDescriptionSpan").html("Description is required")
         } else {
             $("#TeamDescriptionSpan").html("")
@@ -22,7 +22,6 @@
 })
 
 // Add User In Team Validation
-
 var usersEmail = []
 $(".addUser").click(function () {
     if ($("#AddUser").val() == "") {
@@ -33,7 +32,7 @@ $(".addUser").click(function () {
         $("#AddUserSpan").html("")
         var idOfEmailText = $(".AddedUser").length + 1;
         var canAdd = true;
-        debugger
+
         for (var i = 0; i < usersEmail.length; i++) {
             if (usersEmail[i] == `` + $("#AddUser").val() + ``) {
                 $("#AddUserSpan").html("Already Added")
@@ -61,11 +60,11 @@ $(".addUser").click(function () {
 })
 
 function removeUser(idOfEmailText) {
+    usersEmail.splice(usersEmail.indexOf($('#' + idOfEmailText + ' p').html()), 1);
     $('#' + idOfEmailText + '').remove();
 }
 
 $(".createTeamButton").click(function () {
-    debugger
     var team = new FormData();
     team.append('TeamName', $("#TeamName").val());
     team.append('TeamDescription', $("#TeamDescription").val());
@@ -82,9 +81,17 @@ $(".createTeamButton").click(function () {
         processData: false,
         contentType: false,
         data: team,
+        beforeSend: function () {
+            $("#CreateTeamInHomePageButton").attr("disabled", true)
+            document.getElementById("CreateTeamInHomePageButton").innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> &nbsp; Loading...`;
+        },
+        complete: function () {
+            $("#CreateTeamInHomePageButton").html("Created")
+            $("#CreateTeamInHomePageButton").removeAttr("disabled")
+        },
         success: function (result) {
             if (result == true) {
-                $("#CreateTeamModal").modal("hide")
+                window.location.replace('https://localhost:7100/Home/AllTeamsPage');
             }
         }
     })
@@ -116,7 +123,7 @@ function searchTeam() {
                 $(".allTeamContainer").append(`<div class="allTeamContainer" style="justify-content: center;">
                     <p class="text-muted mt-5" style="font-family: sans-serif;font-size:xx-large;">No Teams Available</p>
                 </div>`)
-                $(".availableTeamsText").css("display","none")
+                $(".availableTeamsText").css("display", "none")
             }
         }
     })
@@ -162,7 +169,13 @@ function getDataForAddTask(teamId, userId) {
         url: "/Home/GetDataForAddTask",
         data: { teamId: teamId, userId: userId },
         success: function (result) {
-            console.log(result)
+
+            $("#TaskName").val("")
+            $("#TaskDescription").val("")
+
+            $("#TaskNameSpan").html("")
+            $("#TaskDescriptionSpan").html("")
+
             if (result.length != 0) {
                 $("#TaskAssignTo").empty()
                 for (var i = 0; i < result.length; i++) {
@@ -183,10 +196,10 @@ function addTask() {
     $("#TaskNameSpan").html("")
     $("#TaskDescriptionSpan").html("")
 
-    if ($("#TaskName").val() == "") {
+    if ($("#TaskName").val().trim() == "") {
         $("#TaskNameSpan").html("Task name is required")
     }
-    else if ($("#TaskDescription").val() == "") {
+    else if ($("#TaskDescription").val().trim() == "") {
         $("#TaskDescriptionSpan").html("Task Description is required")
     }
     else {
@@ -246,7 +259,11 @@ function markTaskAsCompleteOrUncomplete(userId, teamId, taskId) {
 }
 
 // View Task Details
-function openTaskDetailOffcanvas(taskId) {
+function openTaskDetailOffcanvas(e, taskId) {
+    e.stopPropagation()
+    var myOffcanvas = document.getElementById('TaskDetailOffCanvas')
+    var bsOffcanvas = new bootstrap.Offcanvas(myOffcanvas)
+
     $.ajax({
         type: "POST",
         url: "/Home/GetTaskDetails",
@@ -255,7 +272,6 @@ function openTaskDetailOffcanvas(taskId) {
             $("#TaskDetailOffCanvas").removeClass("show")
         },
         success: function (result) {
-            console.log(result)
             $("#TeamNameInOffcanvas").empty()
             $("#TeamNameInOffcanvas").html('' + result.teamName + '')
             $("#TaskNameInOffcanvas").val('' + result.taskName + '')
@@ -268,11 +284,21 @@ function openTaskDetailOffcanvas(taskId) {
                 $(".isTaskCompletedOrNot").html(`<button type="button" class="inCompleteTaskButton" disabled>Incomplete</button>`)
             }
 
-            $("#TaskDetailOffCanvas").addClass("show")
+            bsOffcanvas.show()
         }
     })
 }
 
-$(".closeTaskDetailOffCanvas").click(function () {
-    $("#TaskDetailOffCanvas").removeClass("show")
-})
+function openCreateTeamModal() {
+    $(".AddedUserContainer").empty()
+    usersEmail = [];
+    $("#TeamName").val("")
+    $("#TeamDescription").val("")
+    $("#AddUser").val("")
+
+    $("#TeamNameSpan").html("")
+    $("#TeamDescriptionSpan").html("")
+    $("#AddUserSpan").html("")
+
+    $("#CreateTeamModal").modal("show")
+}

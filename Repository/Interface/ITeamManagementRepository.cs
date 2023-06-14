@@ -17,5 +17,7 @@ namespace Repository.Interface
         public bool AcceptJoinRequest(long userId, long teamId);
 
         public bool DeclineLeaveRequest(long userId, long teamId);
+
+        public bool DeleteTeam(long teamId);
     }
 }

@@ -5,8 +5,7 @@
         </div>
         <div class="d-flex justify-content-center align-items-center">
             <!-- Create Team Modal Button -->
-            <button type="button" class="loginButton me-2" data-bs-toggle="modal"
-                    data-bs-target="#CreateTeamModal">
+            <button type="button" class="loginButton me-2" onclick="openCreateTeamModal()">
                 Create Team
             </button>
 
@@ -55,7 +54,7 @@
                                 <a data-bs-dismiss="modal" role="button" class="CancelCreateTeamButton">Cancel</a>
                             </div>
                             <div class="mt-4">
-                                <button type="button" class="createTeamButton">Create</button>
+                                <button type="button" class="createTeamButton" id="CreateTeamInHomePageButton">Create</button>
                             </div>
                         </div>
                     </div>
@@ -66,6 +65,8 @@
     </div>
 </div>
 <div class="row">
+
+    <!-- Join Team Modal -->
     <div class="modal fade" id="JoinTeamModal" tabindex="-1" aria-labelledby="JoinTeamModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -83,7 +84,7 @@
                                 <input type="text" class="form-control" id="Name" autocomplete="off" disabled>
                             </div>
                             <div class="mb-3">
-                                <label for="Description" class="form-label">Description</label>
+                                <label for="Description" class="form-label">Team Description</label>
                                 <textarea class="form-control" id="Description" rows="3" disabled></textarea>
                             </div>
                         </div>

@@ -1,9 +1,11 @@
 ﻿using BAL;
 using Entities.ViewModels.UserProfileViewModels;
 using Microsoft.AspNetCore.Mvc;
+using To_Do_Manager.Filters;
 
 namespace To_Do_Manager.Controllers
 {
+    [CheckSessionFilter]
     public class UserProfileController : Controller
     {
         private readonly UserProfileBAL _UserProfileBAL;
@@ -21,17 +23,10 @@ namespace To_Do_Manager.Controllers
         /// <returns>User Profile Page</returns>
         public IActionResult Index()
         {
-            if (HttpContext.Session.GetString("UserId") == null)
-            {
-                return RedirectToAction("Logout", "Account");
-            }
-            else
-            {
-                ViewBag.UserName = HttpContext.Session.GetString("UserName");
-                ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
+            ViewBag.UserName = HttpContext.Session.GetString("UserName");
+            ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
 
-                return View(_UserProfileBAL.GetUserProfileDetails(long.Parse(HttpContext.Session.GetString("UserId")!)));
-            }
+            return View(_UserProfileBAL.GetUserProfileDetails(long.Parse(HttpContext.Session.GetString("UserId")!)));
         }
 
         /// <summary>

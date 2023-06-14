@@ -2,9 +2,11 @@
 using Entities.ViewModels.AllTasksViewModel;
 using Entities.ViewModels.HomeViewModels;
 using Microsoft.AspNetCore.Mvc;
+using To_Do_Manager.Filters;
 
 namespace To_Do_Manager.Controllers
 {
+    [CheckSessionFilter]
     public class AllTasksController : Controller
     {
         private readonly AllTasksBAL _AllTaksBAL;
@@ -20,17 +22,10 @@ namespace To_Do_Manager.Controllers
         /// <returns>All Tasks Page With Calender and List View</returns>
         public IActionResult Index()
         {
-            if (HttpContext.Session.GetString("UserId") == null)
-            {
-                return RedirectToAction("Logout", "Account");
-            }
-            else
-            {
-                ViewBag.UserName = HttpContext.Session.GetString("UserName");
-                ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
+            ViewBag.UserName = HttpContext.Session.GetString("UserName");
+            ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
 
-                return View(_AllTaksBAL.GetTasksForCalenderView(long.Parse(HttpContext.Session.GetString("UserId")!)));
-            }
+            return View(_AllTaksBAL.GetTasksForCalenderView(long.Parse(HttpContext.Session.GetString("UserId")!)));
         }
 
         /// <summary>
@@ -50,16 +45,9 @@ namespace To_Do_Manager.Controllers
         /// <returns>List of All Task Team wise</returns>
         public IActionResult GetAllTaskOfAllTeams(Filter filter)
         {
-            if (HttpContext.Session.GetString("UserId") == null)
-            {
-                return RedirectToAction("Logout", "Account");
-            }
-            else
-            {
-                filter.UserId = long.Parse(HttpContext.Session.GetString("UserId")!);
+            filter.UserId = long.Parse(HttpContext.Session.GetString("UserId")!);
 
-                return PartialView("~/Views/PartialViews/AllTasks/_Team.cshtml", _AllTaksBAL.GetAllTasks(filter));
-            }
+            return PartialView("~/Views/PartialViews/AllTasks/_Team.cshtml", _AllTaksBAL.GetAllTasks(filter));
         }
     }
 }

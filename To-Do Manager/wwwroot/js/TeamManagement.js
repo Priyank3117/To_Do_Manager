@@ -3,7 +3,7 @@
     getAllTeamDetailsPartialView();
 
     $("#TeamName").focusout(function () {
-        if ($("#TeamName").val() == "") {
+        if ($("#TeamName").val().trim() == "") {
             $("#TeamNameSpan").html("Team name is required")
         } else {
             $("#TeamNameSpan").html("")
@@ -11,7 +11,7 @@
     })
 
     $("#TeamDescription").focusout(function () {
-        if ($("#TeamDescription").val() == "") {
+        if ($("#TeamDescription").val().trim() == "") {
             $("#TeamDescriptionSpan").html("Description is required")
         } else {
             $("#TeamDescriptionSpan").html("")
@@ -27,6 +27,7 @@
     })
 })
 
+var usersEmailInCreateTeam = []
 $(".addUser").click(function () {
     if ($("#AddUser").val() == "") {
         $("#AddUserSpan").html("Email is required")
@@ -34,28 +35,36 @@ $(".addUser").click(function () {
         $("#AddUserSpan").html("Invalid Email")
     } else {
         $("#AddUserSpan").html("")
-
         var idOfEmailText = $(".AddedUser").length + 1;
+        var canAdd = true;
 
-        var emailHTML = `<div class="AddedUser mt-2" id=` + idOfEmailText + `>
+        for (var i = 0; i < usersEmailInCreateTeam.length; i++) {
+            if (usersEmailInCreateTeam[i] == `` + $("#AddUser").val() + ``) {
+                $("#AddUserSpan").html("Already Added")
+                canAdd = false;
+            } else {
+                $("#AddUserSpan").html("")
+            }
+        }
+
+        if (canAdd) {
+            var emailHTML = `<div class="AddedUser mt-2" id=` + idOfEmailText + `>
                                             <p class="text-muted m-0 userEmail">`+ $("#AddUser").val() + `</p>
-                                            <a role="button" onclick="RemoveUser(`+ idOfEmailText + `)" class="ms-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" style="color: black"
+                                            <a role="button" onclick="removeUser(`+ idOfEmailText + `)" class="ms-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color: black;" fill="currentColor"
                                                      class="bi bi-x-lg" viewBox="0 0 16 16">
                                                     <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
                                                 </svg>
                                             </a>
                                         </div>`
-        $(".AddedUserContainer").append(emailHTML)
-        $("#AddUser").val("")
+            $(".AddedUserContainer").append(emailHTML)
+            usersEmailInCreateTeam.push($("#AddUser").val())
+            $("#AddUser").val("")
+        }
     }
-
-
-
 })
 
 // Add User In Team Validation
-
 var usersEmail = []
 $(".addUserInTeam").click(function () {
     if ($("#AddUserInTeam").val() == "") {
@@ -93,20 +102,24 @@ $(".addUserInTeam").click(function () {
     }
 })
 
-function RemoveUser(idOfEmailText) {
+function removeUser(idOfEmailText) {
+    console.log(usersEmailInCreateTeam)
+    usersEmailInCreateTeam.splice(usersEmailInCreateTeam.indexOf($('#' + idOfEmailText + ' p').html()), 1);
+    console.log(usersEmailInCreateTeam)
     $('#' + idOfEmailText + '').remove();
 }
 
 function removeUserFromTeam(idOfEmailText) {
+    usersEmail.splice(usersEmail.indexOf($('#' + idOfEmailText + 'InTeam p').html()), 1);
     $('#' + idOfEmailText + 'InTeam').remove();
 }
 
 function createTeam() {
 
-    if ($("#TeamName").val() == "") {
+    if ($("#TeamName").val().trim() == "") {
         $("#TeamNameSpan").html("Team name is required")
     }
-    else if ($("#TeamDescription").val() == "") {
+    else if ($("#TeamDescription").val().trim() == "") {
         $("#TeamDescriptionSpan").html("Description is required")
     }
     else {
@@ -215,7 +228,11 @@ function requestToJoinTeam() {
 // Add User In Team
 var teamIdForAddUser = 0;
 var teamNameForAddUser = "";
-function OpenAddUserModal(teamId, teamName) {
+function openAddUserModal(teamId, teamName) {
+    $(".AddedUserInTeamContainer").empty()
+    $("#AddUserInTeamSpan").html("")
+    usersEmail = [];
+    console.log(usersEmail)
     $("#AddUserModal").modal("show")
     teamIdForAddUser = teamId;
     teamNameForAddUser = teamName;
@@ -270,7 +287,7 @@ function openRemoveUserModal(userName, userId, teamId) {
     $("#RemoveUserModal").modal("show")
 }
 
-function RemoveUser() {
+function removeUserFromTeam() {
     $.ajax({
         type: "POST",
         url: "/TeamManagement/RemoveUserFromTeam",
@@ -435,4 +452,43 @@ function finalLeaveFromTeam(teamId, userId) {
             }
         }
     });
+}
+
+function openCreateTeamModal() {
+    $(".AddedUserContainer").empty()
+    usersEmailInCreateTeam = [];
+    $("#TeamName").val("")
+    $("#TeamDescription").val("")
+    $("#AddUser").val("")
+
+    $("#TeamNameSpan").html("")
+    $("#TeamDescriptionSpan").html("")
+    $("#AddUserSpan").html("")
+
+    $("#CreateTeamModal").modal("show")
+}
+
+// Delete Team
+var teamIdForDeleteTeam = 0;
+
+function deleteTeam(teamId, teamName) {
+    $(".warnigLineForDeleteTeam").html('Are you sure to delete <b>' + teamName + '</b> team?')
+    teamIdForDeleteTeam = teamId;
+
+    $("#DeleteTeamModal").modal("show")
+}
+
+function finalDeleteTeam() {
+    if (teamIdForDeleteTeam != 0) {
+        $.ajax({
+            type: "POST",
+            url: "/TeamManagement/DeleteTeam",
+            data: { teamId: teamIdForDeleteTeam },
+            success: function (data) {
+                if (data == true) {
+                    location.reload(true)
+                }
+            }
+        });
+    }
 }

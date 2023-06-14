@@ -16,6 +16,17 @@ function getDataForAddTask(teamId, userId) {
         url: "/Home/GetDataForAddTask",
         data: { teamId: teamId, userId: userId },
         success: function (result) {
+
+            $("#TaskName").val("")
+            $("#TaskDescription").val("")
+            $("#StartDate").val("")
+            $("#EndDate").val("")
+
+            $("#TaskNameSpan").html("")
+            $("#TaskDescriptionSpan").html("")
+            $("#StartDateSpan").html("")
+            $("#EndDateSpan").html("")
+
             if (result.length != 0) {
                 $("#TaskAssignTo").empty()
                 for (var i = 0; i < result.length; i++) {
@@ -41,10 +52,10 @@ function addTask() {
     var startDate = new Date($("#StartDate").val());
     var endDate = new Date($("#EndDate").val());
 
-    if ($("#TaskName").val() == "") {
+    if ($("#TaskName").val().trim() == "") {
         $("#TaskNameSpan").html("Task name is required")
     }
-    else if ($("#TaskDescription").val() == "") {
+    else if ($("#TaskDescription").val().trim() == "") {
         $("#TaskDescriptionSpan").html("Task DescriptionSpan is required")
     }
     else if ($("#StartDate").val() == "") {
@@ -165,7 +176,7 @@ function searchTeams(isClearAll) {
         var startDate = $("#StartDateForFilter").val()
         var endDate = $("#EndDateForFilter").val()
         var taskStatus = $('input[name="TaskStatusForFilter"]:checked').val()
-    }    
+    }
 
     var filter = {
         TeamName: teamName,
@@ -288,7 +299,11 @@ $("#list").click(function () {
 })
 
 // View Task Details
-function openTaskDetailOffcanvas(taskId) {
+function openTaskDetailOffcanvas(e, taskId) {
+    e.stopPropagation()
+    var myOffcanvas = document.getElementById('TaskDetailOffCanvas')
+    var bsOffcanvas = new bootstrap.Offcanvas(myOffcanvas)
+
     $.ajax({
         type: "POST",
         url: "/Home/GetTaskDetails",
@@ -309,11 +324,7 @@ function openTaskDetailOffcanvas(taskId) {
                 $(".isTaskCompletedOrNot").html(`<button type="button" class="inCompleteTaskButton" disabled>Incomplete</button>`)
             }
 
-            $("#TaskDetailOffCanvas").addClass("show")
+            bsOffcanvas.show()
         }
     })
 }
-
-$(".closeTaskDetailOffCanvas").click(function () {
-    $("#TaskDetailOffCanvas").removeClass("show")
-})

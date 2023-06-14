@@ -32,9 +32,12 @@ namespace Repository.Repository
                 notification.NotificationType = notificationRow.Type.ToString();
                 notification.Message = notificationRow.Message;
                 notification.IsRead = notificationRow.IsRead;
+                notification.CreatedAt = notificationRow.CreatedAt;
 
                 notifications.Add(notification);
             }
+
+            notifications = notifications.OrderByDescending(notification => notification.CreatedAt).ToList();
 
             return notifications;
         }

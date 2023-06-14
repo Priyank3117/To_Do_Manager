@@ -9,5 +9,7 @@
         public string NotificationType { get; set; } = string.Empty;
 
         public bool IsRead { get; set; } = false;
+
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
 }
