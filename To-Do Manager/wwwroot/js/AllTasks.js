@@ -127,6 +127,80 @@ function markTaskAsCompleteOrUncomplete(userId, teamId, taskId) {
 
 function addTaskToTodayTask(userId, teamId, taskId) {
 
+    $.ajax({
+        type: "POST",
+        url: "/AllTasks/GetForAddTaskToToDo",
+        data: { teamId: teamId },
+        success: function (result) {
+            console.log(result)
+            if (result.length == 0) {
+                AddTaskToToDo(userId, teamId, taskId);
+            }
+            else {
+
+                teamIdForAddTaskToToDo = teamId;
+                taskIdForAddTaskToToDo = taskId;
+
+                var user = ""
+                for (var i = 0; i < result.length; i++) {
+                    if (i != 0) {
+                        user += `<div class="form-check d-flex justify-content-start align-items-center my-3">
+                            <input class="form-check-input me-4" type="radio" name="AddTaskToTodayTask" id="`+ result[i].userId + `User" value="` + result[i].userId + `">
+                            <label class="form-check-label" for="`+ result[i].userId + `User">
+                                <span class="d-flex justify-content-start align-items-center">
+                                    <img src="`+ result[i].avatar + `" class="userAvatar me-2">
+                                    `+ result[i].userName + `
+                                </span>
+                            </label>
+                        </div>`
+                    } else {
+                        user += `<div class="form-check d-flex justify-content-start align-items-center my-3">
+                            <input class="form-check-input me-4" type="radio" name="AddTaskToTodayTask" id="`+ result[i].userId + `User" value="` + result[i].userId + `" checked>
+                            <label class="form-check-label" for="`+ result[i].userId + `User">
+                                <span class="d-flex justify-content-start align-items-center">
+                                    <img src="`+ result[i].avatar + `" class="userAvatar me-2">
+                                    `+ result[i].userName + `
+                                </span>
+                            </label>
+                        </div>`
+                    }
+
+                }
+                $(".selectMember").empty()
+                $(".selectMember").html(user)
+
+                $("#AddTaskToTodayTaskModal").modal("show")
+            }
+        }
+    })   
+}
+
+var teamIdForAddTaskToToDo = 0;
+var taskIdForAddTaskToToDo = 0;
+
+function AddTaskToToDoForMember() {
+    if (teamIdForAddTaskToToDo != 0 && taskIdForAddTaskToToDo != 0) {
+        var task = {
+            TeamId: teamIdForAddTaskToToDo,
+            UserId: $("input[name='AddTaskToTodayTask']:checked").val(),
+            TaskId: taskIdForAddTaskToToDo,
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/AllTasks/AddTaskToTodayTaskForTeamMember",
+            data: { task: task },
+            success: function (IsTodayTask) {
+                if (IsTodayTask == true) {
+                    searchTeams();
+                    $("#AddTaskToTodayTaskModal").modal("hide")
+                }
+            }
+        })
+    }    
+}
+
+function AddTaskToToDo(userId, teamId, taskId) {
     var task = {
         TeamId: teamId,
         UserId: userId,

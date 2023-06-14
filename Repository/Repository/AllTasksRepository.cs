@@ -1,4 +1,5 @@
 ﻿using Entities.Data;
+using Entities.Models;
 using Entities.ViewModels.AllTasksViewModel;
 using Entities.ViewModels.HomeViewModels;
 using Repository.Interface;
@@ -38,12 +39,12 @@ namespace Repository.Repository
 
             if (filter.StartDate != null)
             {
-                query = query.Where(task => task.StartDate >= filter.StartDate);
+                query = query.Where(task => task.StartDate.Date >= filter.StartDate.Value.Date);
             }
 
             if (filter.EndDate != null)
             {
-                query = query.Where(task => task.EndDate <= filter.EndDate);
+                query = query.Where(task => task.EndDate.Date <= filter.EndDate.Value.Date);
             }
 
             if (filter.TaskStatus != null)
@@ -123,6 +124,43 @@ namespace Repository.Repository
             return teams;
         }
 
+        public List<ListOfUsers> GetForAddTaskToToDo(long teamId, long userId)
+        {
+            var query = _db.TeamMembers.AsQueryable();
+
+            //if(query.FirstOrDefault(teamMember => teamMember.TeamId == teamId && teamMember.UserId == userId && teamMember.Role == TeamMembers.Roles.TeamLeader)!.UserId == userId)
+            //{
+            //    return new List<ListOfUsers>();
+            //}
+
+            var memberRole = query.FirstOrDefault(teamMember => teamMember.TeamId == teamId && teamMember.UserId == userId)!.Role;
+
+            
+
+            if (memberRole == TeamMembers.Roles.TeamLeader)
+            {
+                return query.Where(teamMember => teamMember.TeamId == teamId).Select(task => new ListOfUsers()
+                {
+                    UserId = task.UserId,
+                    UserName = task.Users.FirstName + " " + task.Users.LastName,
+                    Avatar = task.Users.Avatar
+                }).ToList();
+            }
+            else if (memberRole == TeamMembers.Roles.ReportingPerson)
+            {
+                return query.Where(teamMember => teamMember.TeamId == teamId && teamMember.ReportinPersonUserId == userId).Select(p => new ListOfUsers()
+                {
+                    UserName = p.Users.FirstName + " " + p.Users.LastName,
+                    UserId = p.UserId,
+                    Avatar = p.Users.Avatar
+                }).ToList();
+            }
+            else
+            {
+                return new List<ListOfUsers>();
+            }
+        }
+
         /// <summary>
         /// Add Task To To-Do Page
         /// </summary>
@@ -150,6 +188,28 @@ namespace Repository.Repository
                 _db.Update(task);
                 _db.SaveChanges();
 
+                return false;
+            }
+        }
+
+        public bool AddTaskToTodayTaskForTeamMember(TaskDetailViewModel taskDetail)
+        {
+            var task = _db.Tasks.FirstOrDefault(task => task.TaskId == taskDetail.TaskId )!;
+
+            if (task != null)
+            {
+                task.UserId = taskDetail.UserId;
+                task.IsTaskForToday = true;
+                task.StartDate = DateTime.Now;
+                task.EndDate = DateTime.Now;
+
+                _db.Update(task);
+                _db.SaveChanges();
+
+                return true;
+            }
+            else
+            {
                 return false;
             }
         }

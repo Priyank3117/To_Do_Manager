@@ -84,5 +84,10 @@ namespace BAL
         {
             return _UserProfileRepo.LeaveFromAllTeam(userId);
         }
+
+        public UserProfileViewModel GetUserAvatar(long UserId)
+        {
+            return _UserProfileRepo.GetUserAvatar(UserId);
+        }
     }
 }

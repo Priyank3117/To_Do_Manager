@@ -39,7 +39,7 @@ function verifyOTP() {
         if ($("#Email").val() == "") {
             $("#EmailSpan").html("Email is required")
         }
-    } 
+    }
     else {
         $("#OTPSpan").html("")
         $("#EmailSpan").html("")
@@ -81,7 +81,7 @@ function getChangePasswordView(email) {
     })
 }
 
-function backToForgotPasswordView(){
+function backToForgotPasswordView() {
     $.ajax({
         url: "/Account/GetForgotPasswordView",
         type: "GET",
@@ -96,10 +96,12 @@ function backToForgotPasswordView(){
 function changePassword() {
     if ($("#OldPassword").val() == "") {
         $("#OldPasswordSpan").html("Old password is required")
-
-        if ($("#NewPassword").val() == "") {
-            $("#NewPasswordSpan").html("New password is required")
-        }
+    }
+    else if ($("#NewPassword").val() == "") {
+        $("#NewPasswordSpan").html("New password is required")
+    }
+    else if (!/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/.test($("#NewPassword").val())) {
+        $("#NewPasswordSpan").html("Password should contains minimum 8 character, one capital character, one numeric value and one special symbol")
     }
     else {
         $("#OldPasswordSpan").html("")
@@ -120,6 +122,13 @@ function changePassword() {
                     $("#OldPasswordSpan").html("Old password is not correct")
                 } else {
                     backToForgotPasswordView();
+                    Swal.fire({
+                        position: 'top-start',
+                        icon: 'success',
+                        title: 'Password Changed',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
                 }
             }
         })

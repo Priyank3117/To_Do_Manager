@@ -1,4 +1,5 @@
-﻿using Entities.ViewModels.TeamManagement;
+﻿using Entities.ViewModels.HomeViewModels;
+using Entities.ViewModels.TeamManagement;
 
 namespace Repository.Interface
 {

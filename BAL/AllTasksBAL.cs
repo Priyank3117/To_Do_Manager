@@ -23,6 +23,11 @@ namespace BAL
             return _AllTasksRepo.GetAllTasks(filter);
         }
 
+        public List<ListOfUsers> GetForAddTaskToToDo(long teamId, long userId)
+        {
+            return _AllTasksRepo.GetForAddTaskToToDo(teamId, userId);
+        }
+
         /// <summary>
         /// Add Task To To-Do Page
         /// </summary>
@@ -31,6 +36,11 @@ namespace BAL
         public bool AddTaskToTodayTask(TaskDetailViewModel taskDetail)
         {
             return _AllTasksRepo.AddTaskToTodayTask(taskDetail);
+        }
+
+        public bool AddTaskToTodayTaskForTeamMember(TaskDetailViewModel taskDetail)
+        {
+            return _AllTasksRepo.AddTaskToTodayTaskForTeamMember(taskDetail);
         }
 
         /// <summary>

@@ -28,6 +28,11 @@ namespace To_Do_Manager.Controllers
             return View(_AllTaksBAL.GetTasksForCalenderView(long.Parse(HttpContext.Session.GetString("UserId")!)));
         }
 
+        public List<ListOfUsers> GetForAddTaskToToDo(long teamId)
+        {
+            return _AllTaksBAL.GetForAddTaskToToDo(teamId, long.Parse(HttpContext.Session.GetString("UserId")!));
+        }
+
         /// <summary>
         /// Add Task To To-Do Page
         /// </summary>
@@ -36,6 +41,11 @@ namespace To_Do_Manager.Controllers
         public bool AddTaskToTodayTask(TaskDetailViewModel task)
         {
             return _AllTaksBAL.AddTaskToTodayTask(task);
+        }
+
+        public bool AddTaskToTodayTaskForTeamMember(TaskDetailViewModel task)
+        {
+            return _AllTaksBAL.AddTaskToTodayTaskForTeamMember(task);
         }
 
         /// <summary>

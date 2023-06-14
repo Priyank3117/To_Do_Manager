@@ -8,9 +8,11 @@ namespace Entities.ViewModels.UserProfileViewModels
         public long UserId { get; set; } = 0;
 
         [Required(ErrorMessage = "First Name is required")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")]
         public string FirstName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Last Name is required")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")]
         public string LastName { get; set; } = string.Empty;
 
         public string? Department { get; set; }

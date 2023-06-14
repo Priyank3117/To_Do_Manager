@@ -46,7 +46,18 @@ namespace To_Do_Manager.Controllers
 
                 return View(userDetails);
             }
-            return View();
+            else
+            {
+                ViewBag.UserName = HttpContext.Session.GetString("UserName");
+                ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
+
+                return View();
+            }            
+        }
+
+        public UserProfileViewModel GetUserAvatar()
+        {
+            return _UserProfileBAL.GetUserAvatar(long.Parse(HttpContext.Session.GetString("UserId")!));
         }
 
         /// <summary>

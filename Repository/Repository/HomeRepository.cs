@@ -238,7 +238,8 @@ namespace Repository.Repository
                 return query.Where(teamMember => teamMember.TeamId == teamId).Select(task => new ListOfUsers()
                 {
                     UserId = task.UserId,
-                    UserName = task.Users.FirstName + " " + task.Users.LastName
+                    UserName = task.Users.FirstName + " " + task.Users.LastName,
+                    Avatar = task.Users.Avatar
                 }).ToList();
             }
             else if (memberRole == TeamMembers.Roles.ReportingPerson)
@@ -246,7 +247,8 @@ namespace Repository.Repository
                 return query.Where(teamMember => teamMember.TeamId == teamId && teamMember.ReportinPersonUserId == userId).Select(p => new ListOfUsers()
                 {
                     UserName = p.Users.FirstName + " " + p.Users.LastName,
-                    UserId = p.UserId
+                    UserId = p.UserId,
+                    Avatar = p.Users.Avatar
                 }).ToList();
             }
             else

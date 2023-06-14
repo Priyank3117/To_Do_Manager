@@ -78,6 +78,21 @@ namespace Repository.Repository
             return new UserProfileViewModel();
         }
 
+        public UserProfileViewModel GetUserAvatar(long UserId)
+        {
+            var user = _db.Users.FirstOrDefault(user => user.UserId == UserId);
+            UserProfileViewModel userInfo = new();
+
+            if (user != null)
+            {
+                userInfo.Avatar = user.Avatar;
+                userInfo.FirstName = user.FirstName;
+                userInfo.LastName = user.LastName;
+            }         
+
+            return userInfo;
+        }
+
         /// <summary>
         /// Change Password
         /// </summary>

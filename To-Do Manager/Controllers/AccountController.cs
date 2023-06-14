@@ -50,6 +50,8 @@ namespace To_Do_Manager.Controllers
                         HttpContext.Session.SetString("UserName", user.UserName);
                         HttpContext.Session.SetString("Avatar", user.Avatar);
 
+                        TempData["IsLoginSuccessful"] = "Yes";
+
                         if (!_AccountBAL.IsUserHaveAnyTeam(user.UserId))
                             return RedirectToAction("Index", "Home");
                         else
@@ -94,6 +96,8 @@ namespace To_Do_Manager.Controllers
                     registration.Password = BCrypt.Net.BCrypt.HashPassword(registration.Password);
                     if (_AccountBAL.RegisterUser(registration))
                     {
+                        TempData["IsRegistered"] = "Yes";
+
                         return RedirectToAction("Index", "Account");
                     }
                 }

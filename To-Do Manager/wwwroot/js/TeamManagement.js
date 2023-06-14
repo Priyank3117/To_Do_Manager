@@ -340,6 +340,15 @@ function openModalForSetReportingPerson(userId, teamId) {
             }
             $(".selectReportingPerson").empty()
             $(".selectReportingPerson").html(user)
+
+            if (result.length == 0) {
+                $(".selectUserLine").html("Select user: No Member Available")
+                $(".SetRPButton").css("display", "none")
+            } else {
+                $(".selectUserLine").html("Select user:")
+                $(".SetRPButton").css("display", "block")
+            }
+
             $("#SetReportingPersonModal").modal("show")
         }
     })

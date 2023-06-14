@@ -1,13 +1,25 @@
-﻿// Change Password Validation
-$(document).ready(function () {
+﻿$(document).ready(function () {
+
+    $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            url: "/UserProfile/GetUserAvatar",
+            data: {},
+            success: function (result) {
+                var userName = result.firstName + ' ' + result.lastName
+                $("#profileImage").attr('src', '' + result.avatar + '')
+                $("#UserNameInUserProfile").append('' + userName + '')
+            }
+        })
+    })
+
+    // Change Password Validation
     $("#oldPassword").focusout(function () {
         if ($('#oldPassword').val() == '') {
             $("#oldPasswordSpan").html('Old password is required');
-            $(".changePasswordButton").attr("disabled", true);
         }
         else if ($('#oldPassword').val().length < 8) {
             $("#oldPasswordSpan").html('Minimum length is 8 character');
-            $(".changePasswordButton").attr("disabled", true);
         }
         else {
             $("#oldPasswordSpan").html('');
@@ -18,19 +30,12 @@ $(document).ready(function () {
     $("#newPassword").focusout(function () {
         if ($('#newPassword').val() == '') {
             $("#newPasswordSpan").html('New password is required');
-            $(".changePasswordButton").attr("disabled", true);
         }
         else if ($('#newPassword').val().length < 8) {
             $("#newPasswordSpan").html('Minimum length is 8 character');
-            $(".changePasswordButton").attr("disabled", true);
-        }
-        else if (!$('#newPassword').val().toString().includes("@")) {
-            $("#newPasswordSpan").html('Enter Strong password');
-            $(".changePasswordButton").attr("disabled", true);
         }
         else if ($('#newPassword').val() == $('#oldPassword').val()) {
             $("#newPasswordSpan").html('Old password and New password can not be same');
-            $(".changePasswordButton").attr("disabled", true);
         }
         else {
             $("#newPasswordSpan").html('');
@@ -41,15 +46,12 @@ $(document).ready(function () {
     $("#confirmPassword").focusout(function () {
         if ($('#confirmPassword').val() == '') {
             $("#confirmPasswordSpan").html('Confirm password is required');
-            $(".changePasswordButton").attr("disabled", true);
         }
         else if ($('#confirmPassword').val().length < 8) {
             $("#confirmPasswordSpan").html('Minimum length is 8 character');
-            $(".changePasswordButton").attr("disabled", true);
         }
         else if ($('#confirmPassword').val() != $('#newPassword').val()) {
             $("#confirmPasswordSpan").html('Password does not matched');
-            $(".changePasswordButton").attr("disabled", true);
         }
         else {
             $("#confirmPasswordSpan").html('');
@@ -87,9 +89,6 @@ function changePassword() {
     else if ($('#newPassword').val().length < 8) {
         $("#newPasswordSpan").html('Minimum length is 8 character');
     }
-    else if (!$('#newPassword').val().toString().includes("@")) {
-        $("#newPasswordSpan").html('Enter Strong password');
-    }
     else if ($('#confirmPassword').val() == '') {
         $("#confirmPasswordSpan").html('Confirm password is required');
     }
@@ -98,7 +97,9 @@ function changePassword() {
     }
     else if ($('#newPassword').val() == $('#oldPassword').val()) {
         $("#newPasswordSpan").html('Old password and New password can not be same');
-        $(".changePasswordButton").attr("disabled", true);
+    }
+    else if (!/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/.test($('#newPassword').val())) {
+        $("#newPasswordSpan").html("Password should contains minimum 8 character, one capital character, one numeric value and one special symbol")
     }
     else {
         $.ajax({

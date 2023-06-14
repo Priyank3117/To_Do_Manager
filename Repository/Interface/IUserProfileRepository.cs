@@ -17,5 +17,7 @@ namespace Repository.Interface
         public bool LeaveFromTeam(long teamId, long userId);
 
         public bool LeaveFromAllTeam(long userId);
+
+        public UserProfileViewModel GetUserAvatar(long UserId);
     }
 }

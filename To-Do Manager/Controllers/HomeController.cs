@@ -115,6 +115,11 @@ namespace To_Do_Manager.Controllers
             return _HomeBAL.GetDataForAddTask(teamId, userId);
         }
 
+        public List<ListOfUsers> GetDataForAddTaskToTeamMember(long teamId)
+        {
+            return _HomeBAL.GetDataForAddTask(teamId, long.Parse(HttpContext.Session.GetString("UserId")!));
+        }
+
         /// <summary>
         /// Add Task In Team
         /// </summary>
