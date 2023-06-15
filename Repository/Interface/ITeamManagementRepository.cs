@@ -20,5 +20,7 @@ namespace Repository.Interface
         public bool DeclineLeaveRequest(long userId, long teamId);
 
         public bool DeleteTeam(long teamId);
+
+        public List<string> GetAllUsersEmailOfTeam(long teamId);
     }
 }

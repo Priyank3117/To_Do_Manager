@@ -359,6 +359,7 @@ $("#grid").click(function () {
     $("#list").css("color", "#333")
     $(".filterRowContainer").css("display", "none")
     $(".filterButton").css("display", "none")
+    $(".taskColorInfo").css("display", "block")
 })
 
 $("#list").click(function () {
@@ -370,6 +371,7 @@ $("#list").click(function () {
     $("#grid").css("color", "#333")
     $(".filterRowContainer").css("display", "block")
     $(".filterButton").css("display", "flex")
+    $(".taskColorInfo").css("display", "none")
 })
 
 // View Task Details

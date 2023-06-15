@@ -146,5 +146,15 @@ namespace BAL
         {
             return _TeamManagementRepo.DeleteTeam(teamId);
         }
+
+        /// <summary>
+        /// Get All Users Email Of Team
+        /// </summary>
+        /// <param name="teamId">Team Id</param>
+        /// <returns>List of String(Emails)</returns>
+        public List<string> GetAllUsersEmailOfTeam(long teamId)
+        {
+            return _TeamManagementRepo.GetAllUsersEmailOfTeam(teamId);
+        }
     }
 }

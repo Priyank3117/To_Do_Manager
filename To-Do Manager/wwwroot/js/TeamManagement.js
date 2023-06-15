@@ -67,6 +67,7 @@ $(".addUser").click(function () {
 // Add User In Team Validation
 var usersEmail = []
 $(".addUserInTeam").click(function () {
+    
     if ($("#AddUserInTeam").val() == "") {
         $("#AddUserInTeamSpan").html("Email is required")
     } else if (!/^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test($("#AddUserInTeam").val())) {
@@ -75,11 +76,12 @@ $(".addUserInTeam").click(function () {
         $("#AddUserInTeamSpan").html("")
         var idOfEmailText = $(".AddedUserInTeam").length + 1;
         var canAdd = true;
-        
+
         for (var i = 0; i < usersEmail.length; i++) {
             if (usersEmail[i] == `` + $("#AddUserInTeam").val() + ``) {
                 $("#AddUserInTeamSpan").html("Already Added")
                 canAdd = false;
+                break;
             } else {
                 $("#AddUserInTeamSpan").html("")
             }
@@ -229,6 +231,8 @@ function requestToJoinTeam() {
 var teamIdForAddUser = 0;
 var teamNameForAddUser = "";
 function openAddUserModal(teamId, teamName) {
+
+    $("#AddUserInTeam").val("")
     $(".AddedUserInTeamContainer").empty()
     $("#AddUserInTeamSpan").html("")
     usersEmail = [];
@@ -236,6 +240,17 @@ function openAddUserModal(teamId, teamName) {
     $("#AddUserModal").modal("show")
     teamIdForAddUser = teamId;
     teamNameForAddUser = teamName;
+
+    $.ajax({
+        type: "POST",
+        url: "/TeamManagement/GetAllUsersEmailOfTeam",
+        data: { teamId: teamId },
+        success: function (data) {
+            for (var i = 0; i < data.length; i++) {
+                usersEmail.push(data[i])
+            }
+        }
+    })
 }
 
 function addUserInTeam() {
@@ -263,7 +278,7 @@ function addUserInTeam() {
                 document.getElementById("addUserInTeam").innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> &nbsp; Loading...`;
             },
             complete: function () {
-                $("#addUserInTeam").html("Created")
+                $("#addUserInTeam").html("Added")
                 $("#addUserInTeam").removeAttr("disabled")
             },
             data: team,

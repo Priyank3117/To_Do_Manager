@@ -81,10 +81,35 @@ namespace Repository.Repository
                     _db.SaveChanges();
                 }
 
-                var member = _db.TeamMembers.FirstOrDefault(teamMember => teamMember.UserId == userId && teamMember.TeamId == teamId);
+                var teamMemberQuery = _db.TeamMembers.AsQueryable();
+                var member = teamMemberQuery.FirstOrDefault(teamMember => teamMember.UserId == userId && teamMember.TeamId == teamId);
 
                 if (member != null)
                 {
+                    if(member.ReportinPersonUserId != null && teamMemberQuery.Count(teamMember => teamMember.TeamId == teamId && teamMember.ReportinPersonUserId == member.ReportinPersonUserId) == 1)
+                    {
+                        var reportingPerson = teamMemberQuery.FirstOrDefault(teamMember => teamMember.UserId == member.ReportinPersonUserId && teamMember.TeamId == teamId);
+
+                        if(reportingPerson != null)
+                        {
+                            reportingPerson.Role = TeamMembers.Roles.TeamMember;
+
+                            _db.SaveChanges();
+                        }
+                    }
+
+                    if(member.Role == TeamMembers.Roles.ReportingPerson)
+                    {
+                        var allMembersUnderRP = teamMemberQuery.Where(teamMember => teamMember.TeamId == teamId && teamMember.ReportinPersonUserId == userId);
+
+                        foreach(var memberunderRP in allMembersUnderRP)
+                        {
+                            memberunderRP.ReportinPersonUserId = null;
+
+                            _db.SaveChanges();
+                        }
+                    }
+
                     _db.Remove(member);
                     _db.SaveChanges();
                 }
@@ -281,6 +306,16 @@ namespace Repository.Repository
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Get All Users Email Of Team
+        /// </summary>
+        /// <param name="teamId">Team Id</param>
+        /// <returns>List of String(Emails)</returns>
+        public List<string> GetAllUsersEmailOfTeam(long teamId)
+        {
+            return _db.TeamMembers.Where(teamMember => teamMember.TeamId == teamId && (teamMember.Status == TeamMembers.MemberStatus.Approved || teamMember.Status == TeamMembers.MemberStatus.RequestedForLeave)).Select(teamMember => teamMember.Users.Email).ToList();
         }
     }
 }

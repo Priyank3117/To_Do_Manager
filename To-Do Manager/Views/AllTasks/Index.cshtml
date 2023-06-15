@@ -14,17 +14,33 @@
             events:[
                 @foreach (var task in Model)
     {
-        <text>
-                        {
-                                    title: '@task.TaskName',
-                                    start: '@task.StartDate',
-                                    end: '@task.EndDate'
-                                },
-        </text>
+        @if (task.IsCompleted == true)
+        {
+            <text>
+                                        {
+                                                    title: '@task.TaskName',
+                                                    start: '@task.StartDate',
+                                                    end: '@task.EndDate',
+                                                    color: '#4fd355'
+                                                },
+            </text>
+        }
+        else
+        {
+            <text>
+                                        {
+                                                    title: '@task.TaskName',
+                                                    start: '@task.StartDate',
+                                                    end: '@task.EndDate',
+                                                    color: '#fd4d4d'
+                                                },
+            </text>
+        }
+
     }
     ],
             eventColor: 'rgb(202 202 202)',
-            eventTextColor: '#000000',
+            eventTextColor: '#ffffff',
             editable: false,
             selectable: true
         });
@@ -36,6 +52,18 @@
     <div class="col d-flex justify-content-between align-items-center">
         <div>
             <a role="button" class="CancelCreateTeamButton filterButton" data-bs-toggle="modal" data-bs-target="#FilterModal">Filters</a>
+        </div>
+        <div class="taskColorInfo" style="display: none">
+            <div class="d-flex justify-content-center align-items-center" style="display: none">
+                <div class="d-flex justify-content-center align-items-center me-1">
+                    <div class="CompleteTask me-1"></div>
+                    <p class="m-0 p-0">Complete Task</p>
+                </div>
+                <div class="d-flex justify-content-center align-items-center ms-1">
+                    <div class="IncompleteTask me-1"></div>
+                    <p class="m-0 p-0">Incomplete Task</p>
+                </div>
+            </div>
         </div>
         <div class="d-flex justify-content-center align-items-center">
             <button class="btn allTaskButton me-2" id="grid">

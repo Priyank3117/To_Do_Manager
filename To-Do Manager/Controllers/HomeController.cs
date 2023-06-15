@@ -115,6 +115,11 @@ namespace To_Do_Manager.Controllers
             return _HomeBAL.GetDataForAddTask(teamId, userId);
         }
 
+        /// <summary>
+        /// Get Data for Add Task
+        /// </summary>
+        /// <param name="teamId">Team Id</param>
+        /// <returns>List of User's UserName with User Id</returns>
         public List<ListOfUsers> GetDataForAddTaskToTeamMember(long teamId)
         {
             return _HomeBAL.GetDataForAddTask(teamId, long.Parse(HttpContext.Session.GetString("UserId")!));
@@ -177,6 +182,11 @@ namespace To_Do_Manager.Controllers
             return _HomeBAL.ClearAllNotifications(long.Parse(HttpContext.Session.GetString("UserId")!));
         }
 
+        /// <summary>
+        /// Mark Notification as Read
+        /// </summary>
+        /// <param name="notificationId">Notification Id</param>
+        /// <returns>True - If notification successfully marked as read else False</returns>
         public bool MarkNotificationAsRead(long notificationId)
         {
             return _HomeBAL.MarkNotificationAsRead(notificationId);

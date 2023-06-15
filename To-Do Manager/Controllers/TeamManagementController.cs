@@ -164,5 +164,15 @@ namespace To_Do_Manager.Controllers
         {
             return _TeamManagementBAL.DeleteTeam(teamId);
         }
+
+        /// <summary>
+        /// Get All Users Email Of Team
+        /// </summary>
+        /// <param name="teamId">Team Id</param>
+        /// <returns>List of String(Emails)</returns>
+        public List<string> GetAllUsersEmailOfTeam(long teamId)
+        {
+            return _TeamManagementBAL.GetAllUsersEmailOfTeam(teamId);
+        }
     }
 }

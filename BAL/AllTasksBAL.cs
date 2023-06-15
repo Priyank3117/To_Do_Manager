@@ -23,6 +23,12 @@ namespace BAL
             return _AllTasksRepo.GetAllTasks(filter);
         }
 
+        /// <summary>
+        /// Get Data For Add Task To Today Task
+        /// </summary>
+        /// <param name="teamId">Team Id</param>
+        /// <param name="userId">User Id</param>
+        /// <returns>List of Users details like Avatar, FirstName, LastName, and User Id</returns>
         public List<ListOfUsers> GetForAddTaskToToDo(long teamId, long userId)
         {
             return _AllTasksRepo.GetForAddTaskToToDo(teamId, userId);
@@ -38,6 +44,11 @@ namespace BAL
             return _AllTasksRepo.AddTaskToTodayTask(taskDetail);
         }
 
+        /// <summary>
+        /// Add Task To Today Task For TeamMember
+        /// </summary>
+        /// <param name="taskDetail">TaskDetails like User Id of that task and User Id of who task assigned</param>
+        /// <returns>True - If task successfully added to Today task else False</returns>
         public bool AddTaskToTodayTaskForTeamMember(TaskDetailViewModel taskDetail)
         {
             return _AllTasksRepo.AddTaskToTodayTaskForTeamMember(taskDetail);

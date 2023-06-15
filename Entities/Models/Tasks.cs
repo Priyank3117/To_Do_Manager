@@ -29,7 +29,8 @@ namespace Entities.Models
         public enum AssignBy
         {
             Self,
-            TeamLeader
+            TeamLeader,
+            ReportingPerson
         }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;

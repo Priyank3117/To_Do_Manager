@@ -28,6 +28,11 @@ namespace To_Do_Manager.Controllers
             return View(_AllTaksBAL.GetTasksForCalenderView(long.Parse(HttpContext.Session.GetString("UserId")!)));
         }
 
+        /// <summary>
+        /// Get Data For Add Task To Today Task
+        /// </summary>
+        /// <param name="teamId">Team Id</param>
+        /// <returns>List of Users details like Avatar, FirstName, LastName, and User Id</returns>
         public List<ListOfUsers> GetForAddTaskToToDo(long teamId)
         {
             return _AllTaksBAL.GetForAddTaskToToDo(teamId, long.Parse(HttpContext.Session.GetString("UserId")!));
@@ -43,8 +48,15 @@ namespace To_Do_Manager.Controllers
             return _AllTaksBAL.AddTaskToTodayTask(task);
         }
 
+        /// <summary>
+        /// Add Task To Today Task For TeamMember
+        /// </summary>
+        /// <param name="task">TaskDetails like User Id of that task and User Id of who task assigned</param>
+        /// <returns>True - If task successfully added to Today task else False</returns>
         public bool AddTaskToTodayTaskForTeamMember(TaskDetailViewModel task)
         {
+            task.FromUserId = long.Parse(HttpContext.Session.GetString("UserId")!);
+
             return _AllTaksBAL.AddTaskToTodayTaskForTeamMember(task);
         }
 

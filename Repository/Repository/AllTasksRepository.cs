@@ -52,7 +52,6 @@ namespace Repository.Repository
                 query = query.Where(task => task.TaskStatus == filter.TaskStatus);
             }
 
-            //query = query.OrderByDescending(task => task.IsTodayTask);
             var totalTeams = teamMemberQuery.Where(teamMembers => teamMembers.UserId == filter.UserId && (teamMembers.Status == Entities.Models.TeamMembers.MemberStatus.Approved || teamMembers.Status == Entities.Models.TeamMembers.MemberStatus.RequestedForLeave)).Select(teamMember => teamMember.TeamId).ToList();
 
             foreach (var teamId in totalTeams)
@@ -124,18 +123,17 @@ namespace Repository.Repository
             return teams;
         }
 
+        /// <summary>
+        /// Get Data For Add Task To Today Task
+        /// </summary>
+        /// <param name="teamId">Team Id</param>
+        /// <param name="userId">User Id</param>
+        /// <returns>List of Users details like Avatar, FirstName, LastName, and User Id</returns>
         public List<ListOfUsers> GetForAddTaskToToDo(long teamId, long userId)
         {
             var query = _db.TeamMembers.AsQueryable();
 
-            //if(query.FirstOrDefault(teamMember => teamMember.TeamId == teamId && teamMember.UserId == userId && teamMember.Role == TeamMembers.Roles.TeamLeader)!.UserId == userId)
-            //{
-            //    return new List<ListOfUsers>();
-            //}
-
             var memberRole = query.FirstOrDefault(teamMember => teamMember.TeamId == teamId && teamMember.UserId == userId)!.Role;
-
-            
 
             if (memberRole == TeamMembers.Roles.TeamLeader)
             {
@@ -192,9 +190,27 @@ namespace Repository.Repository
             }
         }
 
+        /// <summary>
+        /// Add Task To Today Task For TeamMember
+        /// </summary>
+        /// <param name="taskDetail">TaskDetails like User Id of that task and User Id of who task assigned</param>
+        /// <returns>True - If task successfully added to Today task else False</returns>
         public bool AddTaskToTodayTaskForTeamMember(TaskDetailViewModel taskDetail)
         {
-            var task = _db.Tasks.FirstOrDefault(task => task.TaskId == taskDetail.TaskId )!;
+            var fromUser = _db.TeamMembers.FirstOrDefault(teamMember => teamMember.UserId == taskDetail.FromUserId && teamMember.TeamId == taskDetail.TeamId)!.Role;
+
+            Tasks.AssignBy assignBy = new();
+
+            if (fromUser == TeamMembers.Roles.ReportingPerson)
+            {
+                assignBy = Tasks.AssignBy.ReportingPerson;
+            }
+            else if (fromUser == TeamMembers.Roles.TeamLeader)
+            {
+                assignBy = Tasks.AssignBy.TeamLeader;
+            }
+
+            var task = _db.Tasks.FirstOrDefault(task => task.TaskId == taskDetail.TaskId)!;
 
             if (task != null)
             {
@@ -202,8 +218,8 @@ namespace Repository.Repository
                 task.IsTaskForToday = true;
                 task.StartDate = DateTime.Now;
                 task.EndDate = DateTime.Now;
+                task.AssignedBy = assignBy;
 
-                _db.Update(task);
                 _db.SaveChanges();
 
                 return true;

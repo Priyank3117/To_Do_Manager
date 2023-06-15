@@ -15,6 +15,7 @@ namespace Entities.ViewModels.UserProfileViewModels
         [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")]
         public string LastName { get; set; } = string.Empty;
 
+        [RegularExpression(@"^[A-Za-z\s]*$", ErrorMessage = "Use letters and space only please")]
         public string? Department { get; set; }
 
         [RegularExpression(@"^((https?:\/\/)?((www|\w\w)\.)?linkedin\.com\/)((([\w]{2,3})?)|([^\/]+\/(([\w|\d-&#?=])+\/?){1,}))$", ErrorMessage = "Please enter a valid LinkedIn URL")]
