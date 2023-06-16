@@ -25,6 +25,8 @@
                 if (data == true) {
                     $("#OTP").removeAttr("disabled", true)
                     $("#Email").attr("disabled", true)
+                } else {
+                    $("#EmailSpan").html("User not registered")
                 }
             }
         })
@@ -60,6 +62,9 @@ function verifyOTP() {
                 else if (data == "OTPIsExpired") {
                     $("#OTPSpan").html("OTP is expired")
                 }
+                else if (data == "InvalidOTP") {
+                    $("#OTPSpan").html("Wrong OTP")
+                }
                 else if (data == "FirstGenerateOTP") {
                     $("#OTPSpan").html("First generate OTP")
                 }
@@ -94,22 +99,29 @@ function backToForgotPasswordView() {
 }
 
 function changePassword() {
-    if ($("#OldPassword").val() == "") {
-        $("#OldPasswordSpan").html("Old password is required")
-    }
-    else if ($("#NewPassword").val() == "") {
+
+    $("#ConfirmNewPasswordSpan").html("")
+    $("#NewPasswordSpan").html("")
+
+    if ($("#NewPassword").val() == "") {
         $("#NewPasswordSpan").html("New password is required")
+    }
+    else if ($("#ConfirmNewPassword").val() == "") {
+        $("#ConfirmNewPasswordSpan").html("Confirm New Password is required")
     }
     else if (!/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/.test($("#NewPassword").val())) {
         $("#NewPasswordSpan").html("Password should contains minimum 8 character, one capital character, one numeric value and one special symbol")
     }
+    else if ($("#NewPassword").val() != $("#ConfirmNewPassword").val()) {
+        $("#NewPasswordSpan").html("Password does not matched")
+    }
     else {
-        $("#OldPasswordSpan").html("")
+        $("#ConfirmNewPasswordSpan").html("")
         $("#NewPasswordSpan").html("")
 
         var changePassword = {
             Email: $("#Email").val(),
-            OldPassword: $("#OldPassword").val(),
+            ConfirmNewPassword: $("#ConfirmNewPassword").val(),
             NewPassword: $("#NewPassword").val()
         }
 
@@ -118,9 +130,7 @@ function changePassword() {
             type: "POST",
             data: { resetPassword: changePassword },
             success: function (data) {
-                if (data == "EnterValidOldPassword") {
-                    $("#OldPasswordSpan").html("Old password is not correct")
-                } else {
+                if (data == "Changed") {                    
                     backToForgotPasswordView();
                     Swal.fire({
                         position: 'top-start',
@@ -129,6 +139,8 @@ function changePassword() {
                         showConfirmButton: false,
                         timer: 1500
                     })
+                } else {
+                    $("#OldPasswordSpan").html("Something went wrong!")
                 }
             }
         })

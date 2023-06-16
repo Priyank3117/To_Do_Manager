@@ -2,12 +2,16 @@
 
 @model UserProfileViewModel
 
+@{
+    ViewData["Title"] = "User Profile";
+}
+
 <div class="row p-5 mt-5 mb-5" style="background-color: #ebebeb;border-radius: 20px;">
     <div class="col-12 col-md-3 mb-4 userProfileBoxContainer">
         <div class="userProfileBox">
             <div class="profileImageContainer">
                 <img src="~/images/EmptyProfile.png" id="profileImage" class="mt-3" alt="" />
-                <input type="file" id="selectProfileImage" onchange="loadFile(event)" accept="image/*">
+                <input type="file" id="selectProfileImage" onchange="loadFile(event)" accept=".png, .jpg, .jpeg">
             </div>
 
             <p style="font-weight:500;font-size: 1.2rem;" class="m-0" id="UserNameInUserProfile"></p>

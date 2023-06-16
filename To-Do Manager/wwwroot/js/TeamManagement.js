@@ -31,7 +31,7 @@ var usersEmailInCreateTeam = []
 $(".addUser").click(function () {
     if ($("#AddUser").val() == "") {
         $("#AddUserSpan").html("Email is required")
-    } else if (!/^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test($("#AddUser").val())) {
+    } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z]+\.[a-zA-Z]{1,}$/.test($("#AddUser").val())) {
         $("#AddUserSpan").html("Invalid Email")
     } else {
         $("#AddUserSpan").html("")
@@ -70,7 +70,7 @@ $(".addUserInTeam").click(function () {
     
     if ($("#AddUserInTeam").val() == "") {
         $("#AddUserInTeamSpan").html("Email is required")
-    } else if (!/^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test($("#AddUserInTeam").val())) {
+    } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z]+\.[a-zA-Z]{1,}$/.test($("#AddUserInTeam").val())) {
         $("#AddUserInTeamSpan").html("Invalid Email")
     } else {
         $("#AddUserInTeamSpan").html("")
@@ -90,7 +90,7 @@ $(".addUserInTeam").click(function () {
         if (canAdd) {
             var emailHTML = `<div class="AddedUserInTeam mt-2" id="` + idOfEmailText + `InTeam">
                                             <p class="text-muted m-0 userEmailInTeam">`+ $("#AddUserInTeam").val() + `</p>
-                                            <a role="button" onclick="removeUserFromTeam(`+ idOfEmailText + `)" class="ms-2">
+                                            <a role="button" onclick="removeUserFromTeamForAddMember(`+ idOfEmailText + `)" class="ms-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color: black;" fill="currentColor"
                                                      class="bi bi-x-lg" viewBox="0 0 16 16">
                                                     <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
@@ -111,7 +111,7 @@ function removeUser(idOfEmailText) {
     $('#' + idOfEmailText + '').remove();
 }
 
-function removeUserFromTeam(idOfEmailText) {
+function removeUserFromTeamForAddMember(idOfEmailText) {
     usersEmail.splice(usersEmail.indexOf($('#' + idOfEmailText + 'InTeam p').html()), 1);
     $('#' + idOfEmailText + 'InTeam').remove();
 }

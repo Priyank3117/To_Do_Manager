@@ -109,6 +109,14 @@ function changePassword() {
             success: function (result) {
                 if (result == "Changed") {
                     $(".changePasswordButton").html("Password Changed")
+                    $("#changePasswordModal").modal("hide")
+                    Swal.fire({
+                        position: 'top-start',
+                        icon: 'success',
+                        title: 'Password Changed',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
                 }
                 if (result == "Enter Valid Old Password") {
                     $("#oldPasswordSpan").html('Enter Valid Old Password');

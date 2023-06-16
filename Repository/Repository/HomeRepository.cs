@@ -23,8 +23,8 @@ namespace Repository.Repository
         {
             Teams teams = new()
             {
-                TeamName = team.TeamName,
-                TeamDescription = team.TeamDescription
+                TeamName = team.TeamName.Trim(),
+                TeamDescription = team.TeamDescription.Trim()
             };
 
             _db.Add(teams);
@@ -231,9 +231,9 @@ namespace Repository.Repository
         {
             var query = _db.TeamMembers.AsQueryable();
 
-            var memberRole = query.FirstOrDefault(teamMember => teamMember.TeamId == teamId && teamMember.UserId == userId)!.Role;
+            var memberRole = query.FirstOrDefault(teamMember => teamMember.TeamId == teamId && teamMember.UserId == userId)!;
 
-            if (memberRole == TeamMembers.Roles.TeamLeader)
+            if (memberRole.Role == TeamMembers.Roles.TeamLeader)
             {
                 return query.Where(teamMember => teamMember.TeamId == teamId).Select(task => new ListOfUsers()
                 {
@@ -242,14 +242,25 @@ namespace Repository.Repository
                     Avatar = task.Users.Avatar
                 }).ToList();
             }
-            else if (memberRole == TeamMembers.Roles.ReportingPerson)
+            else if (memberRole.Role == TeamMembers.Roles.ReportingPerson)
             {
-                return query.Where(teamMember => teamMember.TeamId == teamId && teamMember.ReportinPersonUserId == userId).Select(p => new ListOfUsers()
+                var allUnderMember = query.Where(teamMember => teamMember.TeamId == teamId && teamMember.ReportinPersonUserId == userId).Select(p => new ListOfUsers()
                 {
                     UserName = p.Users.FirstName + " " + p.Users.LastName,
                     UserId = p.UserId,
                     Avatar = p.Users.Avatar
                 }).ToList();
+
+                var reportingPerson = query.Where(teamMember => teamMember.TeamId == teamId && teamMember.UserId == memberRole.UserId).Select(p => new ListOfUsers()
+                {
+                    UserName = p.Users.FirstName + " " + p.Users.LastName,
+                    UserId = p.UserId,
+                    Avatar = p.Users.Avatar
+                }).FirstOrDefault()!;
+
+                allUnderMember.Add(reportingPerson);
+
+                return allUnderMember;
             }
             else
             {
@@ -266,20 +277,37 @@ namespace Repository.Repository
         {
             if (task != null)
             {
+                var fromUser = _db.TeamMembers.FirstOrDefault(teamMember => teamMember.UserId == task.FromUserId && teamMember.TeamId == task.TeamId)!.Role;
+
+                Tasks.AssignBy assignBy = new();
+
+                if (fromUser == TeamMembers.Roles.ReportingPerson)
+                {
+                    assignBy = Tasks.AssignBy.ReportingPerson;
+                }
+                else if (fromUser == TeamMembers.Roles.TeamLeader)
+                {
+                    assignBy = Tasks.AssignBy.TeamLeader;
+                }
+                else
+                {
+                    assignBy = Tasks.AssignBy.Self;
+                }
+
                 if (task.StartDate == null && task.EndDate == null)
                 {
                     Tasks addTask = new()
                     {
                         TaskStatus = false,
                         TeamId = task.TeamId,
-                        TaskName = task.TaskName,
-                        TaskDescription = task.TaskDescription,
+                        TaskName = task.TaskName.Trim(),
+                        TaskDescription = task.TaskDescription.Trim(),
                         UserId = task.UserId,
                         IsTaskForToday = true,
                         StartDate = DateTime.Now,
                         EndDate = DateTime.Now,
-                        AssignedBy = task.FromUserId != task.UserId ? Tasks.AssignBy.TeamLeader : Tasks.AssignBy.Self
-                    };
+                        AssignedBy = assignBy
+                };
 
                     _db.Add(addTask);
                     _db.SaveChanges();
@@ -290,14 +318,14 @@ namespace Repository.Repository
                     {
                         TaskStatus = false,
                         TeamId = task.TeamId,
-                        TaskName = task.TaskName,
-                        TaskDescription = task.TaskDescription,
+                        TaskName = task.TaskName.Trim(),
+                        TaskDescription = task.TaskDescription.Trim(),
                         UserId = task.UserId,
                         IsTaskForToday = true,
                         StartDate = (DateTime)task.StartDate!,
                         EndDate = (DateTime)task.EndDate!,
-                        AssignedBy = task.FromUserId != task.UserId ? Tasks.AssignBy.TeamLeader : Tasks.AssignBy.Self
-                    };
+                        AssignedBy = assignBy
+            };
 
                     _db.Add(addTask);
                     _db.SaveChanges();

@@ -5,7 +5,7 @@ using Repository.Interface;
 
 namespace Repository.Repository
 {
-    public class AccountRepository: IAccountRepository
+    public class AccountRepository : IAccountRepository
     {
         private readonly ToDoManagerDBContext _db;
         private readonly IHomeRepository _HomeRepo;
@@ -23,7 +23,7 @@ namespace Repository.Repository
         /// <returns>True - If successfully register else False</returns>
         public bool RegisterUser(RegistrationViewModel registration)
         {
-            if(registration != null)
+            if (registration != null)
             {
                 Users user = new Users()
                 {
@@ -76,7 +76,7 @@ namespace Repository.Repository
                 loginViewModel.UserId = user.UserId;
                 loginViewModel.Email = user.Email;
                 loginViewModel.Password = user.Password;
-                loginViewModel.UserName = user.FirstName +" "+ user.LastName;
+                loginViewModel.UserName = user.FirstName + " " + user.LastName;
                 loginViewModel.Avatar = user.Avatar;
             }
             return loginViewModel;
@@ -128,21 +128,25 @@ namespace Repository.Repository
         /// <returns>"Valid OTP" - If OTP is valid</returns>
         public string VerifyOTP(ForgotPasswordViewModel forgotPassword)
         {
-            var otpDetails = _db.ResetPassword.FirstOrDefault( resetPassword => resetPassword.Email == forgotPassword.Email);
-            if(otpDetails == null)
+            var otpDetails = _db.ResetPassword.FirstOrDefault(resetPassword => resetPassword.Email == forgotPassword.Email);
+            if (otpDetails == null)
             {
                 return "FirstGenerateOTP";
             }
             else
             {
                 var OTPTime = otpDetails.UpdatedAt == null ? otpDetails.CreatedAt : otpDetails.UpdatedAt;
-                if ( OTPTime < DateTime.Now.AddMinutes(-10))
+                if (OTPTime < DateTime.Now.AddMinutes(-10))
                 {
                     return "OTPIsExpired";
                 }
-                else if( otpDetails.OTP == forgotPassword.OTP)
+                else if (otpDetails.OTP == forgotPassword.OTP)
                 {
                     return "ValidOTP";
+                }
+                else if (otpDetails.OTP != forgotPassword.OTP)
+                {
+                    return "InvalidOTP";
                 }
 
                 return "Error";
@@ -160,7 +164,7 @@ namespace Repository.Repository
 
             resetPassword.NewPassword = BCrypt.Net.BCrypt.HashPassword(resetPassword.NewPassword);
 
-            if (user != null && BCrypt.Net.BCrypt.Verify(resetPassword.OldPassword, user.Password))
+            if (user != null)
             {
                 user.Password = resetPassword.NewPassword;
                 user.UpdatedAt = DateTime.Now;

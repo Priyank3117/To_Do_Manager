@@ -42,6 +42,14 @@ function getDataForAddTask(teamId, userId) {
     })
 }
 
+$("#StartDate").change(function () {
+    $("#EndDate").attr("min", $("#StartDate").val())
+})
+
+$("#EndDate").change(function () {
+    $("#StartDate").attr("max", $("#EndDate").val())
+})
+
 function addTask() {
 
     $("#TaskNameSpan").html("")
@@ -50,7 +58,7 @@ function addTask() {
     $("#EndDateSpan").html("")
 
     var startDate = new Date($("#StartDate").val());
-    var endDate = new Date($("#EndDate").val());
+    var today = new Date();
 
     if ($("#TaskName").val().trim() == "") {
         $("#TaskNameSpan").html("Task name is required")
@@ -64,8 +72,8 @@ function addTask() {
     else if ($("#EndDate").val() == "") {
         $("#EndDateSpan").html("End Date is required")
     }
-    else if (startDate > endDate) {
-        $("#StartDateSpan").html("Enter valid start & end date")
+    else if (startDate.getDate() < today.getDate()) {
+        $("#StartDateSpan").html("Enter valid start date")
     }
     else {
 

@@ -8,11 +8,14 @@ namespace Entities.ViewModels.AccountViewModels
         public string Email { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Password is required")]
-        [StringLength(20, MinimumLength = 8, ErrorMessage = "Minimum length should be 8 character")]
-        [RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", ErrorMessage = "Enter Strong Password")]
+        [RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", ErrorMessage = "Password should contains minimum 8 character, one capital character, one numeric value and one special symbol")]
         public string OldPassword { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Comfirm Password is required")]
+        [RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", ErrorMessage = "Password should contains minimum 8 character, one capital character, one numeric value and one special symbol")]
         public string NewPassword { get; set; } = string.Empty;
+
+
+        public string ConfirmNewPassword { get; set; } = string.Empty;
     }
 }

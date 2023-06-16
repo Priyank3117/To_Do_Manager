@@ -59,7 +59,7 @@ namespace Repository.Repository
                     user.FirstName = userDetails.FirstName;
                     user.LastName = userDetails.LastName;
                     user.LastName = userDetails.LastName;
-                    user.Deparment = userDetails.Department;
+                    user.Deparment = userDetails.Department == null ? userDetails.Department : userDetails.Department.Trim();
                     user.Gender = userDetails.Gender == "Male" ? Users.UserGender.Male : Users.UserGender.Female;
                     user.LinkedInURL = userDetails.LinkedInURL;
                     user.UpdatedAt = DateTime.Now;

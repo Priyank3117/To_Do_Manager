@@ -26,7 +26,7 @@ var usersEmail = []
 $(".addUser").click(function () {
     if ($("#AddUser").val() == "") {
         $("#AddUserSpan").html("Email is required")
-    } else if (!/^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test($("#AddUser").val())) {
+    } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z]+\.[a-zA-Z]{1,}$/.test($("#AddUser").val())) {
         $("#AddUserSpan").html("Invalid Email")
     } else {
         $("#AddUserSpan").html("")
@@ -65,36 +65,48 @@ function removeUser(idOfEmailText) {
 }
 
 $(".createTeamButton").click(function () {
-    var team = new FormData();
-    team.append('TeamName', $("#TeamName").val());
-    team.append('TeamDescription', $("#TeamDescription").val());
 
-    var allUsersEmails = $(".userEmail")
-
-    for (var i = 0; i < allUsersEmails.length; i++) {
-        team.append('UserEmails', allUsersEmails[i].innerHTML);
+    if ($("#TeamName").val().trim() == "") {
+        $("#TeamNameSpan").html("Team name is required")
     }
+    else if ($("#TeamDescription").val().trim() == "") {
+        $("#TeamDescriptionSpan").html("Description is required")
+    }
+    else {
+        $("#TeamNameSpan").html("")
+        $("#TeamDescriptionSpan").html("")
 
-    $.ajax({
-        type: "POST",
-        url: "/Home/CreateTeam",
-        processData: false,
-        contentType: false,
-        data: team,
-        beforeSend: function () {
-            $("#CreateTeamInHomePageButton").attr("disabled", true)
-            document.getElementById("CreateTeamInHomePageButton").innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> &nbsp; Loading...`;
-        },
-        complete: function () {
-            $("#CreateTeamInHomePageButton").html("Created")
-            $("#CreateTeamInHomePageButton").removeAttr("disabled")
-        },
-        success: function (result) {
-            if (result == true) {
-                window.location.replace('https://localhost:7100/Home/AllTeamsPage');
-            }
+        var team = new FormData();
+        team.append('TeamName', $("#TeamName").val());
+        team.append('TeamDescription', $("#TeamDescription").val());
+
+        var allUsersEmails = $(".userEmail")
+
+        for (var i = 0; i < allUsersEmails.length; i++) {
+            team.append('UserEmails', allUsersEmails[i].innerHTML);
         }
-    })
+
+        $.ajax({
+            type: "POST",
+            url: "/Home/CreateTeam",
+            processData: false,
+            contentType: false,
+            data: team,
+            beforeSend: function () {
+                $("#CreateTeamInHomePageButton").attr("disabled", true)
+                document.getElementById("CreateTeamInHomePageButton").innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> &nbsp; Loading...`;
+            },
+            complete: function () {
+                $("#CreateTeamInHomePageButton").html("Created")
+                $("#CreateTeamInHomePageButton").removeAttr("disabled")
+            },
+            success: function (result) {
+                if (result == true) {
+                    window.location.replace('https://localhost:7100/Home/AllTeamsPage');
+                }
+            }
+        })
+    }
 })
 
 function searchTeam() {
