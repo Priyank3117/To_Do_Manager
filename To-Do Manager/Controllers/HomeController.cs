@@ -51,9 +51,9 @@ namespace To_Do_Manager.Controllers
         /// <returns>All Teams with Today's Task</returns>
         public IActionResult AllTeamsPage()
         {
-
             ViewBag.UserName = HttpContext.Session.GetString("UserName");
             ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
+
             return View(_HomeBAL.GetAllTodayTasks(long.Parse(HttpContext.Session.GetString("UserId")!)));
         }
 
@@ -87,9 +87,13 @@ namespace To_Do_Manager.Controllers
             if (ModelState.IsValid)
             {
                 team.TeamLeaderUserId = long.Parse(HttpContext.Session.GetString("UserId")!);
+
                 return _HomeBAL.CreateTeam(team);
             }
-            return false;
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -100,6 +104,7 @@ namespace To_Do_Manager.Controllers
         public bool RequestToJoinTeam(TeamMemberViewModel userRequest)
         {
             userRequest.UserId = long.Parse(HttpContext.Session.GetString("UserId")!);
+
             return _HomeBAL.RequestToJoinTeam(userRequest);
         }
 

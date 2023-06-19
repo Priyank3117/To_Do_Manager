@@ -24,5 +24,7 @@ namespace Entities.ViewModels.UserProfileViewModels
         public string? Gender { get; set; }
 
         public string Avatar { get; set; } = "/images/EmptyProfile.png";
+
+        public string Email { get; set; } = string.Empty;
     }
 }

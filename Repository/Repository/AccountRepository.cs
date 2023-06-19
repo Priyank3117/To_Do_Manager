@@ -48,7 +48,10 @@ namespace Repository.Repository
 
                 return true;
             }
-            return false;
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -68,7 +71,7 @@ namespace Repository.Repository
         /// <returns>User's details like email, password, user Id</returns>
         public LoginViewModel UserLogin(string email)
         {
-            LoginViewModel loginViewModel = new LoginViewModel();
+            LoginViewModel loginViewModel = new();
             var user = _db.Users.Where(user => user.Email == email).FirstOrDefault();
 
             if (user != null)

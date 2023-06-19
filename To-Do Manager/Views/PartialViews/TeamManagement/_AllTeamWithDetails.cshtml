@@ -79,7 +79,7 @@
                                                                                 @if (team.Role == "TeamLeader" && team.UserId != teamMember.UserId)
                                                                                 {
                                                                                     <button class="removeButton" onclick="openRemoveUserModal('@teamMember.UserName',@teamMember.UserId, @team.TeamId)">
-                                                                                        remove
+                                                                                        Remove
                                                                                     </button>
                                                                                 }
                                                                             </div>
@@ -94,7 +94,7 @@
                                                                                 @if (team.Role == "TeamLeader" && team.UserId != teamMember.UserId)
                                                                                 {
                                                                                     <button class="removeButton" onclick="removeReportingPerson(@teamMember.UserId, @teamMember.ReportingPersonUserId, @team.TeamId)">
-                                                                                        remove
+                                                                                        Remove
                                                                                     </button>
                                                                                 }
                                                                             </div>
@@ -118,10 +118,10 @@
                                                                     {
                                                                         <div>
                                                                             <button class="removeButton me-2" onclick="openRemoveUserModal('@teamMember.UserName',@teamMember.UserId, @team.TeamId)">
-                                                                                remove
+                                                                                Remove
                                                                             </button>
                                                                             <button class="reportingPersonButton" onclick="openModalForSetReportingPerson(@teamMember.UserId, @team.TeamId)">
-                                                                                set R.P.
+                                                                                Set RP
                                                                             </button>
                                                                         </div>
                                                                     }
@@ -153,10 +153,10 @@
                                                                 </div>
                                                                 <div>
                                                                     <button class="approveButton" onclick="acceptJoinRequest(@joinReaquest.UserId, @team.TeamId)">
-                                                                        accept
+                                                                        Accept
                                                                     </button>
                                                                     <button class="removeButton ms-2" onclick="declineJoinRequest(@joinReaquest.UserId, @team.TeamId)">
-                                                                        decline
+                                                                        Decline
                                                                     </button>
                                                                 </div>
 
@@ -183,10 +183,10 @@
                                                                 </div>
                                                                 <div>
                                                                     <button class="approveButton" onclick="acceptLeaveRequest(@leaveReaquest.UserId, @team.TeamId)">
-                                                                        accept
+                                                                        Accept
                                                                     </button>
                                                                     <button class="removeButton ms-2" onclick="declineLeaveRequest(@leaveReaquest.UserId, @team.TeamId)">
-                                                                        decline
+                                                                        Decline
                                                                     </button>
                                                                 </div>
 

@@ -142,7 +142,10 @@ namespace Repository.Repository
 
                 return true;
             }
-            return false;
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -307,7 +310,7 @@ namespace Repository.Repository
                         StartDate = DateTime.Now,
                         EndDate = DateTime.Now,
                         AssignedBy = assignBy
-                };
+                    };
 
                     _db.Add(addTask);
                     _db.SaveChanges();
@@ -325,14 +328,17 @@ namespace Repository.Repository
                         StartDate = (DateTime)task.StartDate!,
                         EndDate = (DateTime)task.EndDate!,
                         AssignedBy = assignBy
-            };
+                    };
 
                     _db.Add(addTask);
                     _db.SaveChanges();
                 }
                 return true;
             }
-            return false;
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>

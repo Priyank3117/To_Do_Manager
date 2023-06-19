@@ -8,6 +8,10 @@
 
         public string EndDate { get; set; } = string.Empty;
 
+        public string? TaskDescription { get; set; }
+
         public bool IsCompleted { get; set; } = false;
+
+        public long TaskId { get; set; } = 0;
     }
 }

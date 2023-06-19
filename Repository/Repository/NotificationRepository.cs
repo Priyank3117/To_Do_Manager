@@ -56,7 +56,10 @@ namespace Repository.Repository
 
                 return true;
             }
-            return false;
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -73,7 +76,10 @@ namespace Repository.Repository
 
                 return true;
             }
-            return false;
+            else
+            {
+                return false;
+            }            
         }
     }
 }

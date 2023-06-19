@@ -24,6 +24,7 @@
                                         {
                                                     title: '@task.TaskName',
                                                     start: '@task.StartDate',
+                                                    description: '@task.TaskDescription',
                                                     end: '@task.EndDate',
                                                     color: '#4fd355'
                                                 },
@@ -35,6 +36,7 @@
                                         {
                                                     title: '@task.TaskName',
                                                     start: '@task.StartDate',
+                                                    description: '@task.TaskDescription',
                                                     end: '@task.EndDate',
                                                     color: '#fd4d4d'
                                                 },
@@ -46,7 +48,11 @@
             eventColor: 'rgb(202 202 202)',
             eventTextColor: '#ffffff',
             editable: false,
-            selectable: true
+            selectable: true,
+            eventClick: function(info){
+                var event = info.event;
+                alert(event.extendedProps.description)
+            }
         });
         calendar.render();
     });

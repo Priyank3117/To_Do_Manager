@@ -2,7 +2,7 @@
     if ($("#Email").val() == '') {
         $("#EmailSpan").html("Email is required")
     }
-    else if (!/^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test($("#Email").val())) {
+    else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z]+\.[a-zA-Z]{1,}$/.test($("#Email").val())) {
         $("#EmailSpan").html("Enter valid email")
     }
     else {
@@ -10,6 +10,8 @@
         var forgotPassword = {
             Email: $("#Email").val()
         }
+
+        var isOTPSent = false
 
         $.ajax({
             url: "/Account/SendOTP",
@@ -19,14 +21,20 @@
                 document.getElementById("SendOTPButton").innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> &nbsp; Loading...`;
             },
             complete: function () {
-                $(".SendOTPButton").html("Resend OTP")
+                if (isOTPSent) {
+                    $(".SendOTPButton").html("Resend OTP")
+                } else {
+                    $(".SendOTPButton").html("Send OTP")
+                }                
             },
             success: function (data) {
                 if (data == true) {
                     $("#OTP").removeAttr("disabled", true)
                     $("#Email").attr("disabled", true)
+                    isOTPSent = true;
                 } else {
                     $("#EmailSpan").html("User not registered")
+                    isOTPSent = false;
                 }
             }
         })

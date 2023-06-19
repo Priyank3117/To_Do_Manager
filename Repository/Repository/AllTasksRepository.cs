@@ -52,7 +52,7 @@ namespace Repository.Repository
                 query = query.Where(task => task.TaskStatus == filter.TaskStatus);
             }
 
-            var totalTeams = teamMemberQuery.Where(teamMembers => teamMembers.UserId == filter.UserId && (teamMembers.Status == Entities.Models.TeamMembers.MemberStatus.Approved || teamMembers.Status == Entities.Models.TeamMembers.MemberStatus.RequestedForLeave)).Select(teamMember => teamMember.TeamId).ToList();
+            var totalTeams = teamMemberQuery.Where(teamMembers => teamMembers.UserId == filter.UserId && (teamMembers.Status == TeamMembers.MemberStatus.Approved || teamMembers.Status == TeamMembers.MemberStatus.RequestedForLeave)).Select(teamMember => teamMember.TeamId).ToList();
 
             foreach (var teamId in totalTeams)
             {
@@ -234,7 +234,7 @@ namespace Repository.Repository
         /// Get All Task Name for Calender View
         /// </summary>
         /// <param name="userId">User Id</param>
-        /// <returns>List of all task for that user with task details like 
+        /// <returns>List of all task for that user with task details like
         /// Start Date, End Date and Task Status whether it is completed or not</returns>
         public List<AllTaskForCalenderView> GetTasksForCalenderView(long userId)
         {
@@ -254,7 +254,8 @@ namespace Repository.Repository
                     task.TaskName = mytask.TaskName;
                     task.IsCompleted = mytask.TaskStatus;
                     task.StartDate = mytask.StartDate.ToString("yyyy-MM-dd");
-                    task.EndDate = mytask.EndDate.ToString("yyyy-MM-dd");
+                    task.EndDate = mytask.EndDate.AddDays(1).ToString("yyyy-MM-dd");
+                    task.TaskDescription = mytask.TaskDescription;
 
                     AllTasks.Add(task);
                 }
@@ -275,7 +276,8 @@ namespace Repository.Repository
                                 taskOfMember.TaskName = task.TaskName;
                                 taskOfMember.IsCompleted = task.TaskStatus;
                                 taskOfMember.StartDate = task.StartDate.ToString("yyyy-MM-dd");
-                                taskOfMember.EndDate = task.EndDate.ToString("yyyy-MM-dd");
+                                taskOfMember.EndDate = task.EndDate.AddDays(1).ToString("yyyy-MM-dd");
+                                taskOfMember.TaskDescription = task.TaskDescription;
 
                                 AllTasks.Add(taskOfMember);
                             }

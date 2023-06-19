@@ -25,7 +25,7 @@ namespace Repository.Repository
             var query = _db.TeamMembers.AsQueryable();
             var users = _db.Users.AsQueryable();
 
-            var teams = query.Where(team => team.UserId == userId && ((team.Status == Entities.Models.TeamMembers.MemberStatus.Approved) || (team.Status == Entities.Models.TeamMembers.MemberStatus.RequestedForLeave))).Select(team => new TeamManagementViewModel()
+            var teams = query.Where(team => team.UserId == userId && ((team.Status == TeamMembers.MemberStatus.Approved) || (team.Status == TeamMembers.MemberStatus.RequestedForLeave))).Select(team => new TeamManagementViewModel()
             {
                 TeamId = team.TeamId,
                 UserId = userId,
@@ -33,8 +33,8 @@ namespace Repository.Repository
                 TeamDescription = team.Teams.TeamDescription,
                 Role = team.Role.ToString(),
                 MemberStatus = team.Status.ToString(),
-                TeamLeaderUserId = team.Teams.TeamMembers.FirstOrDefault(teamMember => teamMember.Role == Entities.Models.TeamMembers.Roles.TeamLeader && teamMember.TeamId == team.TeamId)!.UserId,
-                TeamMembers = query.Where(teamMember => teamMember.TeamId == team.TeamId && (teamMember.Status == Entities.Models.TeamMembers.MemberStatus.Approved || teamMember.Status == Entities.Models.TeamMembers.MemberStatus.RequestedForLeave)).Select(user => new UserDetailOfTeam()
+                TeamLeaderUserId = team.Teams.TeamMembers.FirstOrDefault(teamMember => teamMember.Role == TeamMembers.Roles.TeamLeader && teamMember.TeamId == team.TeamId)!.UserId,
+                TeamMembers = query.Where(teamMember => teamMember.TeamId == team.TeamId && (teamMember.Status == TeamMembers.MemberStatus.Approved || teamMember.Status == TeamMembers.MemberStatus.RequestedForLeave)).Select(user => new UserDetailOfTeam()
                 {
                     UserId = user.UserId,
                     Avatar = user.Users.Avatar,
@@ -43,13 +43,13 @@ namespace Repository.Repository
                     ReportingPersonUserName = user.ReportinPersonUserId != null ? users.FirstOrDefault(user1 => user1.UserId == user.ReportinPersonUserId)!.FirstName + " " + users.FirstOrDefault(user1 => user1.UserId == user.ReportinPersonUserId)!.LastName : null!,
                     ReportingPersonAvatar = users.FirstOrDefault(user1 => user1.UserId == user.ReportinPersonUserId)!.Avatar
                 }).ToList(),
-                JoinRequests = team.Role.ToString() == "TeamLeader" ? query.Where(teamMember => teamMember.TeamId == team.TeamId && teamMember.UserId != userId && teamMember.Status == Entities.Models.TeamMembers.MemberStatus.Pending).Select(user => new UserDetailOfTeam()
+                JoinRequests = team.Role.ToString() == "TeamLeader" ? query.Where(teamMember => teamMember.TeamId == team.TeamId && teamMember.UserId != userId && teamMember.Status == TeamMembers.MemberStatus.Pending).Select(user => new UserDetailOfTeam()
                 {
                     UserId = user.UserId,
                     Avatar = user.Users.Avatar,
                     UserName = user.Users.FirstName + " " + user.Users.LastName,
                 }).ToList() : new List<UserDetailOfTeam>(),
-                LeaveRequests = team.Role.ToString() == "TeamLeader" ? query.Where(teamMember => teamMember.TeamId == team.TeamId && teamMember.UserId != userId && teamMember.Status == Entities.Models.TeamMembers.MemberStatus.RequestedForLeave).Select(user => new UserDetailOfTeam()
+                LeaveRequests = team.Role.ToString() == "TeamLeader" ? query.Where(teamMember => teamMember.TeamId == team.TeamId && teamMember.UserId != userId && teamMember.Status == TeamMembers.MemberStatus.RequestedForLeave).Select(user => new UserDetailOfTeam()
                 {
                     UserId = user.UserId,
                     Avatar = user.Users.Avatar,
@@ -133,7 +133,7 @@ namespace Repository.Repository
         {
             var query = _db.TeamMembers.AsQueryable();
 
-            var allMembers = query.Where(teamMember => teamMember.UserId != userId && teamMember.TeamId == teamId && teamMember.Status == Entities.Models.TeamMembers.MemberStatus.Approved && teamMember.Role != Entities.Models.TeamMembers.Roles.TeamLeader && teamMember.ReportinPersonUserId == null).Select(user => new UserDetailOfTeam()
+            var allMembers = query.Where(teamMember => teamMember.UserId != userId && teamMember.TeamId == teamId && teamMember.Status == TeamMembers.MemberStatus.Approved && teamMember.Role != TeamMembers.Roles.TeamLeader && teamMember.ReportinPersonUserId == null).Select(user => new UserDetailOfTeam()
             {
                 UserId = user.UserId,
                 Avatar = user.Users.Avatar,
@@ -171,14 +171,16 @@ namespace Repository.Repository
             {
                 teamMember.ReportinPersonUserId = userIdOfReportingPerson;
 
-                reportingPerson.Role = Entities.Models.TeamMembers.Roles.ReportingPerson;
+                reportingPerson.Role = TeamMembers.Roles.ReportingPerson;
 
                 _db.SaveChanges();
 
                 return true;
             }
-
-            return false;
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -207,7 +209,7 @@ namespace Repository.Repository
                         var reportingPerson = query.FirstOrDefault(teamMember => teamMember.UserId == reportingPersonUserId);
                         if (reportingPerson != null)
                         {
-                            reportingPerson.Role = Entities.Models.TeamMembers.Roles.TeamMember;
+                            reportingPerson.Role = TeamMembers.Roles.TeamMember;
 
                             _db.SaveChanges();
                         }
@@ -220,7 +222,10 @@ namespace Repository.Repository
                     return false;
                 }
             }
-            return false;
+            else
+            {
+                return false;
+            }            
         }
 
         /// <summary>
@@ -237,7 +242,7 @@ namespace Repository.Repository
 
                 if (teamMember != null)
                 {
-                    teamMember.Status = Entities.Models.TeamMembers.MemberStatus.Approved;
+                    teamMember.Status = TeamMembers.MemberStatus.Approved;
 
                     _db.SaveChanges();
 
@@ -266,7 +271,7 @@ namespace Repository.Repository
 
                 if (teamMember != null)
                 {
-                    teamMember.Status = Entities.Models.TeamMembers.MemberStatus.Approved;
+                    teamMember.Status = TeamMembers.MemberStatus.Approved;
 
                     _db.SaveChanges();
 
@@ -290,7 +295,7 @@ namespace Repository.Repository
         {
             if (teamId != 0)
             {
-                var teamMember = _db.TeamMembers.FirstOrDefault(teamMember => teamMember.TeamId == teamId && teamMember.Role == Entities.Models.TeamMembers.Roles.TeamLeader);
+                var teamMember = _db.TeamMembers.FirstOrDefault(teamMember => teamMember.TeamId == teamId && teamMember.Role == TeamMembers.Roles.TeamLeader);
                 if (teamMember != null)
                     _db.Remove(teamMember);
 

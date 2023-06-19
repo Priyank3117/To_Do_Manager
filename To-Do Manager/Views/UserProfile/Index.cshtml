@@ -112,6 +112,16 @@
                     </div>
                 </div>
             </div>
+            <div class="basicInformationForm row mb-2">
+                <div class="col-12 col-sm-6">
+                    <div class="mb-3">
+                        <label for="Email" class="form-label userProfileFormLabel">Email</label>
+                        <input type="email" class="form-control" asp-for="Email"
+                               placeholder="Enter your Email" readonly>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
             <p class="userProfileFormTitle">Professional Information</p>
             <div class="basicInformationForm row mb-2">
                 <div class="col-12">

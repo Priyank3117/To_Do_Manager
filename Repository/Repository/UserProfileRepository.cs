@@ -30,7 +30,8 @@ namespace Repository.Repository
                 Avatar = user.Avatar,
                 Department = user.Deparment,
                 Gender = user.Gender.ToString(),
-                LinkedInURL = user.LinkedInURL
+                LinkedInURL = user.LinkedInURL,
+                Email = user.Email
             }).FirstOrDefault();
 
             if(user != null)
@@ -63,6 +64,7 @@ namespace Repository.Repository
                     user.Gender = userDetails.Gender == "Male" ? Users.UserGender.Male : Users.UserGender.Female;
                     user.LinkedInURL = userDetails.LinkedInURL;
                     user.UpdatedAt = DateTime.Now;
+                    user.Email = userDetails.Email;
 
                     _db.Update(user);
                     _db.SaveChanges();
