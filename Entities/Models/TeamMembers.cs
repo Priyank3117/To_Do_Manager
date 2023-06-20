@@ -44,5 +44,7 @@ namespace Entities.Models
         public DateTime? UpdatedAt { get; set; }
 
         public long? ReportinPersonUserId { get; set; }
+
+        public string? JoinRequestMessage { get; set; }
     }
 }

@@ -91,11 +91,20 @@ namespace Repository.Repository
         public List<AllTeamsViewModel> GetAllTeams(string searchTerm, long userId)
         {
             var query = _db.Teams.AsQueryable();
+            var userQuery = _db.Users.AsQueryable();
+            var getDomain = userQuery.Where(user => user.UserId == userId).Select(user => user.Email.Substring(user.Email.LastIndexOf("@") + 1));
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 query = query.Where(team => team.TeamName.ToLower().Contains(searchTerm.ToLower()));
             }
+
+            //var x =  GetAllRelatedTeams(getDomain.FirstOrDefault()).Select(team => new AllTeamsViewModel()
+            //{
+            //    TeamId = team.TeamId,
+            //    TeamName = team.TeamName,
+            //    Status = team.TeamMembers.FirstOrDefault(teamMember => teamMember.TeamId == team.TeamId && teamMember.UserId == userId)!.Status.ToString(),
+            //}).ToList();
 
             return query.Select(team => new AllTeamsViewModel()
             {
@@ -103,6 +112,11 @@ namespace Repository.Repository
                 TeamName = team.TeamName,
                 Status = team.TeamMembers.FirstOrDefault(teamMember => teamMember.TeamId == team.TeamId && teamMember.UserId == userId)!.Status.ToString(),
             }).ToList();
+        }
+
+        public List<Teams> GetAllRelatedTeams(string domainName)
+        {
+            return _db.TeamMembers.Where(teamMember => teamMember.Users.Email.Contains(domainName) && teamMember.Role == TeamMembers.Roles.TeamLeader).Select(teamMember => teamMember.Teams).ToList();
         }
 
         /// <summary>
@@ -134,7 +148,8 @@ namespace Repository.Repository
                     TeamId = userRequest.TeamId,
                     UserId = userRequest.UserId,
                     Role = TeamMembers.Roles.TeamMember,
-                    Status = TeamMembers.MemberStatus.Pending
+                    Status = TeamMembers.MemberStatus.Pending,
+                    JoinRequestMessage = userRequest.JoinRequestMessage
                 };
 
                 _db.Add(teamMembers);
@@ -400,6 +415,36 @@ namespace Repository.Repository
             else
             {
                 return new TaskDetailViewModel();
+            }
+        }
+
+        /// <summary>
+        /// Edit Task In Task Description OffCanvas
+        /// </summary>
+        /// <param name="task">Task Details like - Task Id, Task Name, Task Description, Start Date, End Date and Task Status</param>
+        /// <returns>True - If task successfully edited else False</returns>
+        public bool EditTask(TaskDetailViewModel task)
+        {
+            if (task != null && task.TaskId != 0)
+            {
+                var taskDetails = _db.Tasks.FirstOrDefault(tasks => tasks.TaskId == task.TaskId);
+
+                if (taskDetails != null)
+                {
+                    taskDetails.TaskName = task.TaskName.Trim();
+                    taskDetails.TaskDescription = task.TaskDescription?.Trim();
+                    taskDetails.StartDate = (DateTime)task.StartDate!;
+                    taskDetails.EndDate = (DateTime)task.EndDate!;
+                    taskDetails.TaskStatus = task.IsCompleted;
+
+                    _db.SaveChanges();
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }

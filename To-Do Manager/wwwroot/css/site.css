@@ -590,6 +590,12 @@ input[type=checkbox] {
     border-radius: 30px !important;
 }
 
+.searchTask {
+    height: 45px;
+    width: 150% !important;
+    border-radius: 30px !important;
+}
+
 @media screen and (max-width: 576px) {
     .allTaskButton {
         height: 35px;
@@ -1010,4 +1016,8 @@ input[type=checkbox] {
     width: 20px;
     border-radius: 50%;
     background-color: #4fd355;
+}
+
+.fc-popover{
+    z-index: 500 !important;
 }

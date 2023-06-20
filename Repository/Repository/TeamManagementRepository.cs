@@ -48,6 +48,7 @@ namespace Repository.Repository
                     UserId = user.UserId,
                     Avatar = user.Users.Avatar,
                     UserName = user.Users.FirstName + " " + user.Users.LastName,
+                    JoinRequestMessage = user.JoinRequestMessage
                 }).ToList() : new List<UserDetailOfTeam>(),
                 LeaveRequests = team.Role.ToString() == "TeamLeader" ? query.Where(teamMember => teamMember.TeamId == team.TeamId && teamMember.UserId != userId && teamMember.Status == TeamMembers.MemberStatus.RequestedForLeave).Select(user => new UserDetailOfTeam()
                 {

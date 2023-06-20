@@ -256,6 +256,7 @@ namespace Repository.Repository
                     task.StartDate = mytask.StartDate.ToString("yyyy-MM-dd");
                     task.EndDate = mytask.EndDate.AddDays(1).ToString("yyyy-MM-dd");
                     task.TaskDescription = mytask.TaskDescription;
+                    task.TaskId = mytask.TaskId;
 
                     AllTasks.Add(task);
                 }
@@ -278,6 +279,7 @@ namespace Repository.Repository
                                 taskOfMember.StartDate = task.StartDate.ToString("yyyy-MM-dd");
                                 taskOfMember.EndDate = task.EndDate.AddDays(1).ToString("yyyy-MM-dd");
                                 taskOfMember.TaskDescription = task.TaskDescription;
+                                taskOfMember.TaskId = task.TaskId;
 
                                 AllTasks.Add(taskOfMember);
                             }

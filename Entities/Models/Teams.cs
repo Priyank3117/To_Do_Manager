@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
     public class Teams
     {
         [Key]
-        public long TeamId { get; set; }
+        public long TeamId { get; set; } 
 
         public string TeamName { get; set; } = string.Empty;
 

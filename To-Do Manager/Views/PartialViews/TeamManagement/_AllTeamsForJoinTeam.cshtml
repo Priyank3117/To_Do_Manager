@@ -3,6 +3,7 @@
 @model List<AllTeamsViewModel>
 
 <div class="row">
+    <!-- Request to Join Team Modal -->
     <div class="modal fade" id="JoinTeamModal" tabindex="-1" aria-labelledby="JoinTeamModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -22,6 +23,10 @@
                             <div class="mb-3">
                                 <label for="Description" class="form-label">Team Description</label>
                                 <textarea class="form-control" id="Description" rows="3" disabled></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="JoinRequestMessage" class="form-label">Your Message</label>
+                                <textarea class="form-control" id="JoinRequestMessage" rows="3"></textarea>
                             </div>
                         </div>
                     </div>

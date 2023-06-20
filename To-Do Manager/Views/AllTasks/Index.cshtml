@@ -26,7 +26,8 @@
                                                     start: '@task.StartDate',
                                                     description: '@task.TaskDescription',
                                                     end: '@task.EndDate',
-                                                    color: '#4fd355'
+                                                    color: '#4fd355',
+                                                    taskId: '@task.TaskId'
                                                 },
             </text>
         }
@@ -38,7 +39,8 @@
                                                     start: '@task.StartDate',
                                                     description: '@task.TaskDescription',
                                                     end: '@task.EndDate',
-                                                    color: '#fd4d4d'
+                                                    color: '#fd4d4d',
+                                                    taskId: '@task.TaskId'
                                                 },
             </text>
         }
@@ -50,8 +52,9 @@
             editable: false,
             selectable: true,
             eventClick: function(info){
-                var event = info.event;
-                alert(event.extendedProps.description)
+                var event1 = info.event;
+                openTaskDetailOffcanvas(event, event1.extendedProps.taskId);
+
             }
         });
         calendar.render();
@@ -60,8 +63,9 @@
 
 <div class="row mt-3 mb-3">
     <div class="col d-flex justify-content-between align-items-center">
-        <div>
-            <a role="button" class="CancelCreateTeamButton filterButton" data-bs-toggle="modal" data-bs-target="#FilterModal">Filters</a>
+        <div class="d-flex justify-content-between align-items-center">
+            <input class="form-control searchTask me-2" type="search" placeholder="Search Task" onkeyup="searchTask()" id="searchTask" aria-label="Search">
+            <a role="button" class="CancelCreateTeamButton filterButton" style="width: 300px" onclick="openFilterModal()">Advanced Filters</a>
         </div>
         <div class="taskColorInfo" style="display: none">
             <div class="d-flex justify-content-center align-items-center" style="display: none">
@@ -255,51 +259,9 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>    
 
-    <!-- Task Detail Offcanvas-->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="TaskDetailOffCanvas"
-         aria-labelledby="offcanvasRightLabel" style="width: 500px;background-color: #ebebeb;">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasRightLabel">Task Detail</h5>
-            <button type="button" class="btn-close closeTaskDetailOffCanvas" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body d-flex align-items-center justify-content-center">
-            <div class="taskDetailContainer">
-                <div class="row">
-                    <div class="col">
-                        <p class="h4 mb-3" id="TeamNameInOffcanvas">Team Anand</p>
-                        <div class="mb-3">
-                            <label for="TaskNameInOffcanvas" class="form-label">Task Name</label>
-                            <input type="text" class="form-control" id="TaskNameInOffcanvas" disabled>
-                        </div>
-                        <div class="mb-3">
-                            <label for="TaskDescriptionInOffcanvas" class="form-label">Task Description</label>
-                            <textarea class="form-control" id="TaskDescriptionInOffcanvas" disabled style="height: 170px"></textarea>
-                        </div>
-                        <div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="mb-3">
-                                        <label for="StartDateInOffcanvas" class="form-label">Start Date</label>
-                                        <input type="date" class="form-control" id="StartDateInOffcanvas" disabled>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="mb-3">
-                                        <label for="EndDateInOffcanvas" class="form-label">End Date</label>
-                                        <input type="date" class="form-control" id="EndDateInOffcanvas" disabled>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="isTaskCompletedOrNot">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <partial name="/Views/PartialViews/_TaskDescriptionOffCanvas.cshtml" />
 
     <div class="col-12 allTeamsContainer">
     </div>

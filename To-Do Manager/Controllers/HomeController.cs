@@ -57,6 +57,14 @@ namespace To_Do_Manager.Controllers
             return View(_HomeBAL.GetAllTodayTasks(long.Parse(HttpContext.Session.GetString("UserId")!)));
         }
 
+        public IActionResult GetAllTasks()
+        {
+            ViewBag.UserName = HttpContext.Session.GetString("UserName");
+            ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
+
+            return PartialView("~/Views/PartialViews/AllTasks/_TeamInToDoPage.cshtml", _HomeBAL.GetAllTodayTasks(long.Parse(HttpContext.Session.GetString("UserId")!)));
+        }
+
         /// <summary>
         /// Get Available All Teams with Team Name
         /// </summary>
@@ -195,6 +203,16 @@ namespace To_Do_Manager.Controllers
         public bool MarkNotificationAsRead(long notificationId)
         {
             return _HomeBAL.MarkNotificationAsRead(notificationId);
+        }
+
+        /// <summary>
+        /// Edit Task In Task Description OffCanvas
+        /// </summary>
+        /// <param name="task">Task Details like - Task Id, Task Name, Task Description, Start Date, End Date and Task Status</param>
+        /// <returns>True - If task successfully edited else False</returns>
+        public bool EditTask(TaskDetailViewModel task)
+        {
+            return _HomeBAL.EditTask(task);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

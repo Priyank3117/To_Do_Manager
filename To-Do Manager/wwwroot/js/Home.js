@@ -160,7 +160,8 @@ function getTeamDetails(teamId) {
 
 function requestToJoinTeam() {
     var userRequest = {
-        "TeamId": $("#ViewTeamTeamId").val()
+        "TeamId": $("#ViewTeamTeamId").val(),
+        "JoinRequestMessage": $("#JoinRequestMessage").val()
     }
 
     $.ajax({
@@ -286,31 +287,85 @@ function openTaskDetailOffcanvas(e, taskId) {
         success: function (result) {
             $("#TeamNameInOffcanvas").empty()
             $("#TeamNameInOffcanvas").html('' + result.teamName + '')
+            $("#TaskIdInOffcanvas").val('' + result.taskId + '')
             $("#TaskNameInOffcanvas").val('' + result.taskName + '')
             $("#TaskDescriptionInOffcanvas").val('' + result.taskDescription + '')
             $("#StartDateInOffcanvas").val('' + result.startDateForDisplay + '')
             $("#EndDateInOffcanvas").val('' + result.endDateForDisplay + '')
+            $("#EndDateInOffcanvas").attr("min", $("#StartDateInOffcanvas").val())
             if (result.isCompleted == true) {
-                $(".isTaskCompletedOrNot").html(`<button type="button" class="completeTaskButton" disabled>Completed</button>`)
+                $("input[name=TaskStatusInOffcanvas][value='true']").prop("checked", true);
             } else {
-                $(".isTaskCompletedOrNot").html(`<button type="button" class="inCompleteTaskButton" disabled>Incomplete</button>`)
+                $("input[name=TaskStatusInOffcanvas][value='false']").prop("checked", true);
             }
+
+            $("#TaskNameInOffcanvasSpan").html("")
+            $("#StartDateInOffcanvasSpan").html("")
+            $("#EndDateInOffcanvasSpan").html("")
 
             bsOffcanvas.show()
         }
     })
 }
 
-function openCreateTeamModal() {
-    $(".AddedUserContainer").empty()
-    usersEmail = [];
-    $("#TeamName").val("")
-    $("#TeamDescription").val("")
-    $("#AddUser").val("")
+// Edit Task In OffCanvas
 
-    $("#TeamNameSpan").html("")
-    $("#TeamDescriptionSpan").html("")
-    $("#AddUserSpan").html("")
+$("#StartDateInOffcanvas").change(function () {
+    $("#EndDateInOffcanvas").attr("min", $("#StartDateInOffcanvas").val())
+})
 
-    $("#CreateTeamModal").modal("show")
+$("#EndDateInOffcanvas").change(function () {
+    $("#StartDateInOffcanvas").attr("max", $("#EndDateInOffcanvas").val())
+})
+
+function editTask() {
+
+    $("#TaskNameInOffcanvasSpan").html("")
+    $("#StartDateInOffcanvasSpan").html("")
+    $("#EndDateInOffcanvasSpan").html("")
+
+    if ($("#TaskNameInOffcanvas").val().trim() == "") {
+        $("#TaskNameInOffcanvasSpan").html("Task name is required")
+    }
+    else if ($("#EndDateInOffcanvas").val() == "") {
+        $("#EndDateInOffcanvasSpan").html("End Date is required")
+    }
+    else {
+        var task = {
+            "TaskId": $("#TaskIdInOffcanvas").val(),
+            "TaskName": $("#TaskNameInOffcanvas").val(),
+            "TaskDescription": $("#TaskDescriptionInOffcanvas").val(),
+            "StartDate": $("#StartDateInOffcanvas").val(),
+            "EndDate": $("#EndDateInOffcanvas").val(),
+            "IsCompleted": $('input[name="TaskStatusInOffcanvas"]:checked').val()
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/Home/EditTask",
+            data: { task: task },
+            success: function (data) {
+                if (data == true) {
+                    GetAllTodayTasks();
+                    $('#TaskDetailOffCanvas').offcanvas('hide')
+                    toastr.success('Task Edited');
+                } else {
+                    toastr.error('Not Saved');
+                }
+            }
+        })
+    }
+}
+
+function GetAllTodayTasks() {
+    $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            url: "/Home/GetAllTasks",
+            data: {},
+            success: function (data) {
+                $(".teamsContainerInToDoPage").html(data)
+            }
+        })
+    })
 }

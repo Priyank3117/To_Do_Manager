@@ -170,5 +170,15 @@ namespace BAL
         {
             return _NotificationRepo.MarkNotificationAsRead(notificationId);
         }
+
+        /// <summary>
+        /// Edit Task In Task Description OffCanvas
+        /// </summary>
+        /// <param name="task">Task Details like - Task Id, Task Name, Task Description, Start Date, End Date and Task Status</param>
+        /// <returns>True - If task successfully edited else False</returns>
+        public bool EditTask(TaskDetailViewModel task)
+        {
+            return _HomeRepo.EditTask(task);
+        }
     }
 }

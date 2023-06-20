@@ -23,5 +23,7 @@ namespace Repository.Interface
         public bool MarkTaskAsCompleteOrUncomplete(TaskDetailViewModel task);
 
         public TaskDetailViewModel GetTaskDetails(long taskId);
+
+        public bool EditTask(TaskDetailViewModel task);
     }
 }

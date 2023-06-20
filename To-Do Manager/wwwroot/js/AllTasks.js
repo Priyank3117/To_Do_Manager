@@ -180,7 +180,7 @@ function addTaskToTodayTask(userId, teamId, taskId) {
                 $("#AddTaskToTodayTaskModal").modal("show")
             }
         }
-    })   
+    })
 }
 
 var teamIdForAddTaskToToDo = 0;
@@ -205,7 +205,7 @@ function AddTaskToToDoForMember() {
                 }
             }
         })
-    }    
+    }
 }
 
 function AddTaskToToDo(userId, teamId, taskId) {
@@ -243,6 +243,11 @@ $("#EndDateForFilter").change(function () {
     $("#StartDateForFilter").attr("max", $("#EndDateForFilter").val())
 })
 
+function openFilterModal() {
+    $("#TaskNameForFilter").val($("#searchTask").val())
+    $("#FilterModal").modal("show")
+}
+
 function searchTeams(isClearAll) {
 
     if (isClearAll == true) {
@@ -251,6 +256,7 @@ function searchTeams(isClearAll) {
         startDate = ""
         endDate = ""
         $('input[name="TaskStatusForFilter"]:checked').prop('checked', false)
+        $("#searchTask").val("")
     }
     else {
         var teamName = $("#TeamNameForFilter").val()
@@ -367,6 +373,7 @@ $("#grid").click(function () {
     $("#list").css("color", "#333")
     $(".filterRowContainer").css("display", "none")
     $(".filterButton").css("display", "none")
+    $("#searchTask").css("display", "none")
     $(".taskColorInfo").css("display", "block")
 })
 
@@ -379,6 +386,7 @@ $("#list").click(function () {
     $("#grid").css("color", "#333")
     $(".filterRowContainer").css("display", "block")
     $(".filterButton").css("display", "flex")
+    $("#searchTask").css("display", "block")
     $(".taskColorInfo").css("display", "none")
 })
 
@@ -398,17 +406,109 @@ function openTaskDetailOffcanvas(e, taskId) {
         success: function (result) {
             $("#TeamNameInOffcanvas").empty()
             $("#TeamNameInOffcanvas").html('' + result.teamName + '')
+            $("#TaskIdInOffcanvas").val('' + result.taskId + '')
             $("#TaskNameInOffcanvas").val('' + result.taskName + '')
             $("#TaskDescriptionInOffcanvas").val('' + result.taskDescription + '')
             $("#StartDateInOffcanvas").val('' + result.startDateForDisplay + '')
             $("#EndDateInOffcanvas").val('' + result.endDateForDisplay + '')
+            $("#EndDateInOffcanvas").attr("min", $("#StartDateInOffcanvas").val())
             if (result.isCompleted == true) {
-                $(".isTaskCompletedOrNot").html(`<button type="button" class="completeTaskButton" disabled>Completed</button>`)
+                $("input[name=TaskStatusInOffcanvas][value='true']").prop("checked", true);
             } else {
-                $(".isTaskCompletedOrNot").html(`<button type="button" class="inCompleteTaskButton" disabled>Incomplete</button>`)
+                $("input[name=TaskStatusInOffcanvas][value='false']").prop("checked", true);
             }
 
+            $("#TaskNameInOffcanvasSpan").html("")
+            $("#StartDateInOffcanvasSpan").html("")
+            $("#EndDateInOffcanvasSpan").html("")
+
             bsOffcanvas.show()
+        }
+    })
+}
+
+// Edit Task In OffCanvas
+
+$("#StartDateInOffcanvas").change(function () {
+    $("#EndDateInOffcanvas").attr("min", $("#StartDateInOffcanvas").val())
+})
+
+$("#EndDateInOffcanvas").change(function () {
+    $("#StartDateInOffcanvas").attr("max", $("#EndDateInOffcanvas").val())
+})
+
+function editTask() {
+
+    $("#TaskNameInOffcanvasSpan").html("")
+    $("#StartDateInOffcanvasSpan").html("")
+    $("#EndDateInOffcanvasSpan").html("")
+
+    if ($("#TaskNameInOffcanvas").val().trim() == "") {
+        $("#TaskNameInOffcanvasSpan").html("Task name is required")
+    }
+    else if ($("#EndDateInOffcanvas").val() == "") {
+        $("#EndDateInOffcanvasSpan").html("End Date is required")
+    }
+    else {
+        var task = {
+            "TaskId": $("#TaskIdInOffcanvas").val(),
+            "TaskName": $("#TaskNameInOffcanvas").val(),
+            "TaskDescription": $("#TaskDescriptionInOffcanvas").val(),
+            "StartDate": $("#StartDateInOffcanvas").val(),
+            "EndDate": $("#EndDateInOffcanvas").val(),
+            "IsCompleted": $('input[name="TaskStatusInOffcanvas"]:checked').val()
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/Home/EditTask",
+            data: { task: task },
+            success: function (data) {
+                if (data == true) {
+                    searchTeams();
+                    $('#TaskDetailOffCanvas').offcanvas('hide')
+                    toastr.success('Task Edited');
+                } else {
+                    toastr.error('Not Saved');
+                }
+            }
+        })
+    }
+}
+
+function searchTask() {
+    var filter = {
+        TaskName: $("#searchTask").val()
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "/AllTasks/GetAllTaskOfAllTeams",
+        data: { filter: filter },
+        success: function (result) {
+            $(".allTeamsContainer").empty()
+            $(".allTeamsContainer").html(result)
+            $("#filterapplied").empty()            
+
+            if (taskName != "")
+                $("#filterapplied").append(`<div class="filterTag">
+                <p class="m-0 p-0"><b>Task Name - </b>`+ taskName + `</p>
+                <a role="button" class="taskNameApplied"><img src="/images/cancel.png"></a>
+            </div>`)            
+
+            if (taskName != "") {
+                $("#filterapplied").append(`<div class="filterTag">
+                <a role="button" onclick="searchTeams(true)"
+                   class="text-muted d-flex justify-content-center align-items-center"
+                   style="text-decoration: none;color:black">
+                    <p class="m-0 p-0">
+                        Clear all
+                    </p>
+                    &nbsp;
+                    <img src="/images/cancel.png" alt="" style="width: 10px;height: 10px;">
+                </a>
+            </div>`)
+            }            
         }
     })
 }

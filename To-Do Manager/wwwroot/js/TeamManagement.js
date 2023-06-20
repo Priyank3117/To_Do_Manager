@@ -1,4 +1,7 @@
-﻿$(document).ready(function () {
+﻿const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+$(document).ready(function () {
 
     getAllTeamDetailsPartialView();
 
@@ -212,7 +215,8 @@ function getTeamDetails(teamId) {
 
 function requestToJoinTeam() {
     var userRequest = {
-        "TeamId": $("#ViewTeamTeamId").val()
+        "TeamId": $("#ViewTeamTeamId").val(),
+        "JoinRequestMessage": $("#JoinRequestMessage").val()
     }
 
     $.ajax({

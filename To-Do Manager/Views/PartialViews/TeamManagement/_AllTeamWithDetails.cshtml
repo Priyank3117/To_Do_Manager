@@ -152,6 +152,12 @@
                                                                     <p class="m-0">@joinReaquest.UserName</p>
                                                                 </div>
                                                                 <div>
+                                                                    @if (joinReaquest.JoinRequestMessage != null)
+                                                                    {
+                                                                        <button class="reportingPersonButton me-2" data-bs-toggle="collapse" data-bs-target="#Message_@joinReaquest.UserId" aria-expanded="false" aria-controls="collapseExample">
+                                                                            Message
+                                                                        </button>
+                                                                    }
                                                                     <button class="approveButton" onclick="acceptJoinRequest(@joinReaquest.UserId, @team.TeamId)">
                                                                         Accept
                                                                     </button>
@@ -159,8 +165,15 @@
                                                                         Decline
                                                                     </button>
                                                                 </div>
-
                                                             </div>
+                                                            @if (joinReaquest.JoinRequestMessage != null)
+                                                            {
+                                                                <div class="collapse" id="Message_@joinReaquest.UserId">
+                                                                    <div class="card card-body text-muted">
+                                                                        @joinReaquest.JoinRequestMessage
+                                                                    </div>
+                                                                </div>
+                                                            }
                                                         </div>
                                                     </div>
                                                 }

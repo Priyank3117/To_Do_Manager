@@ -4,6 +4,7 @@ using Entities.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(ToDoManagerDBContext))]
-    partial class ToDoManagerDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230620080704_AddedMessageFieldInTeamMemberTable")]
+    partial class AddedMessageFieldInTeamMemberTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,7 +44,7 @@ namespace Entities.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("InvitedUsers", null, t =>
+                    b.ToTable("InvitedUsers", t =>
                         {
                             t.HasTrigger("InvitedUsers_Trigger");
                         });
@@ -80,7 +83,7 @@ namespace Entities.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notifications", null, t =>
+                    b.ToTable("Notifications", t =>
                         {
                             t.HasTrigger("Notifications_Trigger");
                         });
@@ -112,7 +115,7 @@ namespace Entities.Migrations
 
                     b.HasKey("ResetPasswordId");
 
-                    b.ToTable("ResetPassword", null, t =>
+                    b.ToTable("ResetPassword", t =>
                         {
                             t.HasTrigger("ResetPassword_Trigger");
                         });
@@ -168,7 +171,7 @@ namespace Entities.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tasks", null, t =>
+                    b.ToTable("Tasks", t =>
                         {
                             t.HasTrigger("Tasks_Trigger");
                         });
@@ -218,7 +221,7 @@ namespace Entities.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TeamMembers", null, t =>
+                    b.ToTable("TeamMembers", t =>
                         {
                             t.HasTrigger("TeamMembers_Trigger");
                         });
@@ -248,7 +251,7 @@ namespace Entities.Migrations
 
                     b.HasKey("TeamId");
 
-                    b.ToTable("Teams", null, t =>
+                    b.ToTable("Teams", t =>
                         {
                             t.HasTrigger("Teams_Trigger");
                         });
@@ -300,7 +303,7 @@ namespace Entities.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Users", null, t =>
+                    b.ToTable("Users", t =>
                         {
                             t.HasTrigger("Users_Trigger");
                         });
