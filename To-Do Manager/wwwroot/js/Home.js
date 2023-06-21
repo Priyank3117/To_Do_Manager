@@ -19,7 +19,18 @@
     $("#AddUser").focusout(function () {
         $("#AddUserSpan").html("")
     })
+
+    GetAllTodayTasks();
+
+    $("#grid").css("background-color", "#333")
+    $("#grid").css("color", "white")
+    $("#list").css("background-color", "white")
+    $("#list").css("color", "#333")
+
+    isTaskTeamWise = true;
 })
+
+var isTaskTeamWise = false;
 
 // Add User In Team Validation
 var usersEmail = []
@@ -58,6 +69,22 @@ $(".addUser").click(function () {
         }
     }
 })
+
+function openCreateTeamModal() {
+    $(".AddedUserContainer").empty()
+    console.log(usersEmail)
+    usersEmail = [];
+    console.log(usersEmail)
+    $("#TeamName").val("")
+    $("#TeamDescription").val("")
+    $("#AddUser").val("")
+
+    $("#TeamNameSpan").html("")
+    $("#TeamDescriptionSpan").html("")
+    $("#AddUserSpan").html("")
+
+    $("#CreateTeamModal").modal("show")
+}
 
 function removeUser(idOfEmailText) {
     usersEmail.splice(usersEmail.indexOf($('#' + idOfEmailText + ' p').html()), 1);
@@ -212,9 +239,6 @@ function addTask() {
     if ($("#TaskName").val().trim() == "") {
         $("#TaskNameSpan").html("Task name is required")
     }
-    else if ($("#TaskDescription").val().trim() == "") {
-        $("#TaskDescriptionSpan").html("Task Description is required")
-    }
     else {
 
         var task = {
@@ -229,8 +253,17 @@ function addTask() {
             url: "/Home/AddTask",
             data: { task: task },
             success: function (result) {
-                if (result == true) {
-                    location.reload(true);
+                if (result) {
+                    if (isTaskTeamWise) {
+                        GetAllTodayTasks();
+                    }
+                    else {
+                        GetAllTodayTasksForListView();
+                    }
+                    $("#AddTaskModal").modal("hide")
+                    toastr.success('Task Added');
+                } else {
+                    toastr.error('Task Not Added');
                 }
             }
         })
@@ -289,7 +322,11 @@ function openTaskDetailOffcanvas(e, taskId) {
             $("#TeamNameInOffcanvas").html('' + result.teamName + '')
             $("#TaskIdInOffcanvas").val('' + result.taskId + '')
             $("#TaskNameInOffcanvas").val('' + result.taskName + '')
-            $("#TaskDescriptionInOffcanvas").val('' + result.taskDescription + '')
+            if (result.taskDescription != null) {
+                $("#TaskDescriptionInOffcanvas").val('' + result.taskDescription + '')
+            } else {
+                $("#TaskDescriptionInOffcanvas").val('')
+            }            
             $("#StartDateInOffcanvas").val('' + result.startDateForDisplay + '')
             $("#EndDateInOffcanvas").val('' + result.endDateForDisplay + '')
             $("#EndDateInOffcanvas").attr("min", $("#StartDateInOffcanvas").val())
@@ -346,7 +383,12 @@ function editTask() {
             data: { task: task },
             success: function (data) {
                 if (data == true) {
-                    GetAllTodayTasks();
+                    if (isTaskTeamWise) {
+                        GetAllTodayTasks();
+                    }
+                    else {
+                        GetAllTodayTasksForListView();
+                    }
                     $('#TaskDetailOffCanvas').offcanvas('hide')
                     toastr.success('Task Edited');
                 } else {
@@ -358,14 +400,74 @@ function editTask() {
 }
 
 function GetAllTodayTasks() {
-    $(document).ready(function () {
+    $.ajax({
+        type: "POST",
+        url: "/Home/GetAllTasks",
+        data: {},
+        success: function (data) {
+            $(".teamsContainerInToDoPage").html(data)
+        }
+    })
+}
+
+function GetAllTodayTasksForListView() {
+    $.ajax({
+        type: "POST",
+        url: "/Home/GetAllTasksForListView",
+        data: {},
+        success: function (data) {
+            $(".teamsContainerInToDoPage").html(data)
+
+            $("#list").css("background-color", "#333")
+            $("#list").css("color", "white")
+            $("#grid").css("background-color", "white")
+            $("#grid").css("color", "#333")
+
+            isTaskTeamWise = false;
+        }
+    })
+}
+
+$("#grid").click(function () {
+    GetAllTodayTasks();
+
+    $("#grid").css("background-color", "#333")
+    $("#grid").css("color", "white")
+    $("#list").css("background-color", "white")
+    $("#list").css("color", "#333")
+
+    isTaskTeamWise = true;
+})
+
+$("#list").click(function () {
+    GetAllTodayTasksForListView();
+})
+
+function addTaskOnEnter(teamId) {
+    if ($('#AddTaskOnEnter_' + teamId + '').val().trim() != "") {
+
+        var task = {
+            "TeamId": teamId,
+            "TaskName": $('#AddTaskOnEnter_' + teamId + '').val().trim()
+        }
+
         $.ajax({
             type: "POST",
-            url: "/Home/GetAllTasks",
-            data: {},
+            url: "/Home/AddTask",
+            data: { task: task },
             success: function (data) {
-                $(".teamsContainerInToDoPage").html(data)
+                if (data) {
+                    if (isTaskTeamWise) {
+                        GetAllTodayTasks();
+                    }
+                    else {
+                        GetAllTodayTasksForListView();
+                    }
+                    toastr.success('Task Added');
+                } else {
+                    toastr.error('Task Not Added');
+                }
             }
         })
-    })
+    }
 }

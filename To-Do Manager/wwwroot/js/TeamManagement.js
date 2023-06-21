@@ -267,6 +267,7 @@ function addUserInTeam() {
         var team = new FormData();
         team.append('TeamId', teamIdForAddUser);
         team.append('TeamName', teamNameForAddUser);
+        team.append('MessageForUser', $("#MessageForUser").val());
 
         for (var i = 0; i < allUsersEmails.length; i++) {
             team.append('UserEmails', allUsersEmails[i].innerHTML);

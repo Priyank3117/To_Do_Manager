@@ -54,15 +54,17 @@ namespace To_Do_Manager.Controllers
             ViewBag.UserName = HttpContext.Session.GetString("UserName");
             ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
 
-            return View(_HomeBAL.GetAllTodayTasks(long.Parse(HttpContext.Session.GetString("UserId")!)));
+            return View();
         }
 
         public IActionResult GetAllTasks()
         {
-            ViewBag.UserName = HttpContext.Session.GetString("UserName");
-            ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
-
             return PartialView("~/Views/PartialViews/AllTasks/_TeamInToDoPage.cshtml", _HomeBAL.GetAllTodayTasks(long.Parse(HttpContext.Session.GetString("UserId")!)));
+        }
+        
+        public IActionResult GetAllTasksForListView()
+        {
+            return PartialView("~/Views/PartialViews/Home/_AllTaskInToDoPageForListView.cshtml", _HomeBAL.GetAllTodayTasksForListView(long.Parse(HttpContext.Session.GetString("UserId")!)));
         }
 
         /// <summary>

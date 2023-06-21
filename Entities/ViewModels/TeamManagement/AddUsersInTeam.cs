@@ -6,6 +6,8 @@
 
         public string TeamName { get; set; } = string.Empty;
 
+        public string? MessageForUser { get; set; }
+
         public List<string> UserEmails { get; set; } = new List<string>();
     }
 }

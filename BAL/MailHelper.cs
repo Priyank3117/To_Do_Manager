@@ -25,7 +25,7 @@ namespace Entities
             {
                 var fromEmailAddress = _configuration.GetSection("EmailSettings").GetSection("FromEmail").Value;
 
-                var fromEmail = new MailAddress(fromEmailAddress!);
+                var fromEmail = new MailAddress(fromEmailAddress!);          
 
                 var smtp = new SmtpClient
                 {

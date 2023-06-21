@@ -488,7 +488,7 @@ input[type=checkbox] {
             background-color: #ebebeb;
         }
 
-.createTeamButton, .addTaskButton {
+.createTeamButton, .addTaskButton, .saveEditedTaskButton {
     text-decoration: none;
     font-size: 15px;
     font-weight: 500;
@@ -1020,4 +1020,35 @@ input[type=checkbox] {
 
 .fc-popover{
     z-index: 500 !important;
+}
+
+.taskRow {
+    background-color: #f5f3f3;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    height: fit-content;
+}
+
+    .taskRow .row {
+        width: inherit;
+    }
+
+    .taskRow:hover {
+        background-color: #cecece;
+    }
+
+.listViewButton {
+    border: 1px solid black !important;
+    border-radius: 0px 15px 15px 0px !important;
+    border-left: none !important;
+}
+
+.gridViewButton {
+    border: 1px solid black !important;
+    border-radius: 15px 0px 0px 15px !important;
+}
+
+*:focus {
+    outline: none;
 }

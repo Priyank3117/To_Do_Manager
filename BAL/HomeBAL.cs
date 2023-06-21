@@ -99,6 +99,11 @@ namespace BAL
         {
             return _HomeRepo.GetAllTodayTasks(userId);
         }
+        
+        public List<AllTodayTasksForListView> GetAllTodayTasksForListView(long userId)
+        {
+            return _HomeRepo.GetAllTodayTasksForListView(userId);
+        }
 
         /// <summary>
         /// Get Data for Add Task

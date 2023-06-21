@@ -88,23 +88,50 @@ namespace Repository.Repository
         /// <param name="searchTerm">Search Keyword</param>
         /// <param name="userId"></param>
         /// <returns>List of all available teams</returns>
+        //public List<AllTeamsViewModel> GetAllTeamsTemp(string searchTerm, long userId)
+        //{
+        //    var query = _db.Teams.AsQueryable();
+        //    var userQuery = _db.Users.AsQueryable();
+        //    var getDomain = userQuery.Where(user => user.UserId == userId).Select(user => user.Email.Substring(user.Email.LastIndexOf("@") + 1));
+
+        //    if (!string.IsNullOrEmpty(searchTerm))
+        //    {
+        //        query = query.Where(team => team.TeamName.ToLower().Contains(searchTerm.ToLower()));
+        //    }
+
+        //    var x = GetAllRelatedTeams(getDomain.FirstOrDefault());
+
+        //    List<AllTeamsViewModel> teams = new();            
+
+        //    //var y = x.Select(team => new AllTeamsViewModel()
+        //    //{
+        //    //    TeamId = team.TeamId,
+        //    //    TeamName = team.TeamName,
+        //    //    Status = team.TeamMembers.FirstOrDefault(teamMember => teamMember.TeamId == team.TeamId && teamMember.UserId == userId)!.Status.ToString(),
+        //    //}).ToList();
+
+        //    foreach (var team in x)
+        //    {
+        //        AllTeamsViewModel tempTeam = new();
+
+        //        tempTeam.TeamId = team.TeamId;
+        //        tempTeam.TeamName = team.TeamName;
+        //        tempTeam.Status = FindStatus(team.TeamId, userId);
+
+        //        teams.Add(tempTeam);
+        //    }
+
+        //    return teams;
+        //}
+
         public List<AllTeamsViewModel> GetAllTeams(string searchTerm, long userId)
         {
             var query = _db.Teams.AsQueryable();
-            var userQuery = _db.Users.AsQueryable();
-            var getDomain = userQuery.Where(user => user.UserId == userId).Select(user => user.Email.Substring(user.Email.LastIndexOf("@") + 1));
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 query = query.Where(team => team.TeamName.ToLower().Contains(searchTerm.ToLower()));
             }
-
-            //var x =  GetAllRelatedTeams(getDomain.FirstOrDefault()).Select(team => new AllTeamsViewModel()
-            //{
-            //    TeamId = team.TeamId,
-            //    TeamName = team.TeamName,
-            //    Status = team.TeamMembers.FirstOrDefault(teamMember => teamMember.TeamId == team.TeamId && teamMember.UserId == userId)!.Status.ToString(),
-            //}).ToList();
 
             return query.Select(team => new AllTeamsViewModel()
             {
@@ -114,9 +141,15 @@ namespace Repository.Repository
             }).ToList();
         }
 
+        public string FindStatus(long teamId, long userId)
+        {
+            return _db.TeamMembers.FirstOrDefault(teamMember => teamMember.TeamId == teamId && teamMember.UserId == userId)!.Status.ToString();
+        }
+
         public List<Teams> GetAllRelatedTeams(string domainName)
         {
-            return _db.TeamMembers.Where(teamMember => teamMember.Users.Email.Contains(domainName) && teamMember.Role == TeamMembers.Roles.TeamLeader).Select(teamMember => teamMember.Teams).ToList();
+            var x = _db.TeamMembers.Where(teamMember => teamMember.Role == TeamMembers.Roles.TeamLeader).Where(teamMember => teamMember.Users.Email.Contains(domainName)).Select(teamMember => teamMember.Teams).ToList();
+            return x;
         }
 
         /// <summary>
@@ -201,7 +234,7 @@ namespace Repository.Repository
 
                 if (team.Role == "TeamLeader")
                 {
-                    totalMembers = query.Where(task => task.UserId != userId && task.TeamId == teamId).Select(p => p.UserId).Distinct().ToList();
+                    totalMembers = teamMemberQuery.Where(task => task.UserId != userId && task.TeamId == teamId).Select(p => p.UserId).Distinct().ToList();
                 }
                 else if (team.Role == "ReportingPerson")
                 {
@@ -237,6 +270,69 @@ namespace Repository.Repository
             }
 
             return teams;
+        }
+
+        public List<AllTodayTasksForListView> GetAllTodayTasksForListView(long userId)
+        {
+            var query = _db.Tasks.AsQueryable();
+
+            List<AllTodayTasksForListView> allTasks = new();
+
+            var myTasks = query.Where(task => task.UserId == userId && task.StartDate.Date <= DateTime.Now.Date && task.EndDate.Date >= DateTime.Now.Date && task.IsTaskForToday == true);
+
+            allTasks.AddRange(myTasks.Select(task => new AllTodayTasksForListView()
+            {
+                TaskId = task.TaskId,
+                TeamId = task.TeamId,
+                UserId = task.UserId,
+                TaskName = task.TaskName,
+                TaskStatus = task.TaskStatus,
+                TeamName = task.Teams.TeamName,
+                Deadline = task.EndDate.Date.ToString("dd/MM/yyyy"),
+                IsMyTask = true
+            }).ToList());
+
+            var teamMemberQuery = _db.TeamMembers.AsQueryable();
+            var totalTeams = teamMemberQuery.Where(teamMembers => teamMembers.UserId == userId && (teamMembers.Status == TeamMembers.MemberStatus.Approved || teamMembers.Status == TeamMembers.MemberStatus.RequestedForLeave)).Select(teamMember => teamMember.TeamId).ToList();
+
+            foreach (var teamId in totalTeams)
+            {
+                var userRole = teamMemberQuery.FirstOrDefault(teamMember => teamMember.UserId == userId && teamMember.TeamId == teamId)!.Role.ToString();
+
+                List<long> totalMembers = new();
+
+                if (userRole == "TeamLeader")
+                {
+                    totalMembers = teamMemberQuery.Where(task => task.UserId != userId && task.TeamId == teamId).Select(p => p.UserId).Distinct().ToList();
+                }
+                else if (userRole == "ReportingPerson")
+                {
+                    totalMembers = teamMemberQuery.Where(task => task.UserId != userId && task.TeamId == teamId && task.ReportinPersonUserId == userId).Select(p => p.UserId).Distinct().ToList();
+                }
+
+                AllTodayTasksForListView taskInfo = new();
+
+                foreach (var memberUserId in totalMembers)
+                {
+                    var memberTask = query.Where(task => task.UserId == memberUserId && task.TeamId == teamId && task.StartDate.Date <= DateTime.Now.Date && task.EndDate.Date >= DateTime.Now.Date && task.IsTaskForToday == true);
+
+                    allTasks.AddRange(memberTask.Select(task => new AllTodayTasksForListView()
+                    {
+                        TaskId = task.TaskId,
+                        TeamId = task.TeamId,
+                        UserId = task.UserId,
+                        TaskName = task.TaskName,
+                        TaskStatus = task.TaskStatus,
+                        TeamName = task.Teams.TeamName,
+                        Deadline = task.EndDate.Date.ToString("dd/MM/yyyy"),
+                        Avatar = task.Users.Avatar,
+                        UserName = task.Users.FirstName + " " + task.Users.LastName,
+                        IsMyTask = false
+                    }).ToList());
+                }
+            }
+
+            return allTasks.OrderBy(team => team.TeamName).ToList();
         }
 
         /// <summary>
@@ -319,7 +415,7 @@ namespace Repository.Repository
                         TaskStatus = false,
                         TeamId = task.TeamId,
                         TaskName = task.TaskName.Trim(),
-                        TaskDescription = task.TaskDescription.Trim(),
+                        TaskDescription = task.TaskDescription?.Trim(),
                         UserId = task.UserId,
                         IsTaskForToday = true,
                         StartDate = DateTime.Now,
@@ -337,7 +433,7 @@ namespace Repository.Repository
                         TaskStatus = false,
                         TeamId = task.TeamId,
                         TaskName = task.TaskName.Trim(),
-                        TaskDescription = task.TaskDescription.Trim(),
+                        TaskDescription = task.TaskDescription?.Trim(),
                         UserId = task.UserId,
                         IsTaskForToday = true,
                         StartDate = (DateTime)task.StartDate!,

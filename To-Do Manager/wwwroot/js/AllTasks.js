@@ -408,7 +408,11 @@ function openTaskDetailOffcanvas(e, taskId) {
             $("#TeamNameInOffcanvas").html('' + result.teamName + '')
             $("#TaskIdInOffcanvas").val('' + result.taskId + '')
             $("#TaskNameInOffcanvas").val('' + result.taskName + '')
-            $("#TaskDescriptionInOffcanvas").val('' + result.taskDescription + '')
+            if (result.taskDescription != null) {
+                $("#TaskDescriptionInOffcanvas").val('' + result.taskDescription + '')
+            } else {
+                $("#TaskDescriptionInOffcanvas").val('')
+            }
             $("#StartDateInOffcanvas").val('' + result.startDateForDisplay + '')
             $("#EndDateInOffcanvas").val('' + result.endDateForDisplay + '')
             $("#EndDateInOffcanvas").attr("min", $("#StartDateInOffcanvas").val())

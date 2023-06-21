@@ -16,6 +16,8 @@ namespace Repository.Interface
 
         public List<TodayTasksViewModel> GetAllTodayTasks(long userId);
 
+        public List<AllTodayTasksForListView> GetAllTodayTasksForListView(long userId);
+
         public List<ListOfUsers> GetDataForAddTask(long teamId, long userId);
 
         public bool AddTask(TaskDetailViewModel task);
