@@ -97,6 +97,15 @@
                                                             </div>
                                                         </div>
                                                     }
+                                                    <div style="width: 100%;" class="mt-2">
+                                                        <div class="row">
+                                                            <div class="col-1" style="width: 4%;"></div>
+                                                            <div class="col-10" style="border-bottom: 1px dotted black;width: 92%;">
+                                                                <input type="text" class="addTaskShortcutInput" id="AddTaskOnEnter_@team.TeamId" style="width: 100%;border: none;" placeholder="Add Task..." onchange="addTaskOnEnter(@team.TeamId)">
+                                                            </div>
+                                                            <div class="col-1" style="width: 4%;"></div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -169,6 +178,15 @@
                                                                 </div>
                                                             </div>
                                                         }
+                                                        <div style="width: 100%;" class="mt-2">
+                                                            <div class="row">
+                                                                <div class="col-1" style="width: 4%;"></div>
+                                                                <div class="col-10" style="border-bottom: 1px dotted black;width: 92%;">
+                                                                    <input type="text" class="addTaskShortcutInput" id="AddTaskOnEnterForMember_@member.UserId-@team.TeamId" style="width: 100%;border: none;" placeholder="Add Task..." onchange="addTaskOnEnterForMember(@member.UserId, @team.TeamId)">
+                                                                </div>
+                                                                <div class="col-1" style="width: 4%;"></div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

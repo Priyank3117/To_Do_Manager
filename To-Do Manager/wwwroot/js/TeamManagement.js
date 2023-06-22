@@ -64,6 +64,14 @@ $(".addUser").click(function () {
             usersEmailInCreateTeam.push($("#AddUser").val())
             $("#AddUser").val("")
         }
+
+        if ($(".AddedUser").length > 0) {
+            $(".messageforMembersField").css("display", "block")
+        }
+        else {
+            $(".messageforMembersField").css("display", "none")
+            $("#MessageForMembers").val("")
+        }
     }
 })
 
@@ -112,6 +120,14 @@ function removeUser(idOfEmailText) {
     usersEmailInCreateTeam.splice(usersEmailInCreateTeam.indexOf($('#' + idOfEmailText + ' p').html()), 1);
     console.log(usersEmailInCreateTeam)
     $('#' + idOfEmailText + '').remove();
+
+    if ($(".AddedUser").length > 0) {
+        $(".messageforMembersField").css("display", "block")
+    }
+    else {
+        $(".messageforMembersField").css("display", "none")
+        $("#MessageForMembers").val("")
+    }
 }
 
 function removeUserFromTeamForAddMember(idOfEmailText) {
@@ -133,7 +149,11 @@ function createTeam() {
 
         var team = new FormData();
         team.append('TeamName', $("#TeamName").val());
-        team.append('TeamDescription', $("#TeamDescription").val());
+        team.append('TeamDescription', $("#TeamDescription").val());        
+
+        if ($("#MessageForMembers").val().trim() != "") {
+            team.append('MessageForMembers', $("#MessageForMembers").val());
+        }
 
         var allUsersEmails = $(".userEmail")
 

@@ -97,6 +97,7 @@ namespace Repository.Repository
                     {
                         TeamMembersTaskDetails teamMembersTaskDetails = new();
                         teamMembersTaskDetails.Avatar = teamMemberTasks.Select(p => p.Users.Avatar).FirstOrDefault()!.ToString();
+                        teamMembersTaskDetails.UserId = teamMemberTasks.Select(p => p.Users.UserId).FirstOrDefault();
                         teamMembersTaskDetails.UserName = teamMemberTasks.Select(p => p.Users.FirstName).FirstOrDefault()!.ToString() + " " + teamMemberTasks.Select(p => p.Users.LastName).FirstOrDefault()!.ToString();
 
                         foreach (var task in teamMemberTasks)

@@ -12,6 +12,8 @@ namespace Entities.ViewModels.HomeViewModels
         [Required]
         public string TeamName { get; set; } = string.Empty;
 
+        public string? MessageForMembers { get; set; }
+
         [Required]
         public string TeamDescription { get; set; } = string.Empty;
 

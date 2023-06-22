@@ -41,9 +41,18 @@ namespace BAL
                 {
                     if (!_HomeRepo.AddUserToTeam(userEmail, addUsers.TeamId))
                     {
+                        var button = "<center><a role=\"button\" style=\" background-color: gray; color: black: border-radius: 10px; \" href=https://localhost:7100/Account/Registration >Join Team</a></center>";
+
+                        string body = "<div>You have an invitation to join <b> " + addUsers.TeamName + " </ b > Team click below button to join team \n\n" + button + "</div>";
+
+                        if(addUsers.MessageForUser != null)
+                        {
+                            body += "\n <h4> You have one special message from Team Leader:</h4>\n\n <b>" + addUsers.MessageForUser + "</b>";
+                        }
+
                         SendEmailViewModel sendEmailViewModel = new()
                         {
-                            Body = "You have an invitation to join <b>" + addUsers.TeamName + "</b> Team click below link to see https://localhost:7100/Account/Registration",
+                            Body = "<div>" + body + "</div>",
                             Subject = "Invitation to join a Team",
                             ToEmail = userEmail
                         };
@@ -52,9 +61,17 @@ namespace BAL
                     }
                     else
                     {
+                        var button = "<center><a role=\"button\" style=\" background-color: gray; color: black: border-radius: 10px; \" href=https://localhost:7100/ >Join Team</a></center>";
+                        string body = "<div>You have an invitation to join <b> " + addUsers.TeamName + " </ b > Team click below button to join team \n\n" + button + "</div>";
+
+                        if (addUsers.MessageForUser != null)
+                        {
+                            body += "\n <h4> You have one special message from Team Leader:</h4>\n\n <b>" + addUsers.MessageForUser + "</b>";
+                        }
+
                         SendEmailViewModel sendEmailViewModel = new()
                         {
-                            Body = "You have an invitation to join <b>" + addUsers.TeamName + "</b> Team click below link to see https://localhost:7100",
+                            Body = "<div>" + body + "</div>",
                             Subject = "Invitation to join a Team",
                             ToEmail = userEmail
                         };

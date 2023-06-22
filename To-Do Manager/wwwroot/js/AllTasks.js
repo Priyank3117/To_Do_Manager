@@ -516,3 +516,52 @@ function searchTask() {
         }
     })
 }
+
+function addTaskOnEnter(teamId) {
+    if ($('#AddTaskOnEnter_' + teamId + '').val().trim() != "") {
+
+        var task = {
+            "TeamId": teamId,
+            "TaskName": $('#AddTaskOnEnter_' + teamId + '').val().trim()
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/Home/AddTask",
+            data: { task: task },
+            success: function (data) {
+                if (data) {
+                    searchTeams();
+                    toastr.success('Task Added');
+                } else {
+                    toastr.error('Task Not Added');
+                }
+            }
+        })
+    }
+}
+
+function addTaskOnEnterForMember(userId, teamId) {
+    if ($('#AddTaskOnEnterForMember_' + userId + '-' + teamId + '').val().trim() != "") {
+
+        var task = {
+            "TeamId": teamId,
+            "UserId": userId,
+            "TaskName": $('#AddTaskOnEnterForMember_' + userId + '-' + teamId + '').val().trim()
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/Home/AddTask",
+            data: { task: task },
+            success: function (data) {
+                if (data) {
+                    searchTeams();
+                    toastr.success('Task Added');
+                } else {
+                    toastr.error('Task Not Added');
+                }
+            }
+        })
+    }
+}

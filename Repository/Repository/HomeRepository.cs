@@ -124,9 +124,14 @@ namespace Repository.Repository
         //    return teams;
         //}
 
-        public List<AllTeamsViewModel> GetAllTeams(string searchTerm, long userId)
+        public List<AllTeamsViewModel> GetAllTeamsTemp(string searchTerm, long userId)
         {
             var query = _db.Teams.AsQueryable();
+
+            var userQuery = _db.Users.AsQueryable();
+
+            var emailDomainOfUser = userQuery.FirstOrDefault(user => user.UserId == userId)!.Email;
+            emailDomainOfUser = emailDomainOfUser.Substring(emailDomainOfUser.LastIndexOf("@") + 1);
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -141,15 +146,82 @@ namespace Repository.Repository
             }).ToList();
         }
 
-        public string FindStatus(long teamId, long userId)
+        public List<AllTeamsViewModel> GetAllTeams(string searchTerm, long userId)
         {
-            return _db.TeamMembers.FirstOrDefault(teamMember => teamMember.TeamId == teamId && teamMember.UserId == userId)!.Status.ToString();
+            var query = _db.TeamMembers.AsQueryable();
+
+            var userQuery = _db.Users.AsQueryable();
+
+            var emailDomainOfUser = userQuery.FirstOrDefault(user => user.UserId == userId)!.Email;
+            emailDomainOfUser = emailDomainOfUser.Substring(emailDomainOfUser.LastIndexOf("@") + 1);            
+
+            var realatedTeams = query.Where(team => team.Users.Email.Contains(emailDomainOfUser) && team.Role == TeamMembers.Roles.TeamLeader);
+
+            if(realatedTeams.Any())
+            {
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    realatedTeams = realatedTeams.Where(team => team.Teams.TeamName.ToLower().Contains(searchTerm.ToLower()));
+                }
+
+                var teams = realatedTeams.Select(team => new AllTeamsViewModel()
+                {
+                    TeamId = team.TeamId,
+                    TeamName = team.Teams.TeamName,
+                    Status = query.FirstOrDefault(teamMember => teamMember.TeamId == team.TeamId && teamMember.UserId == userId)!.Status.ToString()
+                }).ToList();
+
+                return teams;
+            }
+            else
+            {
+                return GetTeamsOfOtherDomain(searchTerm, userId);
+            }            
         }
 
-        public List<Teams> GetAllRelatedTeams(string domainName)
+        public List<AllTeamsViewModel> GetTeamsOfOtherDomain(string searchTerm, long userId)
         {
-            var x = _db.TeamMembers.Where(teamMember => teamMember.Role == TeamMembers.Roles.TeamLeader).Where(teamMember => teamMember.Users.Email.Contains(domainName)).Select(teamMember => teamMember.Teams).ToList();
-            return x;
+            List<AllTeamsViewModel> teams = new();
+
+            var query = _db.TeamMembers.AsQueryable();
+
+            var realatedTeamsByEmail = query.Where(team => team.Users.Email.ToLower().Contains(searchTerm) && team.Role == TeamMembers.Roles.TeamLeader);
+
+            if (realatedTeamsByEmail.Any())
+            {
+                teams.AddRange(realatedTeamsByEmail.Select(team => new AllTeamsViewModel()
+                {
+                    TeamId = team.TeamId,
+                    TeamName = team.Teams.TeamName,
+                    Status = query.FirstOrDefault(teamMember => teamMember.TeamId == team.TeamId && teamMember.UserId == userId)!.Status.ToString()
+                }).ToList());
+            }            
+
+            var realatedTeamsByUserName = query.Where(team => (team.Users.FirstName + " " + team.Users.LastName).ToLower().Contains(searchTerm) && team.Role == TeamMembers.Roles.TeamLeader);
+
+            if (realatedTeamsByUserName.Any())
+            {
+                teams.AddRange(realatedTeamsByUserName.Select(team => new AllTeamsViewModel()
+                {
+                    TeamId = team.TeamId,
+                    TeamName = team.Teams.TeamName,
+                    Status = query.FirstOrDefault(teamMember => teamMember.TeamId == team.TeamId && teamMember.UserId == userId)!.Status.ToString()
+                }).ToList());
+            }            
+
+            var realatedTeamsByTeamName = query.Where(team => team.Teams.TeamName.ToLower().Contains(searchTerm) && team.Role == TeamMembers.Roles.TeamLeader);
+
+            if (realatedTeamsByTeamName.Any())
+            {
+                teams.AddRange(realatedTeamsByTeamName.Select(team => new AllTeamsViewModel()
+                {
+                    TeamId = team.TeamId,
+                    TeamName = team.Teams.TeamName,
+                    Status = query.FirstOrDefault(teamMember => teamMember.TeamId == team.TeamId && teamMember.UserId == userId)!.Status.ToString()
+                }).ToList());
+            }  
+
+            return teams.DistinctBy(team => team.TeamId).ToList();
         }
 
         /// <summary>
@@ -249,6 +321,7 @@ namespace Repository.Repository
                     {
                         TeamMembersTaskDetails teamMembersTaskDetails = new();
                         teamMembersTaskDetails.Avatar = teamMemberTasks.Select(p => p.Users.Avatar).FirstOrDefault()!.ToString();
+                        teamMembersTaskDetails.UserId = teamMemberTasks.Select(p => p.Users.UserId).FirstOrDefault();
                         teamMembersTaskDetails.UserName = teamMemberTasks.Select(p => p.Users.FirstName).FirstOrDefault()!.ToString() + " " + teamMemberTasks.Select(p => p.Users.LastName).FirstOrDefault()!.ToString();
 
                         foreach (var task in teamMemberTasks)

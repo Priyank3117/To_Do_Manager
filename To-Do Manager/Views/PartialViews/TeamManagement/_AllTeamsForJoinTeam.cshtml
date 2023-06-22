@@ -49,7 +49,7 @@
             {
                 foreach (var team in Model)
                 {
-                    if (team.Status != null)
+                    if (team.Status == "Approved" || team.Status == "RequestedForLeave")
                     {
                         <a role="button" onclick="getTeamDetails(@team.TeamId)" id=@team.TeamId class="requestSendButton" disabled>
                             @team.TeamName

@@ -471,3 +471,33 @@ function addTaskOnEnter(teamId) {
         })
     }
 }
+
+function addTaskOnEnterForMember(userId, teamId) {
+    if ($('#AddTaskOnEnterForMember_' + userId + '-' + teamId + '').val().trim() != "") {
+
+        var task = {
+            "TeamId": teamId,
+            "UserId": userId,
+            "TaskName": $('#AddTaskOnEnterForMember_' + userId + '-' + teamId + '').val().trim()
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/Home/AddTask",
+            data: { task: task },
+            success: function (data) {
+                if (data) {
+                    if (isTaskTeamWise) {
+                        GetAllTodayTasks();
+                    }
+                    else {
+                        GetAllTodayTasksForListView();
+                    }
+                    toastr.success('Task Added');
+                } else {
+                    toastr.error('Task Not Added');
+                }
+            }
+        })
+    }
+}

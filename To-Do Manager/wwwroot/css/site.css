@@ -1052,3 +1052,9 @@ input[type=checkbox] {
 *:focus {
     outline: none;
 }
+
+.fc-title span {
+    display: block;
+    font-size: 12px;
+    color: gray;
+}
