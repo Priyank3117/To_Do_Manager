@@ -53,7 +53,8 @@ namespace Entities.Data
 
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
-            configurationBuilder.Conventions.Add(_ => new BlankTriggerAddingConvention());
+              configurationBuilder.Conventions.Add(_ => new BlankTriggerAddingConvention());
+
         }
     }
 }
