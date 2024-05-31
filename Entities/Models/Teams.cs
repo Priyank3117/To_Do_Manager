@@ -21,5 +21,7 @@ namespace Entities.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public DateTime? UpdatedAt { get; set; }
+
+        public virtual ICollection<Documents> Documents { get; } = new List<Documents>();
     }
 }

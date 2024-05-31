@@ -38,5 +38,7 @@ namespace Entities.Models
         public virtual ICollection<Tasks> Tasks { get; } = new List<Tasks>();
 
         public virtual ICollection<TeamMembers> TeamMembers { get; } = new List<TeamMembers>();
+
+        public virtual ICollection<Documents> Documents { get; } = new List<Documents>();   
     }
 }

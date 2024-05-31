@@ -17,12 +17,14 @@ builder.Services.AddScoped<IAllTasksRepository, AllTasksRepository>();
 builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
 builder.Services.AddScoped<ITeamManagementRepository, TeamManagementRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
 builder.Services.AddScoped<AccountBAL>();
 builder.Services.AddScoped<HomeBAL>();
 builder.Services.AddScoped<AllTasksBAL>();
 builder.Services.AddScoped<UserProfileBAL>();
 builder.Services.AddScoped<TeamManagementBAL>();
 builder.Services.AddScoped<MailHelper>();
+builder.Services.AddScoped<DocumentBAL>();
 
 var app = builder.Build();
 
@@ -36,7 +38,6 @@ if (!app.Environment.IsDevelopment())
 app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
 
 app.UseAuthorization();

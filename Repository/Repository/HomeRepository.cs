@@ -127,6 +127,7 @@ namespace Repository.Repository
         public List<AllTeamsViewModel> GetAllTeamsTemp(string searchTerm, long userId)
         {
             var query = _db.Teams.AsQueryable();
+            
 
             var userQuery = _db.Users.AsQueryable();
 

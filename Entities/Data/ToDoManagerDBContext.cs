@@ -10,6 +10,7 @@ namespace Entities.Data
 
         }
 
+        public DbSet<Documents>   Documents { get; set; }
         public DbSet<Users> Users { get; set; }
 
         public DbSet<ResetPassword> ResetPassword { get; set; }

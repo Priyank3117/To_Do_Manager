@@ -21,15 +21,14 @@ namespace To_Do_Manager.Controllers
             _AccountBAL = accountBAL;
         }
 
-        /// <summary>
-        /// Get Available All Teams Page
-        /// </summary>
-        /// <returns>Availale Teams Page</returns>
+            /// <summary>
+            /// Get Available All Teams Page
+            /// </summary>
+            /// <returns>Availale Teams Page</returns>
         public IActionResult Index()
         {
             ViewBag.UserName = HttpContext.Session.GetString("UserName");
             ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
-
             return View();
         }
 
@@ -82,6 +81,7 @@ namespace To_Do_Manager.Controllers
         /// </summary>
         /// <param name="teamId">TeamId</param>
         /// <returns>All Tasks with Team Name</returns>
+        
         public TeamViewModel GetTeamDetails(long teamId)
         {
             return _HomeBAL.GetTeamDetails(teamId);
@@ -181,7 +181,7 @@ namespace To_Do_Manager.Controllers
         /// Get All Notifications
         /// </summary>
         /// <param name="userId">User Id</param>
-        /// <returns>List od all notifications</returns>
+        /// <returns>List of all notifications</returns>
         public IActionResult GetNotifications()
         {
             return PartialView("~/Views/PartialViews/_Notification.cshtml", _HomeBAL.GetNotifications(long.Parse(HttpContext.Session.GetString("UserId")!)));

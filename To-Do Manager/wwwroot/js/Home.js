@@ -91,6 +91,9 @@ function removeUser(idOfEmailText) {
     $('#' + idOfEmailText + '').remove();
 }
 
+//summary
+//create the team on the clicking of the create team button from home index view
+//summary
 $(".createTeamButton").click(function () {
 
     if ($("#TeamName").val().trim() == "") {
