@@ -1,6 +1,7 @@
-﻿
+﻿@model List<Entities.ViewModels.DocumentViewModels.DocumentDisplayViewModel>
 @{
     ViewData["Title"] = "DocumentPage";
+     
 }
 
 
@@ -13,25 +14,50 @@
 </div>
 <div class="d-flex justify-content-between p-2 align-items-center"> 
     <h3 class="mt-2">Documents</h3>
-    <a asp-action="TextEditor" class="btn btn-light mt-1 rounded-pill" data-bs-toggle="tooltip" title="Add new Documnet" style="transition: all 0.2s ease-in-out; border-radius: 5px; scale:1.2"><i class="bi bi-plus-circle"></i></a>
-   
+    <a asp-action="TextEditor" asp-route-Teamid="@ViewBag.TeamId" asp-route-teamName="@ViewBag.TeamName" class="btn btn-secondary mt-1 rounded-pill" data-bs-toggle="tooltip" title="Add new Documnet" style="transition: all 0.2s ease-in-out; border-radius: 5px; scale:1.2!"><i class="bi bi-plus-circle"></i></a>
 </div>
 
 <div class="teamContainer">
     <div class="row">
         <div class="col">
-            <div class="col d-flex justify-content-between align-items-center">
-                <p class="teamName m-0">.Net/or dyanamic</p>
-                <div class="d-flex justify-content-start align-items-center">
-                   
-                </div>
+            <div class="col d-flex justify-content-between align-items-center mb-3">
+                <p class="teamName m-0">@ViewBag.TeamName</p>
             </div>
-     
-            <div class="allTasksContainer">
-                <div class="col-12">
 
+           @* wrapping it in the for loop *@
+            @foreach (var item in Model)
+            {
+                <div class="bg-white p-4 rounded-3 mt-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>Title : @item.Title</div>
+                        <div class="d-flex justify-content-center align-items-center gap-4">
+                            <a class="fs-4 text-black" asp-action="EditDocument" asp-route-teamName="@ViewBag.TeamName" class="me-4" asp-route-DocumnentId="@item.DocId" data-bs-toggle="tooltip" title="Edit" style="text-decoration:none!important"><i class="bi bi-pencil-square"></i></a>
+                            <a class="fs-4 text-black dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration:none!important">
+                                <i class="bi bi-download"></i>
+                            </a>
+
+
+                            
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" data-flag="1"></a>Download Raw html</li>
+                                <li><a class="dropdown-item" href="#" data-flag="2">Download Pdf</a></li>
+                            </ul>
+
+                            <script>
+                                $(document).ready(function () {
+                                    $('.dropdown-item').click(function (e) {
+                                        e.preventDefault();
+                                        var flag = $(this).data('flag');
+                                        var url = '@Url.Action("GeneratePdf", "Document")';
+                                        url += '?DocumentId=@item.DocId&flag=' + flag;
+                                        window.location.href = url;
+                                    });
+                                });
+                            </script>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            }
         </div>
     </div>
 </div>

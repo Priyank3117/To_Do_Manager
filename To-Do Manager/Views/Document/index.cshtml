@@ -1,11 +1,11 @@
-﻿
+﻿@model List<Entities.ViewModels.HomeViewModels.AllTeamsViewModel>
 @{
     ViewData["Title"] = "index";
 }
-<div class="row mt-3 mb-3">
+@* <div class="row mt-3 mb-3">
     <div class="col d-flex justify-content-between align-items-center">
         <div class="searchTeamContainerInToDoPage">
-            <input class="form-control searchTeam" type="search" placeholder="Search Team" onkeyup="searchTeam()" id="searchTeamInDoc" aria-label="Search">
+            <input class="form-control searchTeam" type="search" placeholder="Search Team" onkeyup="SearchAvailableTeam()" id="searchTeamInDoc" aria-label="Search">
         </div>
     </div>
 </div>
@@ -15,12 +15,60 @@
         <div class="UserMemberTeams d-flex">
         </div>
     </div>
-</div>
+</div> *@
 
 <script src="~/js/Document.js"></script>
-<script>
+@* <script>
     $(document).ready(function () {
         SearchAvailableTeam();
     })
-</script>
+</script> *@
 
+
+
+
+
+<div class="teamContainer">
+    <div class="row">
+        <div class="col">
+            
+
+            @foreach (var team in Model)
+            {
+              <div class="d-flex justify-content-center align-items-center">
+                    <div class="col d-flex justify-content-between align-items-center mt-3">
+                        <p class="teamName m-0">@team.TeamName</p>
+                    </div>
+
+                    @{
+                        var title = $"Add Document For {team.TeamName}";
+                    }
+                    <div class="d-flex justify-content-between p-2 align-items-center">
+                        <a asp-action="TextEditor" asp-route-Teamid="@team.TeamId" asp-route-teamName="@team.TeamName" class="btn btn-secondary mt-1 rounded-pill" data-bs-toggle="tooltip" title="@title" style="transition: all 0.2s ease-in-out; border-radius: 5px; scale:1.2!"><i class="bi bi-plus-circle"></i></a>
+                    </div>
+              </div>
+                @foreach (var s in team.DocumentViewModels)
+                {
+
+                    @if (s.TeamId == team.TeamId)
+                    {
+                        <div class="bg-white p-4 rounded-3 mt-2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>Title : @s.Title</div>
+                                <div class="d-flex justify-content-center align-items-center gap-4">
+                                    <a class="fs-4 text-black" asp-action="EditDocument" asp-route-teamName="@team.TeamName" class="me-4" asp-route-DocumnentId="@s.DocumentID" data-bs-toggle="tooltip" title="Edit" style="text-decoration:none!important"><i class="bi bi-pencil-square"></i></a>
+                                    <a class="fs-4 text-black" asp-action="GeneratePdf" asp-route-DocumnentId="@s.DocumentID" data-bs-toggle="tooltip" title="Download" style="text-decoration:none!important"><i class="bi bi-download"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                   
+                }
+            }
+           @* wrapping it in the for loop *@
+            
+        </div>
+    </div>
+</div>
+
+<script src="~/js/Document.js"></script>

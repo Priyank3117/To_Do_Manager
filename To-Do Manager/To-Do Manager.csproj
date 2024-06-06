@@ -8,6 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\assets\vendor\ckeditor5\src\**" />
+    <Content Remove="wwwroot\assets\vendor\ckeditor5\src\**" />
+    <EmbeddedResource Remove="wwwroot\assets\vendor\ckeditor5\src\**" />
+    <None Remove="wwwroot\assets\vendor\ckeditor5\src\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\assets\vendor\ckeditor5\build\ckeditor.js.map" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BAL\BAL.csproj" />
     <ProjectReference Include="..\Entities\Entities.csproj" />
     <ProjectReference Include="..\Repository\Repository.csproj" />
@@ -20,10 +31,16 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+    <PackageReference Include="Rotativa.AspNetCore" Version="1.3.2" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\ProfileImages\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Rotativa\wkhtmltoimage.exe" />
+    <None Include="wwwroot\Rotativa\wkhtmltopdf.exe" />
   </ItemGroup>
 
 </Project>

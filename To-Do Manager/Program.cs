@@ -4,6 +4,7 @@ using Repository.Repository;
 using Repository.Interface;
 using BAL;
 using Entities;
+using Rotativa.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,8 +40,8 @@ app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-
 app.UseAuthorization();
+app.UseRotativa();
 
 app.MapControllerRoute(
     name: "default",

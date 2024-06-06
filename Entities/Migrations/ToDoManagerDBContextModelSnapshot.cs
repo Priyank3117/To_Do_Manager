@@ -17,10 +17,50 @@ namespace Entities.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.20")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Entities.Models.Documents", b =>
+                {
+                    b.Property<long>("DocumentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("DocumentId"));
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("TeamId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("DocumentId");
+
+                    b.HasIndex("TeamId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Documents", t =>
+                        {
+                            t.HasTrigger("Documents_Trigger");
+                        });
+                });
 
             modelBuilder.Entity("Entities.Models.InvitedUsers", b =>
                 {
@@ -41,7 +81,7 @@ namespace Entities.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("InvitedUsers", null, t =>
+                    b.ToTable("InvitedUsers", t =>
                         {
                             t.HasTrigger("InvitedUsers_Trigger");
                         });
@@ -80,7 +120,7 @@ namespace Entities.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notifications", null, t =>
+                    b.ToTable("Notifications", t =>
                         {
                             t.HasTrigger("Notifications_Trigger");
                         });
@@ -112,7 +152,7 @@ namespace Entities.Migrations
 
                     b.HasKey("ResetPasswordId");
 
-                    b.ToTable("ResetPassword", null, t =>
+                    b.ToTable("ResetPassword", t =>
                         {
                             t.HasTrigger("ResetPassword_Trigger");
                         });
@@ -168,7 +208,7 @@ namespace Entities.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tasks", null, t =>
+                    b.ToTable("Tasks", t =>
                         {
                             t.HasTrigger("Tasks_Trigger");
                         });
@@ -218,7 +258,7 @@ namespace Entities.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TeamMembers", null, t =>
+                    b.ToTable("TeamMembers", t =>
                         {
                             t.HasTrigger("TeamMembers_Trigger");
                         });
@@ -248,7 +288,7 @@ namespace Entities.Migrations
 
                     b.HasKey("TeamId");
 
-                    b.ToTable("Teams", null, t =>
+                    b.ToTable("Teams", t =>
                         {
                             t.HasTrigger("Teams_Trigger");
                         });
@@ -300,10 +340,29 @@ namespace Entities.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Users", null, t =>
+                    b.ToTable("Users", t =>
                         {
                             t.HasTrigger("Users_Trigger");
                         });
+                });
+
+            modelBuilder.Entity("Entities.Models.Documents", b =>
+                {
+                    b.HasOne("Entities.Models.Teams", "Teams")
+                        .WithMany("Documents")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.Users", "Users")
+                        .WithMany("Documents")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Teams");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Entities.Models.InvitedUsers", b =>
@@ -368,6 +427,8 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.Teams", b =>
                 {
+                    b.Navigation("Documents");
+
                     b.Navigation("InvitedUsers");
 
                     b.Navigation("Tasks");
@@ -377,6 +438,8 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.Users", b =>
                 {
+                    b.Navigation("Documents");
+
                     b.Navigation("Notifications");
 
                     b.Navigation("Tasks");

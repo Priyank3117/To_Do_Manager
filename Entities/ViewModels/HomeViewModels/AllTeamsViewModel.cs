@@ -1,4 +1,6 @@
-﻿namespace Entities.ViewModels.HomeViewModels
+﻿using Entities.ViewModels.DocumentViewModels;
+
+namespace Entities.ViewModels.HomeViewModels
 {
     public class AllTeamsViewModel
     {
@@ -7,5 +9,7 @@
         public string TeamName { get; set; } = string.Empty;
 
         public string Status { get; set; } = string.Empty;
+
+        public List<DocumentViewModel> DocumentViewModels { get; set; }
     }
 }

@@ -1,95 +1,53 @@
-﻿
+﻿@model Entities.ViewModels.DocumentViewModels.DocumentViewModel
 @{
     ViewData["Title"] = "TextEditor";
 }
+<style>
+    .ck-content img {
+        width: 100px; 
+        height: 100px; 
+        object-fit: cover; 
+        margin: 5px; 
+    }
 
+    .ck-editor__editable_inline {
+        min-height: 400px;
+    }
+</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CKEditor 5 Example</title>
+    <!-- Replace "X.X.X" with the version you want to use -->
+   <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+   
 
+  
+</head>
+<body>
+    <form asp-action="SaveContent">
 
-<form method="POST">
-
-
-    <!-- title input -->
-
-    <div class="form-outline mb-4">
-        <label class="form-label" ></label>
-        <div>
-            <input  id="Title" placeholder="Title" class="form-control" />
-            <span  class="text-danger"></span>
-        </div>
-    </div>
-
-    <!-- body input -->
-
-    <div class="form-outline mb-4">
-        <label class="form-label" ></label>
-        <div>
-            <textarea id="file_picker" class="form-control" placeholder="Write Here............."></textarea>
-            <span  class="text-danger"></span>
-        </div>
-    </div>
-    <input type="Submit" class="btn btn-primary" onclick="saveData()" value="Create" />
-</form>
-
-<script>
-    tinymce.init({
-        selector: 'textarea#file_picker',
-
-        plugins: [
-            'advlist', 'autolink', 'link', 'image', 'lists', 'preview',
-            'anchor', 'pagebreak',
-            'searchreplace', 'wordcount', 'visualblocks', 'visualchars', 'code',
-            'fullscreen', 'insertdatetime', 'save',
-            'media', 'table', 'help'
-        ],
-        toolbar: 'undo redo | styles | bold italic | alignleft aligncenter alignright alignjustify | ' +
-            'bullist numlist outdent indent | link | image |code ' +
-            'forecolor backcolor emoticons | help',
-
-    
-        menubar: false,
+        <input asp-for="TeamId" value="@Model.TeamId" hidden />
+        <input asp-for="UserId" value="@Model.UserId" hidden />
+        <input asp-for="DocumentID" value="@Model.DocumentID" hidden />
+        <input  asp-for="TeamName" value="@Model.TeamName" hidden/>
+        
       
-      
-        image_title: true,
-        /* enable automatic uploads of images represented by blob or data URIs*/
-        automatic_uploads: true,
-        /*
-          URL of our upload handler (for more details check: https://www.tiny.cloud/docs/configure/file-image-upload/#images_upload_url)
-          images_upload_url: 'postAcceptor.php',
-          here we add custom filepicker only to Image dialog
-        */
-        file_picker_types: 'image',
-        /* and here's our custom image picker*/
-        file_picker_callback: (cb, value, meta) => {
-             console.log("ho ja bhai ")
-            const input = document.createElement('input');
-            input.setAttribute('type', 'file');
-            input.setAttribute('accept', 'image/*');
 
-            input.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-
-                const reader = new FileReader();
-                reader.addEventListener('load', () => {
-                    /*
-                      Note: Now we need to register the blob in TinyMCEs image blob
-                      registry. In the next release this part hopefully won't be
-                      necessary, as we are looking to handle it internally.
-                    */
-                    const id = 'blobid' + (new Date()).getTime();
-                    const blobCache = tinymce.activeEditor.editorUpload.blobCache;
-                    const base64 = reader.result.split(',')[1];
-                    const blobInfo = blobCache.create(id, file, base64);
-                    blobCache.add(blobInfo);
-
-                    /* call the callback and populate the Title field with the file name */
-                    cb(blobInfo.blobUri(), { title: file.name });
-                });
-                reader.readAsDataURL(file);
-            });
-
-            input.click();
-        },
-        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
-    });
-
-</script>
+        <div class="form-outline mt-4">
+            <input class="form-control" id="title" asp-for="Title" placeholder="Title" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        <div>
+        <div class="mt-4">
+            <textarea id="editor"  asp-for="Content" class="form-control ">
+             </textarea>
+             <span asp-validation-for="Content" class="text-danger"></span>
+        </div>
+          
+        <button type="submit" class="bg-success border-0 btn-s rounded-3 mt-3 text-white p-2" >Submit</button>
+    </form>
+</body>
+</html>
+<script src="~/js/Document.js"></script>

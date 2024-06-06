@@ -1,4 +1,5 @@
-﻿using Entities.ViewModels.HomeViewModels;
+﻿using Entities.ViewModels.DocumentViewModels;
+using Entities.ViewModels.HomeViewModels;
 using Repository.Interface;
 using System;
 using System.Collections.Generic;
@@ -21,11 +22,29 @@ namespace BAL
         }
 
 
-        public List<AllTeamsViewModel> GetAllAvailableTeams(string searchTerm, long userId)
+        public List<AllTeamsViewModel> GetAllAvailableDocs(long userId)
         {
-            return _documentRepository.GetAllAvailableTeams(searchTerm, userId);
+            return _documentRepository.GetAllAvailableDocs(userId);
         }
 
+        public void SaveContent(DocumentViewModel documentViewModel)
+        {
+            _documentRepository.AddContent(documentViewModel);
+        }
 
+        public List<DocumentDisplayViewModel> GetDocuments(long teamId)
+        {
+            return _documentRepository.GetDocumnets(teamId);
+        }
+
+        public DocumentViewModel GetDocumentById(long documnentId, string teamName)
+        {
+            return _documentRepository.GetDocumentById(documnentId, teamName);
+        }
+
+        public string DocumentContent(long documnentId)
+        {
+            return _documentRepository.DocumentContent(documnentId);
+        }
     }
 }
