@@ -10,6 +10,10 @@ namespace Entities.Data
 
         }
 
+        public ToDoManagerDBContext()
+        {
+        }
+
         public DbSet<Documents>   Documents { get; set; }
         public DbSet<Users> Users { get; set; }
 
@@ -24,6 +28,8 @@ namespace Entities.Data
         public DbSet<InvitedUsers> InvitedUsers { get; set; }
 
         public DbSet<Notifications> Notifications { get; set; }
+        public DbSet<TimeSheetDetails> TimeSheetDetails { get; set; }
+        public DbSet<TimeSheetInputLog> TimeSheetInputLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

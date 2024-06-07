@@ -19,6 +19,7 @@ builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
 builder.Services.AddScoped<ITeamManagementRepository, TeamManagementRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
+builder.Services.AddScoped<ITimeSheetRepository, TimeSheetRepository>();
 builder.Services.AddScoped<AccountBAL>();
 builder.Services.AddScoped<HomeBAL>();
 builder.Services.AddScoped<AllTasksBAL>();
@@ -26,6 +27,7 @@ builder.Services.AddScoped<UserProfileBAL>();
 builder.Services.AddScoped<TeamManagementBAL>();
 builder.Services.AddScoped<MailHelper>();
 builder.Services.AddScoped<DocumentBAL>();
+builder.Services.AddScoped<TimeSheetBAL>();
 
 var app = builder.Build();
 

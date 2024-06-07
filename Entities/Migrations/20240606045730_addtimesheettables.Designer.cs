@@ -4,6 +4,7 @@ using Entities.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(ToDoManagerDBContext))]
-    partial class ToDoManagerDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240606045730_addtimesheettables")]
+    partial class addtimesheettables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -294,73 +297,6 @@ namespace Entities.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Entities.Models.TimeSheetDetails", b =>
-                {
-                    b.Property<long>("TimeSheetDetailsId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("TimeSheetDetailsId"));
-
-                    b.Property<string>("Note")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProjectCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Task")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("TimeSheetInputLogId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("TimeSheetDetailsId");
-
-                    b.HasIndex("TimeSheetInputLogId");
-
-                    b.ToTable("TimeSheetDetails", t =>
-                        {
-                            t.HasTrigger("TimeSheetDetails_Trigger");
-                        });
-                });
-
-            modelBuilder.Entity("Entities.Models.TimeSheetInputLog", b =>
-                {
-                    b.Property<long>("TimeSheetInputLogID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("TimeSheetInputLogID"));
-
-                    b.Property<DateTime>("CurrentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsProcesses")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ProjectType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("TimeSheetInputLogID");
-
-                    b.ToTable("TimeSheetInputLogs", t =>
-                        {
-                            t.HasTrigger("TimeSheetInputLogs_Trigger");
-                        });
-                });
-
             modelBuilder.Entity("Entities.Models.Users", b =>
                 {
                     b.Property<long>("UserId")
@@ -492,17 +428,6 @@ namespace Entities.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("Entities.Models.TimeSheetDetails", b =>
-                {
-                    b.HasOne("Entities.Models.TimeSheetInputLog", "TimeSheetInputLog")
-                        .WithMany("TimeSheets")
-                        .HasForeignKey("TimeSheetInputLogId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TimeSheetInputLog");
-                });
-
             modelBuilder.Entity("Entities.Models.Teams", b =>
                 {
                     b.Navigation("Documents");
@@ -512,11 +437,6 @@ namespace Entities.Migrations
                     b.Navigation("Tasks");
 
                     b.Navigation("TeamMembers");
-                });
-
-            modelBuilder.Entity("Entities.Models.TimeSheetInputLog", b =>
-                {
-                    b.Navigation("TimeSheets");
                 });
 
             modelBuilder.Entity("Entities.Models.Users", b =>
