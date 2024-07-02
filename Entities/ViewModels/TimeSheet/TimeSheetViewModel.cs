@@ -14,5 +14,7 @@ namespace Entities.ViewModels.TimeSheet
         public string ProjectType { get; set; } = string.Empty;
 
         public IFormFile UploadedFile { get; set; } = null!;
+
+        
     }
 }

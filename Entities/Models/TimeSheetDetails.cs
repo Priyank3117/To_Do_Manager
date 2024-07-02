@@ -13,6 +13,7 @@ namespace Entities.Models
 
         public string ProjectCode { get; set; } = null!;
 
+        public string ProjectType { get; set; } = null!;
         
         public string Url { get; set; } = null!;
 

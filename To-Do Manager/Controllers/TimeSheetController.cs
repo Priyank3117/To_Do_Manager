@@ -1,7 +1,10 @@
 ﻿using BAL;
 using Entities.Data;
 using Entities.ViewModels.TimeSheet;
+
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace To_Do_Manager.Controllers
 {
@@ -11,10 +14,10 @@ namespace To_Do_Manager.Controllers
         private readonly IConfiguration _configuration;
         private readonly TimeSheetBAL _timeSheetBAL;
 
-        public TimeSheetController( IConfiguration configuration, TimeSheetBAL timeSheetBAL)
+        public TimeSheetController(IConfiguration configuration, TimeSheetBAL timeSheetBAL)
         {
 
-            _configuration = configuration; 
+            _configuration = configuration;
             _timeSheetBAL = timeSheetBAL;
 
         }
@@ -28,8 +31,8 @@ namespace To_Do_Manager.Controllers
             ViewBag.UserName = HttpContext.Session.GetString("UserName");
             ViewBag.Avatar = HttpContext.Session.GetString("Avatar");
             ViewBag.ProjectType = _configuration.GetSection("ProjectTypes").Get<Dictionary<string, string>>();
-            return View();
-       }
+            return View(/*_timeSheetBAL.GetDocumentsData()*/);
+        }
 
         [HttpPost]
         public async Task<IActionResult> ImportFromExcel(TimeSheetViewModel timeSheetViewModel)
@@ -41,17 +44,15 @@ namespace To_Do_Manager.Controllers
                 {
                     //add the data to the database call the method of the   
                     _timeSheetBAL.AddTimeSheetData(timeSheetViewModel);
-                  }
-               
+                }
             }
             catch (Exception)
             {
-
                 throw;
             }
-            
-
-            return RedirectToAction("Index"); // Redirect back to upload view in case of failure
+            // Redirect back to upload view in case of failure
+            return RedirectToAction("Index");
         }
+
     }
 }

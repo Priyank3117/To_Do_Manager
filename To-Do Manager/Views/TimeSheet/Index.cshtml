@@ -5,30 +5,27 @@
     var projects = ViewBag.ProjectType as Dictionary<string,string>;
 }
 
-<div class="teamContainer w-50 mx-auto  mt-4 d-flex justify-content-center flex-column ">
-    <div class="fw-bold fs-3 mx-auto mb-3">
+<div class="teamContainer  mx-auto  mt-4 ">
+    <div class="fw-bold fs-5 mb-3">
         Submit TimeSheet
     </div>
-    <form class="form-sheet  row g-3" asp-controller="TimeSheet" asp-action="ImportFromExcel" enctype="multipart/form-data">
-        <div class="form-floating col-12 ">
-            <input type="text" class="form-control" asp-for="FileName"  id="exampleFormControlInput1" placeholder="name">
-            <label for="exampleFormControlInput1" class="form-label" style="left:18px">File Name(optional)</label>
-        </div> 
-        <div class=" col-12 py-1">
+    <form class="form-sheet d-flex justify-content-between row mx-4" asp-controller="TimeSheet" asp-action="ImportFromExcel" enctype="multipart/form-data">
+       
+        <div class="col-4 py-1">
             <select class="form-control" asp-for="ProjectType" required>
                 @if (ViewBag.ProjectType != null)
                 {
                     <option value="">Select type of project</option>
                     foreach (var item in projects)
                     {
-                        <option value="@item.Key">@item.Value</option>
+                        <option value="@item.Value">@item.Key</option>
                     }
                 }
             </select>
             <span asp-validation-for="ProjectType" class="text-danger fs-6"></span>
         </div>
      
-            <div class="col-12 pb-3">
+            <div class="col-4 pb-3">
                 <input class="form-control form-control-lg fs-6 bg-body-tertiary" asp-for="UploadedFile" type="file" id="formFile" accept=".xls, .xlsx">
                 <div id="file-error" class="alert alert-danger p-1 d-none mt-3" role="alert">
                     <span class="mx-2">Please upload only XLS or XLSX files.</span>
@@ -36,7 +33,7 @@
             <span asp-validation-for="UploadedFile" class="text-danger fs-6"></span>
             </div>
 
-            <div class="d-flex justify-content-end ">
+            <div class="col-4">
                 <button class="btn btn-success col-12 p-1  w-25 " type="submit">submit</button>
             </div>
     </form>

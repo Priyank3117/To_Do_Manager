@@ -1,4 +1,5 @@
-﻿using Entities.ViewModels.TimeSheet;
+﻿using Entities.Migrations;
+using Entities.ViewModels.TimeSheet;
 using Repository.Interface;
 
 namespace BAL
@@ -12,9 +13,15 @@ namespace BAL
             _timeSheetRepository = timeSheetRepository;
         }
 
+
         public void AddTimeSheetData(TimeSheetViewModel timeSheetViewModel)
         {
             _timeSheetRepository.AddTimeSheetData(timeSheetViewModel);
         }
+
+        //public TimeSheetViewModel GetDocumentsData()
+        //{
+           
+        //}
     }
 }

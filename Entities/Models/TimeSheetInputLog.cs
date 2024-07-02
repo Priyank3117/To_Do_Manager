@@ -17,5 +17,7 @@ namespace Entities.Models
 
         public virtual ICollection<TimeSheetDetails> TimeSheets { get; set; }   = new List<TimeSheetDetails>();
 
+        public virtual HtmlTemplate HtmlTemplate { get; set; } = null!;
+
     }
 }

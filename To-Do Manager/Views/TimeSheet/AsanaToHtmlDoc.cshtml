@@ -1,0 +1,22 @@
+﻿@model Entities.ViewModels.TimeSheet.AsanaViewModel
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asana Tasks</title>
+</head>
+<body>
+    <h1>Asana Tasks</h1>
+    <ul>
+        @foreach (var task in Model.Tasks)
+        {
+            <li>
+                <strong>@task.Name</strong><br />
+                @task.Notes<br />
+                <a href="@task.Permalink_Url">@task.Permalink_Url</a>
+            </li>
+        }
+    </ul>
+</body>
+</html>

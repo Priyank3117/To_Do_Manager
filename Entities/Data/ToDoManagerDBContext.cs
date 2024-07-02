@@ -31,6 +31,8 @@ namespace Entities.Data
         public DbSet<TimeSheetDetails> TimeSheetDetails { get; set; }
         public DbSet<TimeSheetInputLog> TimeSheetInputLogs { get; set; }
 
+        public DbSet<HtmlTemplate> HtmlTemplate { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

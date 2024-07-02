@@ -4,6 +4,7 @@ using Entities.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(ToDoManagerDBContext))]
-    partial class ToDoManagerDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240701081459_update_timesheetdetails_column")]
+    partial class update_timesheetdetails_column
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,32 +62,6 @@ namespace Entities.Migrations
                     b.ToTable("Documents", t =>
                         {
                             t.HasTrigger("Documents_Trigger");
-                        });
-                });
-
-            modelBuilder.Entity("Entities.Models.HtmlTemplate", b =>
-                {
-                    b.Property<long>("HtmlTemplateId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("HtmlTemplateId"));
-
-                    b.Property<string>("HtmlTemplateName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("TimeSheetInputLogId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("HtmlTemplateId");
-
-                    b.HasIndex("TimeSheetInputLogId")
-                        .IsUnique();
-
-                    b.ToTable("HtmlTemplate", t =>
-                        {
-                            t.HasTrigger("HtmlTemplate_Trigger");
                         });
                 });
 
@@ -462,17 +439,6 @@ namespace Entities.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("Entities.Models.HtmlTemplate", b =>
-                {
-                    b.HasOne("Entities.Models.TimeSheetInputLog", "TimeSheetInputLog")
-                        .WithOne("HtmlTemplate")
-                        .HasForeignKey("Entities.Models.HtmlTemplate", "TimeSheetInputLogId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TimeSheetInputLog");
-                });
-
             modelBuilder.Entity("Entities.Models.InvitedUsers", b =>
                 {
                     b.HasOne("Entities.Models.Teams", "Teams")
@@ -557,9 +523,6 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.TimeSheetInputLog", b =>
                 {
-                    b.Navigation("HtmlTemplate")
-                        .IsRequired();
-
                     b.Navigation("TimeSheets");
                 });
 
