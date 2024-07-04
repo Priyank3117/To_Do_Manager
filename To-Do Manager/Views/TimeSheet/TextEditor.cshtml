@@ -1,0 +1,56 @@
+﻿@model Entities.ViewModels.TimeSheet.ProjectDocument
+@{
+    ViewData["Title"] = "TextEditor";
+}
+<style>
+    .ck-content img {
+        width: 100px; 
+        height: 100px; 
+        object-fit: cover; 
+        margin: 5px; 
+    }
+
+    .ck-editor__editable_inline {
+        min-height: 570px;
+    }
+
+    .ck-content ul {
+        list-style: none;
+        padding-left: 0; /* Optional: Removes the default padding */
+    }
+
+    
+</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CKEditor 5 Example</title>
+    <!-- Replace "X.X.X" with the version you want to use -->
+   <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+   
+
+  
+</head>
+<a role="button" asp-action="index" style="display: block; color: black;" class="mb-2 mt-2 d-flex justify-content-end">
+    <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"></path>
+    </svg>
+</a>
+<body>
+    <form asp-action="SaveEditDocument">
+
+        <input asp-for="DocumentId" value="@Model.DocumentId" hidden />
+    
+        <div class="mt-4">
+            <textarea id="editor" asp-for="HtmlContent" class="form-control ">
+             </textarea>
+             <span  class="text-danger"></span>
+        </div>
+          
+        <button type="submit" class="bg-success border-0 btn-s rounded-3 mt-3 text-white p-2" >Submit</button>
+    </form>
+</body>
+</html>
+<script src="~/js/Document.js"></script>

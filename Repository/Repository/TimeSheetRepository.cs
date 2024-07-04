@@ -1,7 +1,8 @@
-﻿using Entities.Data;
+﻿using DocumentFormat.OpenXml.Drawing;
+using Entities.Data;
 using Entities.Models;
 using Entities.ViewModels.TimeSheet;
-using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Repository.Interface;
 using System.Net.Http.Headers;
@@ -15,31 +16,100 @@ namespace Repository.Repository
     {
 
         private readonly ToDoManagerDBContext _db;
+        private readonly IConfiguration _configuration;
 
-        public TimeSheetRepository(ToDoManagerDBContext toDoManagerDBContext)
+        public TimeSheetRepository(ToDoManagerDBContext toDoManagerDBContext, IConfiguration configuration)
         {
             _db = toDoManagerDBContext;
+            _configuration = configuration;
+
         }
+
+        #region public methods
+        /// <summary>
+        /// Addtimesheet to the database
+        /// </summary>
+        /// <param name="timeSheetViewModel">User Id</param>
+        /// <returns></returns>
         public async void AddTimeSheetData(TimeSheetViewModel timeSheetViewModel)
         {
-
-            //first we added the data of the timesheet input log
-            TimeSheetInputLog timeSheetInputLog = new TimeSheetInputLog();
-
-            if (timeSheetViewModel.FileName == null)
+            // Check if there's already an active transaction
+            try
             {
-                IFormFile file = timeSheetViewModel.UploadedFile;
-                timeSheetInputLog.FileName = file.FileName;
-            }
-            else
-            {
-                timeSheetInputLog.FileName = timeSheetViewModel.FileName;
-            }
-            string[] splitProjectTypeAndId = timeSheetViewModel.ProjectType.Split(',');
-            timeSheetInputLog.ProjectType = splitProjectTypeAndId[0];
-            _db.TimeSheetInputLogs.Add(timeSheetInputLog);
-            _db.SaveChanges();
+                // First we added the data of the timesheet input log
+                TimeSheetInputLog timeSheetInputLog = new TimeSheetInputLog();
+                string[] splitProjectTypeAndId = null;
+                timeSheetInputLog.FileName = timeSheetViewModel.UploadedFile.FileName;
 
+                if (timeSheetViewModel.ProjectType == null)
+                {
+                    AddAll(timeSheetViewModel);
+                }
+                else
+                {
+                    using (var transaction = _db.Database.BeginTransaction())
+                    {
+                        splitProjectTypeAndId = timeSheetViewModel.ProjectType.Split(',');
+                        timeSheetInputLog.ProjectType = splitProjectTypeAndId[0];
+                        _db.TimeSheetInputLogs.Add(timeSheetInputLog);
+                        _db.SaveChanges();
+
+
+                        ReadAndSaveExcel(timeSheetViewModel, timeSheetInputLog.TimeSheetInputLogID, timeSheetInputLog.ProjectType);
+
+                        var timeSheetDetailData = _db.TimeSheetDetails.Where(s => s.TimeSheetInputLogId == timeSheetInputLog.TimeSheetInputLogID).ToList();
+
+                        if (timeSheetDetailData.Count == 0)
+                        {
+                            transaction.Rollback();
+                            return;
+                        }
+                        else
+                        {
+                            transaction.Commit();
+                        }
+
+                        if (splitProjectTypeAndId != null && splitProjectTypeAndId.Length > 0)
+                        {
+                            AsanaTOHtmlDoc(timeSheetInputLog.TimeSheetInputLogID, timeSheetInputLog.ProjectType, splitProjectTypeAndId[1], timeSheetDetailData);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Method for add all the project one by one 
+        /// </summary>
+        /// <param name="timeSheetViewModel">User Id</param>
+        /// <returns></returns>
+        public void AddAll(TimeSheetViewModel timeSheetViewModel)
+        {
+            string allProject = _configuration.GetSection("AllProject").Get<string>();
+            string[] splitProject = allProject.Split('|');
+
+            foreach (string line in splitProject)
+            {
+                TimeSheetViewModel ts = new TimeSheetViewModel();
+                ts.UploadedFile = timeSheetViewModel.UploadedFile;
+                ts.ProjectType = line;
+                AddTimeSheetData(ts);
+            }
+        }
+
+        /// <summary>
+        /// read the excel file and add data in db
+        /// </summary>
+        /// <param name="timeSheetViewModel">User Id</param>
+        /// <param name="timeSheetInputLogId">User Id</param>
+        /// <param name="projectType">User Id</param>
+        /// <returns></returns>
+        public void ReadAndSaveExcel(TimeSheetViewModel timeSheetViewModel, long timeSheetInputLogId, string projectType)
+        {
             //now save the data of time sheet details
             using (var workbook = new ClosedXML.Excel.XLWorkbook(timeSheetViewModel.UploadedFile.OpenReadStream()))
             {
@@ -62,7 +132,7 @@ namespace Repository.Repository
                     {
                         var timeSheetDetail = new TimeSheetDetails();
 
-                        timeSheetDetail.TimeSheetInputLogId = timeSheetInputLog.TimeSheetInputLogID;
+                        timeSheetDetail.TimeSheetInputLogId = timeSheetInputLogId;
                         timeSheetDetail.ProjectType = row.Cell(3).GetValue<string>();
                         timeSheetDetail.ProjectCode = row.Cell(4).GetValue<string>();
                         timeSheetDetail.Task = row.Cell(5).GetValue<string>();
@@ -88,7 +158,7 @@ namespace Repository.Repository
                         }
                         else
                         {
-                            if (timeSheetDetail.ProjectType.Contains(timeSheetInputLog.ProjectType))
+                            if (timeSheetDetail.ProjectType.Contains(projectType))
                             {
                                 _db.TimeSheetDetails.Add(timeSheetDetail);
                             }
@@ -98,7 +168,7 @@ namespace Repository.Repository
                     {
                         var timeSheetDetail = new TimeSheetDetails();
 
-                        timeSheetDetail.TimeSheetInputLogId = timeSheetInputLog.TimeSheetInputLogID;
+                        timeSheetDetail.TimeSheetInputLogId = timeSheetInputLogId;
                         timeSheetDetail.ProjectType = row.Cell(3).GetValue<string>();
                         timeSheetDetail.ProjectCode = row.Cell(4).GetValue<string>();
                         timeSheetDetail.Task = row.Cell(5).GetValue<string>();
@@ -107,7 +177,7 @@ namespace Repository.Repository
                         //string date = row.Cell(5).GetValue<string>();
                         //timeSheetDetails. = DateOnly.FromDateTime(DateTime.Parse(date));
                         //Add the Employee to the List of Employees
-                        if (timeSheetDetail.ProjectType.Contains(timeSheetInputLog.ProjectType))
+                        if (timeSheetDetail.ProjectType.Contains(projectType))
                         {
                             _db.TimeSheetDetails.Add(timeSheetDetail);
 
@@ -117,11 +187,17 @@ namespace Repository.Repository
 
                 _db.SaveChanges();
             }
-            var timeSheetDetailData = _db.TimeSheetDetails.Where(s => s.TimeSheetInputLogId == timeSheetInputLog.TimeSheetInputLogID).ToList();
-            AsanaTOHtmlDoc(timeSheetInputLog.TimeSheetInputLogID, splitProjectTypeAndId[1], timeSheetDetailData);
         }
 
-        public void AsanaTOHtmlDoc(long TimeSheetInputLogID, string projectId, List<TimeSheetDetails> timesheetdetails)
+        /// <summary>
+        /// Get tasks from calling asana api and match with excel data and get common tasks list
+        /// </summary>
+        /// <param name="timeSheetInputLogId">User Id</param>
+        /// <param name="projectType">User Id</param>
+        /// <param name="projectId">User Id</param>
+        /// <param name="timesheetdetails">User Id</param>
+        /// <returns></returns>
+        public void AsanaTOHtmlDoc(long timeSheetInputLogId, string projectType, string projectId, List<TimeSheetDetails> timesheetdetails)
         {
             var viewModel = new AsanaViewModel();
             var matchedViewModel = new AsanaViewModel();
@@ -131,7 +207,7 @@ namespace Repository.Repository
                 // Set the Bearer token in the request headers
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "2/1207683751267451/1207686063568260:d7c2960bcaba823b350bd3531c58d7eb");
 
-                string url = $"https://app.asana.com/api/1.0/tasks?project={projectId}&opt_fields=name,notes,permalink_url";
+                string url = $"https://app.asana.com/api/1.0/tasks?project={projectId}&opt_fields=name,notes,html_notes,permalink_url";
 
                 // Use synchronous GetStringAsync equivalent
                 var response = _httpClient.GetStringAsync(url).Result;
@@ -143,111 +219,155 @@ namespace Repository.Repository
                     viewModel.Tasks.AddRange(asanaResponse.Data);
                 }
 
-                foreach (var item in viewModel.Tasks)
+                if (timesheetdetails.Count != 0)
                 {
-                    var isPresent = timesheetdetails.Any(ts => (ts.Note == item.Name) && (ts.Url.Trim() == item.Permalink_Url));
-
-                    if (isPresent)
+                    foreach (var item in viewModel.Tasks)
                     {
-                        matchedViewModel.Tasks.Add(item);
+                        var isPresent = timesheetdetails.Any(ts => (ts.Note == item.Name) && (ts.Url.Trim() == item.Permalink_Url));
+
+                        if (isPresent)
+                        {
+                            matchedViewModel.Tasks.Add(item);
+                        }
                     }
                 }
+
             }
 
-            string html = GenerateHtmlString(matchedViewModel);
+            string html = matchedViewModel.Tasks.Count == 0 ? null : GenerateHtmlString(matchedViewModel, projectType);
             HtmlTemplate htmlTemplate = new HtmlTemplate();
             if (html != null)
             {
                 htmlTemplate.HtmlTemplateName = html;
-                htmlTemplate.TimeSheetInputLogId = TimeSheetInputLogID;
+                htmlTemplate.TimeSheetInputLogId = timeSheetInputLogId;
                 _db.HtmlTemplate.Add(htmlTemplate);
                 _db.SaveChanges();
             }
-           
+
         }
 
-        private string GenerateHtmlString(AsanaViewModel viewModel)
+        /// <summary>
+        /// get document content from db
+        /// </summary>
+        /// <param name="DocumnentId">User Id</param>
+        /// <returns>retutn the html string of the document</returns>
+        public string DocumentContent(long documnentId)
+        {
+            return _db.HtmlTemplate.Where(s => s.HtmlTemplateId == documnentId).Select(s => s.HtmlTemplateName).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Getdocument using Id 
+        /// </summary>
+        /// <param name="documnentId">User Id</param>
+        /// <returns>Project document view model</returns>
+        public ProjectDocument GetDocumentById(long documnentId)
+        {
+            var document = _db.HtmlTemplate.Where(s => s.HtmlTemplateId == documnentId).FirstOrDefault();
+
+            ProjectDocument projectDocument = new ProjectDocument();
+            if (document != null)
+            {
+                projectDocument.DocumentId = documnentId;
+                projectDocument.HtmlContent = document.HtmlTemplateName;
+            }
+            return projectDocument;
+        }
+
+        /// <summary>
+        /// Method for get data of doc for displaying in the index view
+        /// </summary>
+        /// <param name="">User Id</param>
+        /// <returns>timesheetview model</returns>
+        public TimeSheetViewModel GetDocumentsData()
+        {
+            var listOfDoc = _db.HtmlTemplate.ToList();
+            TimeSheetViewModel timeSheetViewModel = new TimeSheetViewModel();
+            List<ProjectDocument> pd = new List<ProjectDocument>();
+
+            foreach (var item in listOfDoc)
+            {
+                var data = _db.TimeSheetInputLogs.Where(s => s.TimeSheetInputLogID == item.TimeSheetInputLogId).Select(s => new ProjectDocument
+                {
+                    DocumentId = item.HtmlTemplateId,
+                    ProjectType = s.ProjectType
+                });
+
+                pd.AddRange(data);
+            }
+            timeSheetViewModel.ProjectDocuments = pd;
+            return timeSheetViewModel;
+        }
+
+        /// <summary>
+        /// Method for Updating content
+        /// </summary>
+        /// <param name="ProjectDocument">User Id</param>
+        /// <returns></returns>
+        public void UpdateContent(ProjectDocument ProjectDocument)
+        {
+            var documentInstance = _db.HtmlTemplate.Where(s => s.HtmlTemplateId == ProjectDocument.DocumentId).FirstOrDefault();
+
+            if (documentInstance != null && ProjectDocument.HtmlContent != null)
+            {
+                documentInstance.HtmlTemplateName = ProjectDocument.HtmlContent;
+                _db.HtmlTemplate.Update(documentInstance);
+                _db.SaveChanges();
+            }
+        }
+
+        #endregion
+
+        #region private methods
+
+        /// <summary>
+        /// Get html string for the common task
+        /// </summary>
+        /// <param name="asanaViewModel">User Id</param>
+        /// <param name="projectType">User Id</param>
+        /// <returns></returns>
+        private string GenerateHtmlString(AsanaViewModel asanaViewModel, string projectType)
         {
             StringBuilder htmlBuilder = new StringBuilder();
 
             // Define the template with placeholders
             string template = @"
-                    <!DOCTYPE html>
-                    <html lang=""en"">
-                    <head>
-                        <meta charset=""UTF-8"">
-                        <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
-                        <title>Asana Tasks</title>
-                        <style>
-                            body { font-family: Arial, sans-serif; }
-                            ul { list-style-type: none; padding: 0; }
-                            li { margin: 10px 0; }
-                            h1{ text-align: center;}
-                        </style>
-                    </head>
-                    <body>
-                        <h1>$$PROJECHEADING$$</h1>
-                        <div>
-                            $$TASKTEMPLATE$$    
-                        </div>
-                    </body>
-                    </html>";
+            <!DOCTYPE html>
+            <html lang=""en"">
+            <head>
+                <meta charset=""UTF-8"">
+                <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+                <title>Asana Tasks</title>
+            </head>
+            <body>
+                <h1>$$PROJECTHEADING$$ Asana Doc</h1>
+                <div>
+                    $$TASKTEMPLATE$$    
+                </div>
+            </body>
+            </html>";
 
             // Generate task items HTML
             StringBuilder tasksBuilder = new StringBuilder();
             int counter = 1;
-            foreach (var task in viewModel.Tasks)
+            foreach (var task in asanaViewModel.Tasks)
             {
                 tasksBuilder.Append("<li>");
-                tasksBuilder.AppendFormat("{0}. <strong>{1}</strong>", counter, task.Name);
+                tasksBuilder.AppendFormat("<h2><strong>{0}</strong>. <strong>{1}</strong></h2>", counter, task.Name);
                 tasksBuilder.AppendFormat("<p>Link: <a href=\"{0}\">{0}</a></p>", task.Permalink_Url);
-                tasksBuilder.AppendFormat("<p>{0}</p>", task.Notes);
+                tasksBuilder.AppendFormat("<p>{0}</p>", task.Html_Notes);
                 tasksBuilder.Append("</li>");
                 counter++;
             }
 
             // Replace placeholders with actual values
             string htmlString = template
-                .Replace("$$PROJECTHEADING$$", "Asana Tasks") // Replace with actual project heading if available
+                .Replace("$$PROJECTHEADING$$", projectType)
                 .Replace("$$TASKTEMPLATE$$", $"<ul>{tasksBuilder.ToString()}</ul>");
 
-            return htmlString;
+            return tasksBuilder.ToString() == null ? null : htmlString;
+
         }
-
-        //private string GenerateHtmlString(AsanaViewModel viewModel)
-        //{
-        //    StringBuilder htmlBuilder = new StringBuilder();
-
-        //    htmlBuilder.Append("<!DOCTYPE html>");
-        //    htmlBuilder.Append("<html>");
-        //    htmlBuilder.Append("<head>");
-        //    htmlBuilder.Append("<title>Asana Tasks</title>");
-        //    htmlBuilder.Append("<style>");
-        //    htmlBuilder.Append("body { font-family: Arial, sans-serif; }");
-        //    htmlBuilder.Append("ul { list-style-type: none; padding: 0; }");
-        //    htmlBuilder.Append("</style>");
-        //    htmlBuilder.Append("</head>");
-        //    htmlBuilder.Append("<body>");
-        //    htmlBuilder.Append("<h1>Asana Tasks</h1>");
-        //    htmlBuilder.Append("<ul>");
-
-        //    int counter = 1;
-
-        //    foreach (var task in viewModel.Tasks)
-        //    {
-        //        htmlBuilder.Append("<li>");
-        //        htmlBuilder.AppendFormat("{0}.<strong>{1}</strong>", counter, task.Name);
-        //        htmlBuilder.AppendFormat("<p>Link -> <a href=\"{0}\">{0}</a></p>",task.Permalink_Url);
-        //        htmlBuilder.AppendFormat("<p>{0}</p>", task.Notes);
-        //        htmlBuilder.Append("</li>");
-        //        counter++;
-        //    }
-
-        //    htmlBuilder.Append("</ul>");
-        //    htmlBuilder.Append("</body>");
-        //    htmlBuilder.Append("</html>");
-
-        //    return htmlBuilder.ToString();
-        //}
+        #endregion
     }
 }

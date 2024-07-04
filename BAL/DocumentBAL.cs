@@ -12,15 +12,12 @@ namespace BAL
 
     public class DocumentBAL
     {
-
-
         private readonly IDocumentRepository _documentRepository;
 
         public DocumentBAL(IDocumentRepository documentRepository)
         {
             _documentRepository = documentRepository;
         }
-
 
         public List<AllTeamsViewModel> GetAllAvailableDocs(long userId)
         {
@@ -46,5 +43,7 @@ namespace BAL
         {
             return _documentRepository.DocumentContent(documnentId);
         }
+
+
     }
 }

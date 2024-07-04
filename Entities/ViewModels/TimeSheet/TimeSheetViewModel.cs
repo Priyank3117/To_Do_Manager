@@ -9,12 +9,11 @@ namespace Entities.ViewModels.TimeSheet
 {
     public class TimeSheetViewModel
     {
-        public string? FileName { get; set; }
-
-        public string ProjectType { get; set; } = string.Empty;
+        public string? ProjectType { get; set; } 
 
         public IFormFile UploadedFile { get; set; } = null!;
 
-        
-    }
+        public string? MessageToShow { get; set; }
+        public List<ProjectDocument>? ProjectDocuments { get; set; }
+     }
 }

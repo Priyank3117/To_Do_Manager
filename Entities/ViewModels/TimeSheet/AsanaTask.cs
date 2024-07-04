@@ -5,6 +5,7 @@
         public string Gid { get; set; }
         public string Name { get; set; }
         public string Notes { get; set; }
+        public string Html_Notes { get; set; }
         public string Permalink_Url { get; set; }
     }
 
